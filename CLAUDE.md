@@ -21,11 +21,9 @@ Website for **Brisbane West Toy Library** (briswesttoylibrary.org.au), a communi
 ```bash
 pnpm dev                                              # local dev server
 pnpm build                                            # payload migrate && next build
-pnpm payload migrate:create --name <name>             # generate migration after schema change
+pnpm payload migrate:create <name>                    # generate migration after schema change
 pnpm payload migrate                                  # apply pending migrations to DB
 ```
-
-> **Note:** The Payload CLI (`migrate:create`) fails locally on Node 22 due to a tsx/ESM compatibility issue. Use the GitHub Actions workflow instead (see below).
 
 ## Repository
 
@@ -51,15 +49,6 @@ Stored in **1Password**. Manually entered into Vercel environment variables:
 | Phase 4 — Separate pages | Pending |
 | Phase 5 — Polish + production | Pending |
 | Phase 6 — SETLS integration | Future |
-
-## ⚠️ Blocking Issue: Database Tables Not Created
-
-The Turso database has never had its schema applied. Until the migration workflow runs, all deployed pages that touch the DB (including `/admin/login`) show `no such table: users`.
-
-**Fix — run once from GitHub:**
-1. GitHub → **Actions** tab → **Generate Payload Migrations** → **Run workflow**
-2. Workflow uses Node 22, generates `migrations/*.ts` files, commits them to `main`
-3. Vercel auto-deploys → `payload migrate` creates all tables → admin works
 
 ## Content Architecture
 
@@ -114,6 +103,6 @@ Then wire everything together in `src/app/(frontend)/page.tsx`.
 - `serverExternalPackages` must include `['@payloadcms/db-sqlite', 'libsql', '@libsql/client']`
 - **Do NOT** add `drizzle-kit` or `@payloadcms/drizzle` to `serverExternalPackages` → causes `WebpackError is not a constructor` during build
 - **Do NOT** add `src/instrumentation.ts` with dynamic payload imports → same webpack error
-- Payload CLI `migrate:create` fails on Node 22 locally (tsx/ESM issue) — use GitHub Actions workflow
+- `"type": "module"` is required in `package.json` — without it tsx serves TypeScript as CJS, causing ESM loading cycles in Node 22
 - Vercel Framework Preset must be **Next.js** (not "Other")
 - `payload migrate` runs as part of `pnpm build` — after any schema change, run `migrate:create`, commit the output, then push

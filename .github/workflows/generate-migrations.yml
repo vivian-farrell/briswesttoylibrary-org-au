@@ -38,8 +38,7 @@ jobs:
         env:
           PAYLOAD_SECRET: generate-migrations-only
           DATABASE_URL: file:./migration-gen.db
-          PAYLOAD_CONFIG_PATH: payload.config.ts
-        run: node --import tsx/esm ./node_modules/payload/bin.js --disable-transpile migrate:create --name initial --force-accept-warning
+        run: pnpm payload migrate:create initial --force-accept-warning
 
       - name: Commit migration files
         if: steps.check.outputs.exists == 'false'
@@ -49,4 +48,3 @@ jobs:
           git add migrations/
           git commit -m "feat: generate initial Payload migration schema" || echo "Nothing to commit"
           git push
-

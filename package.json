@@ -33,6 +33,11 @@
     "node": ">=18.20.2"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "sharp", "@img/sharp-linux-x64"]
-  }
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "@img/sharp-linux-x64"
+    ]
+  },
+  "type": "module"
 }
