@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'picsum.photos' },
     ],
   },
-  serverExternalPackages: ['@payloadcms/db-sqlite', 'libsql', '@libsql/client', 'drizzle-kit', '@payloadcms/drizzle'],
+  serverExternalPackages: ['@payloadcms/db-sqlite', 'libsql', '@libsql/client'],
 }
 
 export default withPayload(nextConfig)
