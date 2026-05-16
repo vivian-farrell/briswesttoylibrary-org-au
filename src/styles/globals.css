@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
 @theme {
   /* Brand colours — match mockup.html CSS variables */
   --color-forest: #1d5c3a;
