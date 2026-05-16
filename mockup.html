@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brisbane West Toy Library — Design Mockup</title>
+<style>
+/* ── Design tokens ─────────────────────────────────────────── */
+:root {
+  --forest:  #1d5c3a;
+  --green:   #2e8b5a;
+  --mint:    #a8d5b5;
+  --cream:   #f7faf8;
+  --orange:  #e8632a;
+  --yellow:  #f5c842;
+  --dark:    #142b1e;
+  --text:    #1a2e22;
+  --muted:   #5a7060;
+  --white:   #ffffff;
+  --card-bg: #ffffff;
+  --radius:  0.75rem;
+  --shadow:  0 4px 24px rgba(0,0,0,0.10);
+}
+
+/* ── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  background: var(--white);
+  line-height: 1.6;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+
+/* ── Typography helpers ────────────────────────────────────── */
+.section-label {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--green);
+  margin-bottom: 0.5rem;
+}
+.section-heading {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--forest);
+}
+.section-heading.light { color: var(--white); }
+.section-body {
+  color: var(--muted);
+  max-width: 52ch;
+  font-size: 1.05rem;
+}
+.section-body.light { color: rgba(255,255,255,0.8); }
+
+/* ── Layout helpers ────────────────────────────────────────── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+.section-pad { padding: 5rem 0; }
+
+/* ── Floating hamburger button ─────────────────────────────── */
+#hamburger-btn {
+  position: fixed;
+  top: 1.25rem;
+  left: 1.25rem;
+  z-index: 200;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(12px) saturate(1.4);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  border: 1.5px solid rgba(255,255,255,0.35);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+}
+#hamburger-btn:hover {
+  background: rgba(255,255,255,0.28);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.22);
+}
+#hamburger-btn .icon-bar {
+  width: 20px;
+  height: 2px;
+  background: var(--white);
+  border-radius: 2px;
+  display: block;
+  transition: transform 0.25s, opacity 0.2s;
+}
+#hamburger-btn .icon-bar + .icon-bar { margin-top: 4px; }
+
+/* X animation when open */
+body.menu-open #hamburger-btn .bar-top    { transform: translateY(6px) rotate(45deg); }
+body.menu-open #hamburger-btn .bar-mid    { opacity: 0; transform: scaleX(0); }
+body.menu-open #hamburger-btn .bar-bot    { transform: translateY(-6px) rotate(-45deg); }
+body.menu-open #hamburger-btn .icon-bar   { background: var(--white); }
+
+/* when on a light section (not over hero), darken bars */
+#hamburger-btn.dark-mode .icon-bar { background: var(--forest); }
+#hamburger-btn.dark-mode {
+  background: rgba(30,90,60,0.14);
+  border-color: rgba(30,90,60,0.25);
+}
+
+/* ── Menu overlay ──────────────────────────────────────────── */
+#menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 180;
+  background: linear-gradient(145deg, var(--dark) 0%, var(--forest) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.32s ease;
+}
+body.menu-open #menu-overlay {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#menu-overlay nav {
+  text-align: center;
+}
+#menu-overlay nav ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+#menu-overlay nav a {
+  display: block;
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  font-weight: 700;
+  color: rgba(255,255,255,0.88);
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: color 0.15s, background 0.15s;
+  letter-spacing: -0.01em;
+}
+#menu-overlay nav a:hover {
+  color: var(--yellow);
+  background: rgba(255,255,255,0.05);
+}
+#menu-overlay nav a.cta {
+  color: var(--yellow);
+  border: 2px solid var(--yellow);
+  margin-top: 0.75rem;
+  padding: 0.6rem 2.5rem;
+  font-size: clamp(1.1rem, 3vw, 1.4rem);
+  border-radius: 2rem;
+  letter-spacing: 0.02em;
+}
+#menu-overlay nav a.cta:hover {
+  background: var(--yellow);
+  color: var(--dark);
+}
+#menu-overlay .menu-tagline {
+  color: rgba(255,255,255,0.35);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 2.5rem;
+}
+#menu-overlay .menu-footer {
+  position: absolute;
+  bottom: 2rem;
+  color: rgba(255,255,255,0.3);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+/* ── Hero section ──────────────────────────────────────────── */
+#hero {
+  position: relative;
+  height: 100dvh;
+  min-height: 520px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-slides {
+  position: absolute;
+  inset: 0;
+}
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.hero-slide.active { opacity: 1; }
+.hero-slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10,30,18,0.45) 0%,
+    rgba(10,30,18,0.38) 60%,
+    rgba(10,30,18,0.65) 100%
+  );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 0 1.5rem;
+  max-width: 780px;
+}
+.hero-eyebrow {
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.hero-heading {
+  font-size: clamp(2.4rem, 7vw, 5rem);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.08;
+  margin-bottom: 1.25rem;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.4);
+}
+.hero-sub {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  color: rgba(255,255,255,0.88);
+  margin-bottom: 2.5rem;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+}
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ── Buttons ───────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.75rem 2rem;
+  border-radius: 2rem;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s, color 0.15s;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+.btn-primary { background: var(--orange); color: var(--white); }
+.btn-primary:hover { background: #d4521f; }
+.btn-outline-white { background: transparent; color: var(--white); border-color: rgba(255,255,255,0.7); }
+.btn-outline-white:hover { background: rgba(255,255,255,0.15); border-color: var(--white); }
+.btn-forest { background: var(--forest); color: var(--white); }
+.btn-forest:hover { background: #154a2e; }
+.btn-outline-forest { background: transparent; color: var(--forest); border-color: var(--forest); }
+.btn-outline-forest:hover { background: var(--forest); color: var(--white); }
+
+/* Hero carousel dots */
+.hero-dots {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  gap: 0.5rem;
+}
+.hero-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.hero-dot.active { background: var(--white); transform: scale(1.35); }
+
+/* Scroll cue */
+.hero-scroll-cue {
+  position: absolute;
+  bottom: 2.5rem;
+  right: 2rem;
+  z-index: 10;
+  color: rgba(255,255,255,0.55);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.hero-scroll-cue::before {
+  content: '';
+  width: 1px;
+  height: 3rem;
+  background: rgba(255,255,255,0.35);
+}
+
+/* ── Floating right-side dot nav ───────────────────────────── */
+#dot-nav {
+  position: fixed;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 150;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+#dot-nav.visible { opacity: 1; }
+.dot-nav-item {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: rgba(29,92,58,0.25);
+  border: 1.5px solid rgba(29,92,58,0.4);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s, border-color 0.2s;
+  position: relative;
+}
+.dot-nav-item:hover::after,
+.dot-nav-item.active::after {
+  content: attr(data-label);
+  position: absolute;
+  right: 1.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--forest);
+  color: var(--white);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.25rem;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.dot-nav-item:hover::after { opacity: 1; }
+.dot-nav-item:not(.active):not(:hover)::after { opacity: 0; }
+.dot-nav-item.active {
+  background: var(--forest);
+  border-color: var(--forest);
+  transform: scale(1.3);
+}
+
+/* ── Location section ──────────────────────────────────────── */
+#location {
+  background: var(--cream);
+  padding: 4rem 0;
+  border-top: 1px solid rgba(46,139,90,0.12);
+}
+.location-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+.location-info h2 { margin-bottom: 1.25rem; }
+.hours-table { width: 100%; border-collapse: collapse; margin: 1.25rem 0 1.5rem; }
+.hours-table td { padding: 0.4rem 0; font-size: 0.95rem; }
+.hours-table td:first-child { color: var(--forest); font-weight: 600; width: 42%; }
+.location-meta { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
+.location-meta-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.97rem;
+}
+.location-meta-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+.map-placeholder {
+  background: var(--mint);
+  border-radius: var(--radius);
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: var(--forest);
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+}
+.map-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 40px,
+    rgba(29,92,58,0.06) 40px, rgba(29,92,58,0.06) 41px
+  ),
+  repeating-linear-gradient(
+    90deg, transparent, transparent 40px,
+    rgba(29,92,58,0.06) 40px, rgba(29,92,58,0.06) 41px
+  );
+}
+.map-pin {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+.map-pin-icon { font-size: 3rem; display: block; margin-bottom: 0.5rem; }
+
+/* ── What Is A Toy Library ─────────────────────────────────── */
+#about {
+  background: var(--white);
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+.about-image {
+  border-radius: var(--radius);
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  background: var(--mint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.about-image img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.about-image-placeholder {
+  font-size: 5rem;
+  filter: grayscale(0.3);
+}
+.about-pillars {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+.pillar {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: var(--radius);
+  background: var(--cream);
+}
+.pillar-icon {
+  font-size: 1.75rem;
+  flex-shrink: 0;
+  width: 2.75rem;
+  text-align: center;
+}
+.pillar-text h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--forest);
+  margin-bottom: 0.2rem;
+}
+.pillar-text p { font-size: 0.9rem; color: var(--muted); }
+
+/* ── How It Works ──────────────────────────────────────────── */
+#how-it-works { background: var(--cream); }
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 3rem;
+  position: relative;
+}
+.steps-grid::before {
+  content: '';
+  position: absolute;
+  top: 2.5rem;
+  left: calc(16.67% + 1rem);
+  right: calc(16.67% + 1rem);
+  height: 2px;
+  background: var(--mint);
+}
+.step {
+  text-align: center;
+  position: relative;
+}
+.step-number {
+  width: 5rem; height: 5rem;
+  border-radius: 50%;
+  background: var(--forest);
+  color: var(--white);
+  font-size: 1.6rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 4px 16px rgba(29,92,58,0.3);
+}
+.step-icon { font-size: 1.75rem; margin-bottom: 0.5rem; }
+.step h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--forest);
+  margin-bottom: 0.6rem;
+}
+.step p { font-size: 0.92rem; color: var(--muted); }
+
+/* ── Membership ────────────────────────────────────────────── */
+#membership {
+  background: var(--forest);
+  color: var(--white);
+}
+.membership-intro { text-align: center; max-width: 56ch; margin: 0 auto 3rem; }
+.membership-intro .section-heading { color: var(--white); }
+.membership-intro p { color: rgba(255,255,255,0.75); margin-top: 0.75rem; font-size: 1.05rem; }
+.tiers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 780px;
+  margin: 0 auto;
+}
+.tier-card {
+  background: rgba(255,255,255,0.08);
+  border: 1.5px solid rgba(255,255,255,0.18);
+  border-radius: var(--radius);
+  padding: 2rem;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.tier-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.25); }
+.tier-card.featured {
+  background: rgba(255,255,255,0.14);
+  border-color: var(--yellow);
+}
+.tier-badge {
+  position: absolute;
+  top: -0.7rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--yellow);
+  color: var(--dark);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.9rem;
+  border-radius: 1rem;
+}
+.tier-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.tier-price {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+}
+.tier-price span { font-size: 1rem; font-weight: 400; color: rgba(255,255,255,0.6); }
+.tier-period { font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-bottom: 1.5rem; }
+.tier-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 2rem;
+}
+.tier-features li {
+  font-size: 0.93rem;
+  color: rgba(255,255,255,0.8);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.tier-features li::before {
+  content: '✓';
+  color: var(--yellow);
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+.btn-yellow { background: var(--yellow); color: var(--dark); font-weight: 800; }
+.btn-yellow:hover { background: #e6b820; }
+.btn-full { width: 100%; justify-content: center; }
+.membership-note {
+  text-align: center;
+  color: rgba(255,255,255,0.45);
+  font-size: 0.83rem;
+  margin-top: 2rem;
+}
+
+/* ── News ──────────────────────────────────────────────────── */
+#news { background: var(--white); }
+.news-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.75rem;
+}
+.post-card {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  background: var(--card-bg);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.post-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.12); }
+.post-thumb {
+  aspect-ratio: 16/9;
+  background: var(--mint);
+  overflow: hidden;
+}
+.post-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.post-body { padding: 1.5rem; }
+.post-meta {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.post-tag {
+  background: var(--cream);
+  color: var(--forest);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.25rem;
+}
+.post-date { font-size: 0.82rem; color: var(--muted); }
+.post-card h3 {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--forest);
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+.post-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.5; }
+.post-card .read-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 1rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--green);
+}
+.post-card .read-more:hover { color: var(--forest); }
+
+/* ── Contact ───────────────────────────────────────────────── */
+#contact { background: var(--cream); }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+.contact-map {
+  border-radius: var(--radius);
+  overflow: hidden;
+  height: 360px;
+  background: var(--mint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.contact-map::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 40px,
+    rgba(29,92,58,0.06) 40px, rgba(29,92,58,0.06) 41px
+  ),
+  repeating-linear-gradient(
+    90deg, transparent, transparent 40px,
+    rgba(29,92,58,0.06) 40px, rgba(29,92,58,0.06) 41px
+  );
+}
+.contact-details { display: flex; flex-direction: column; gap: 0; }
+.contact-details h2 { margin-bottom: 0.5rem; }
+.contact-details > p { color: var(--muted); margin-bottom: 2rem; }
+.contact-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(29,92,58,0.1);
+  align-items: flex-start;
+}
+.contact-item:last-of-type { border-bottom: none; }
+.contact-icon {
+  font-size: 1.3rem;
+  width: 2rem;
+  flex-shrink: 0;
+  text-align: center;
+}
+.contact-item h4 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 0.2rem;
+  font-weight: 600;
+}
+.contact-item p { font-size: 0.97rem; color: var(--text); }
+.social-icons {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+.social-icon {
+  width: 2.5rem; height: 2.5rem;
+  border-radius: 50%;
+  background: var(--forest);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: background 0.15s, transform 0.15s;
+}
+.social-icon:hover { background: var(--green); transform: scale(1.1); }
+
+/* ── Footer ────────────────────────────────────────────────── */
+footer {
+  background: var(--dark);
+  color: rgba(255,255,255,0.7);
+  padding: 3rem 0 2rem;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+.footer-brand h3 { color: var(--white); font-size: 1.1rem; margin-bottom: 0.5rem; }
+.footer-brand p { font-size: 0.88rem; line-height: 1.6; }
+.footer-col h4 {
+  color: var(--white);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.footer-col ul li a { font-size: 0.88rem; color: rgba(255,255,255,0.55); transition: color 0.15s; }
+.footer-col ul li a:hover { color: var(--yellow); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 1.5rem;
+  font-size: 0.82rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.footer-acknowledgement {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  font-style: italic;
+  max-width: 60ch;
+  line-height: 1.55;
+}
+.footer-copyright { color: rgba(255,255,255,0.35); }
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .location-grid,
+  .about-grid,
+  .contact-grid { grid-template-columns: 1fr; }
+  .about-image { order: -1; }
+  .steps-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .steps-grid::before { display: none; }
+  .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .news-header { flex-direction: column; align-items: flex-start; }
+  #dot-nav { display: none; }
+  .hero-scroll-cue { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Floating hamburger button ─────────────────────────── -->
+<button id="hamburger-btn" aria-label="Open menu" aria-expanded="false">
+  <span class="icon-bar bar-top"></span>
+  <span class="icon-bar bar-mid"></span>
+  <span class="icon-bar bar-bot"></span>
+</button>
+
+<!-- ── Menu overlay ──────────────────────────────────────── -->
+<div id="menu-overlay" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <p class="menu-tagline">Brisbane West Toy Library</p>
+  <nav>
+    <ul>
+      <li><a href="#location"     class="menu-link">Location</a></li>
+      <li><a href="#about"        class="menu-link">About</a></li>
+      <li><a href="#how-it-works" class="menu-link">How It Works</a></li>
+      <li><a href="#membership"   class="menu-link">Membership</a></li>
+      <li><a href="#news"         class="menu-link">News</a></li>
+      <li><a href="#contact"      class="menu-link">Contact</a></li>
+      <li><a href="#"             class="menu-link">Our Toys</a></li>
+      <li><a href="#"             class="menu-link cta">Join Now →</a></li>
+    </ul>
+  </nav>
+  <div class="menu-footer">© 2026 Brisbane West Toy Library</div>
+</div>
+
+<!-- ── Right-side dot nav ─────────────────────────────────── -->
+<div id="dot-nav">
+  <div class="dot-nav-item" data-section="hero"         data-label="Top"></div>
+  <div class="dot-nav-item" data-section="location"     data-label="Location"></div>
+  <div class="dot-nav-item" data-section="about"        data-label="About"></div>
+  <div class="dot-nav-item" data-section="how-it-works" data-label="How It Works"></div>
+  <div class="dot-nav-item" data-section="membership"   data-label="Membership"></div>
+  <div class="dot-nav-item" data-section="news"         data-label="News"></div>
+  <div class="dot-nav-item" data-section="contact"      data-label="Contact"></div>
+</div>
+
+<main>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- HERO                                                       -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-slides">
+    <div class="hero-slide active" style="background-image:url('https://picsum.photos/seed/toys1/1920/1080')"></div>
+    <div class="hero-slide"        style="background-image:url('https://picsum.photos/seed/children2/1920/1080')"></div>
+    <div class="hero-slide"        style="background-image:url('https://picsum.photos/seed/play3/1920/1080')"></div>
+    <div class="hero-slide"        style="background-image:url('https://picsum.photos/seed/family4/1920/1080')"></div>
+  </div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">Kenmore, Brisbane West</p>
+    <h1 class="hero-heading">Toys.&ensp;Imagination.&ensp;Community.</h1>
+    <p class="hero-sub">
+      Borrow quality toys for your child's world — sustainably, affordably, together.
+    </p>
+    <div class="hero-actions">
+      <a href="#" class="btn btn-primary">Join Now</a>
+      <a href="#how-it-works" class="btn btn-outline-white">How It Works ↓</a>
+    </div>
+  </div>
+
+  <div class="hero-dots">
+    <div class="hero-dot active" data-slide="0"></div>
+    <div class="hero-dot"        data-slide="1"></div>
+    <div class="hero-dot"        data-slide="2"></div>
+    <div class="hero-dot"        data-slide="3"></div>
+  </div>
+
+  <div class="hero-scroll-cue">Scroll</div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- LOCATION                                                   -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section id="location" class="section-pad">
+  <div class="container">
+    <div class="location-grid">
+      <div class="location-info">
+        <p class="section-label">Find Us</p>
+        <h2 class="section-heading">We're in Kenmore</h2>
+        <div class="location-meta">
+          <div class="location-meta-item">
+            <span class="location-meta-icon">📍</span>
+            <span>123 Kenmore Road, Kenmore QLD 4069<br>(next to Kenmore Community Hall)</span>
+          </div>
+          <div class="location-meta-item">
+            <span class="location-meta-icon">🚗</span>
+            <span>Free parking on site · Bus stops nearby</span>
+          </div>
+        </div>
+        <table class="hours-table">
+          <tr><td>Saturday</td><td>9:00 am – 12:00 pm</td></tr>
+          <tr><td>Wednesday</td><td>4:00 pm – 6:00 pm</td></tr>
+          <tr><td>Public holidays</td><td>Closed</td></tr>
+        </table>
+        <a href="#" class="btn btn-forest">Get Directions</a>
+      </div>
+      <div class="map-placeholder">
+        <div class="map-pin">
+          <span class="map-pin-icon">📍</span>
+          <strong>Kenmore, Brisbane West</strong><br>
+          <small style="color:var(--muted)">Google Map embed here</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- WHAT IS A TOY LIBRARY                                      -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section id="about" class="section-pad">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-image">
+        <img src="https://picsum.photos/seed/toylibrary/800/600" alt="Children playing with toys">
+      </div>
+      <div>
+        <p class="section-label">What Is a Toy Library?</p>
+        <h2 class="section-heading">More toys. Less clutter. More community.</h2>
+        <p class="section-body" style="margin-top:1rem">
+          A toy library is exactly what it sounds like — a library for toys. Members pay a small annual
+          fee and can borrow quality educational toys, puzzles, games, and outdoor equipment for their
+          children, returning them when their child is ready for something new.
+        </p>
+        <div class="about-pillars">
+          <div class="pillar">
+            <div class="pillar-icon">🧸</div>
+            <div class="pillar-text">
+              <h4>Borrow from 500+ toys</h4>
+              <p>A curated catalogue of quality toys for all ages — from babies to big kids.</p>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">🌱</div>
+            <div class="pillar-text">
+              <h4>Save money &amp; the planet</h4>
+              <p>No clutter, no waste. Great toys at a fraction of retail cost.</p>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">🤝</div>
+            <div class="pillar-text">
+              <h4>Community run, community loved</h4>
+              <p>Volunteer-run and proudly not-for-profit since 1978.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- HOW IT WORKS                                               -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section id="how-it-works" class="section-pad">
+  <div class="container">
+    <div style="text-align:center;max-width:52ch;margin:0 auto 1rem">
+      <p class="section-label">The Process</p>
+      <h2 class="section-heading">Three easy steps</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-icon">📋</div>
+        <h3>Join &amp; Browse</h3>
+        <p>Sign up as a member online or at the library. Browse our toy catalogue and choose what you'd like to borrow.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-icon">🎁</div>
+        <h3>Borrow</h3>
+        <p>Visit during opening hours to collect your toys. Each toy comes clean, complete, and ready to play with.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-icon">🔄</div>
+        <h3>Return &amp; Repeat</h3>
+        <p>Return toys when your child is done (usually within 4–6 weeks). Then borrow something new!</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:3rem">
+      <a href="#" class="btn btn-outline-forest">Full Borrowing Guide</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- MEMBERSHIP & PRICING                                       -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section id="membership" class="section-pad">
+  <div class="container">
+    <div class="membership-intro">
+      <p class="section-label" style="color:var(--mint)">Membership</p>
+      <h2 class="section-heading light">Simple, affordable membership</h2>
+      <p>One annual fee. Unlimited borrowing. No hidden costs. Concession rates available.</p>
+    </div>
+    <div class="tiers-grid">
+      <div class="tier-card">
+        <p class="tier-name">Standard</p>
+        <div class="tier-price">$75<span>/year</span></div>
+        <p class="tier-period">For individual families</p>
+        <ul class="tier-features">
+          <li>Borrow up to 3 toys at once</li>
+          <li>4–6 week loan period</li>
+          <li>Access to full catalogue</li>
+          <li>Online catalogue browsing</li>
+          <li>One vote at AGM</li>
+        </ul>
+        <a href="#" class="btn btn-outline-white btn-full">Join as Standard</a>
+      </div>
+      <div class="tier-card featured">
+        <div class="tier-badge">Most Popular</div>
+        <p class="tier-name">Concession</p>
+        <div class="tier-price">$50<span>/year</span></div>
+        <p class="tier-period">Pension / Health Care Card holders</p>
+        <ul class="tier-features">
+          <li>Borrow up to 3 toys at once</li>
+          <li>4–6 week loan period</li>
+          <li>Access to full catalogue</li>
+          <li>Online catalogue browsing</li>
+          <li>One vote at AGM</li>
+        </ul>
+        <a href="#" class="btn btn-yellow btn-full">Join at Concession Rate</a>
+      </div>
+    </div>
+    <p class="membership-note">Lost or damaged toys may incur a replacement fee. See our T&Cs for details.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- NEWS                                                       -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section id="news" class="section-pad">
+  <div class="container">
+    <div class="news-header">
+      <div>
+        <p class="section-label">Latest</p>
+        <h2 class="section-heading">News &amp; Updates</h2>
+      </div>
+      <a href="#" class="btn btn-outline-forest" style="white-space:nowrap">All News →</a>
+    </div>
+    <div class="news-grid">
+      <article class="post-card">
+        <div class="post-thumb">
+          <img src="https://picsum.photos/seed/news1/600/340" alt="">
+        </div>
+        <div class="post-body">
+          <div class="post-meta">
+            <span class="post-tag">News</span>
+            <span class="post-date">12 May 2026</span>
+          </div>
+          <h3>New toys arriving this month — outdoor play special!</h3>
+          <p>We've added 18 new outdoor play items to the catalogue, including water tables, sandpits, and ride-ons.</p>
+          <a href="#" class="read-more">Read more →</a>
+        </div>
+      </article>
+      <article class="post-card">
+        <div class="post-thumb">
+          <img src="https://picsum.photos/seed/news2/600/340" alt="">
+        </div>
+        <div class="post-body">
+          <div class="post-meta">
+            <span class="post-tag">Event</span>
+            <span class="post-date">28 Apr 2026</span>
+          </div>
+          <h3>Annual General Meeting — Saturday 7 June</h3>
+          <p>All members welcome. We'll be electing committee members and reviewing the year's highlights over a sausage sizzle.</p>
+          <a href="#" class="read-more">Read more →</a>
+        </div>
+      </article>
+      <article class="post-card">
+        <div class="post-thumb">
+          <img src="https://picsum.photos/seed/news3/600/340" alt="">
+        </div>
+        <div class="post-body">
+          <div class="post-meta">
+            <span class="post-tag">Volunteer</span>
+            <span class="post-date">10 Apr 2026</span>
+          </div>
+          <h3>Volunteers needed for Saturday sessions</h3>
+          <p>Can you spare a Saturday morning once a month? We're looking for friendly helpers to join our volunteer team.</p>
+          <a href="#" class="read-more">Read more →</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- CONTACT                                                    -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<section id="contact" class="section-pad">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-map">
+        <div class="map-pin" style="position:relative;z-index:1;text-align:center">
+          <span class="map-pin-icon">📍</span>
+          <strong>Kenmore, Brisbane West</strong><br>
+          <small style="color:var(--muted)">Google Map embed here</small>
+        </div>
+      </div>
+      <div class="contact-details">
+        <p class="section-label">Get In Touch</p>
+        <h2 class="section-heading">We'd love to hear from you</h2>
+        <p>Questions about membership, toys, or volunteering? Drop us a line and we'll get back to you quickly.</p>
+        <div class="contact-item">
+          <span class="contact-icon">📍</span>
+          <div>
+            <h4>Address</h4>
+            <p>123 Kenmore Road, Kenmore QLD 4069</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">📧</span>
+          <div>
+            <h4>Email</h4>
+            <p>hello@briswesttoylibrary.org.au</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">📞</span>
+          <div>
+            <h4>Phone</h4>
+            <p>(07) 3378 0000</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">🕐</span>
+          <div>
+            <h4>Opening Hours</h4>
+            <p>Saturday 9am–12pm · Wednesday 4pm–6pm</p>
+          </div>
+        </div>
+        <div class="social-icons">
+          <a href="#" class="social-icon" title="Facebook">f</a>
+          <a href="#" class="social-icon" title="Instagram">📷</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- FOOTER                                                     -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>Brisbane West Toy Library</h3>
+        <p>A community toy library serving Kenmore and Brisbane's west since 1978. Not-for-profit, volunteer-run, and proud of it.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#">Our Toys</a></li>
+          <li><a href="#">How It Works</a></li>
+          <li><a href="#">Membership</a></li>
+          <li><a href="#">News &amp; Blog</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="#">Join Now</a></li>
+          <li><a href="#">Volunteer</a></li>
+          <li><a href="#">Donate Toys</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">About Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-acknowledgement">
+        Brisbane West Toy Library acknowledges the Traditional Custodians of the land on which we meet and play —
+        the Turrbal and Yuggera peoples — and pays respect to their Elders past, present, and emerging.
+      </p>
+      <p class="footer-copyright">© 2026 Brisbane West Toy Library Inc.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── Hero carousel ──────────────────────────────────────────
+const slides = document.querySelectorAll('.hero-slide');
+const dots   = document.querySelectorAll('.hero-dot');
+let current  = 0;
+
+function showSlide(n) {
+  slides[current].classList.remove('active');
+  dots[current].classList.remove('active');
+  current = (n + slides.length) % slides.length;
+  slides[current].classList.add('active');
+  dots[current].classList.add('active');
+}
+
+let carouselTimer = setInterval(() => showSlide(current + 1), 4500);
+
+dots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    clearInterval(carouselTimer);
+    showSlide(parseInt(dot.dataset.slide));
+    carouselTimer = setInterval(() => showSlide(current + 1), 4500);
+  });
+});
+
+// ── Hamburger menu ─────────────────────────────────────────
+const hamburgerBtn = document.getElementById('hamburger-btn');
+const overlay      = document.getElementById('menu-overlay');
+const menuLinks    = document.querySelectorAll('.menu-link');
+
+function openMenu() {
+  document.body.classList.add('menu-open');
+  hamburgerBtn.setAttribute('aria-expanded', 'true');
+}
+function closeMenu() {
+  document.body.classList.remove('menu-open');
+  hamburgerBtn.setAttribute('aria-expanded', 'false');
+}
+
+hamburgerBtn.addEventListener('click', () => {
+  document.body.classList.contains('menu-open') ? closeMenu() : openMenu();
+});
+
+menuLinks.forEach(link => {
+  link.addEventListener('click', () => closeMenu());
+});
+
+overlay.addEventListener('click', (e) => {
+  if (e.target === overlay) closeMenu();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeMenu();
+});
+
+// ── Hamburger dark mode (when not over hero) ───────────────
+const hero = document.getElementById('hero');
+const observer = new IntersectionObserver(
+  ([entry]) => {
+    hamburgerBtn.classList.toggle('dark-mode', !entry.isIntersecting);
+  },
+  { threshold: 0.1 }
+);
+observer.observe(hero);
+
+// ── Dot nav scroll spy ─────────────────────────────────────
+const dotNav        = document.getElementById('dot-nav');
+const dotNavItems   = document.querySelectorAll('.dot-nav-item');
+const sectionIds    = Array.from(dotNavItems).map(d => d.dataset.section);
+const sections      = sectionIds.map(id => document.getElementById(id));
+
+const sectionObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        dotNavItems.forEach(dot => {
+          dot.classList.toggle('active', dot.dataset.section === id);
+        });
+        dotNav.classList.add('visible');
+      }
+    });
+  },
+  { threshold: 0.4 }
+);
+
+sections.forEach(s => s && sectionObserver.observe(s));
+
+// Show dot nav after scrolling past hero
+const heroShowObserver = new IntersectionObserver(
+  ([entry]) => dotNav.classList.toggle('visible', !entry.isIntersecting),
+  { threshold: 0.5 }
+);
+heroShowObserver.observe(hero);
+
+// Dot nav click navigation
+dotNavItems.forEach(dot => {
+  dot.addEventListener('click', () => {
+    document.getElementById(dot.dataset.section)?.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>
+</body>
+</html>
