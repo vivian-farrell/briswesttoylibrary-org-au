@@ -5,8 +5,19 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import sharp from 'sharp'
+
 import { Users } from './src/collections/Users'
 import { Media } from './src/collections/Media'
+import { Posts } from './src/collections/Posts'
+import { FAQs } from './src/collections/FAQs'
+import { Toys } from './src/collections/Toys'
+
+import { SiteSettings } from './src/globals/SiteSettings'
+import { Navigation } from './src/globals/Navigation'
+import { Footer } from './src/globals/Footer'
+import { Homepage } from './src/globals/Homepage'
+import { MembershipPage } from './src/globals/MembershipPage'
+import { ContactPage } from './src/globals/ContactPage'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -18,7 +29,8 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [Users, Media, Posts, FAQs, Toys],
+  globals: [SiteSettings, Navigation, Footer, Homepage, MembershipPage, ContactPage],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'dev-secret-change-in-production',
   typescript: {
