@@ -38,7 +38,8 @@ jobs:
         env:
           PAYLOAD_SECRET: generate-migrations-only
           DATABASE_URL: file:./migration-gen.db
-        run: pnpm payload migrate:create --name initial --force-accept-warning
+          PAYLOAD_CONFIG_PATH: payload.config.ts
+        run: node --import tsx/esm ./node_modules/payload/bin.js --disable-transpile migrate:create --name initial --force-accept-warning
 
       - name: Commit migration files
         if: steps.check.outputs.exists == 'false'
