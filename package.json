@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "cross-env PAYLOAD_CONFIG_PATH=payload.config.ts payload migrate && cross-env PAYLOAD_CONFIG_PATH=payload.config.ts next build",
     "start": "next start",
     "payload": "cross-env PAYLOAD_CONFIG_PATH=payload.config.ts payload"
   },
@@ -13,7 +13,9 @@
     "@payloadcms/next": "^3.0.0",
     "@payloadcms/plugin-seo": "^3.0.0",
     "@payloadcms/richtext-lexical": "^3.0.0",
+    "@payloadcms/ui": "^3.0.0",
     "cross-env": "^7.0.3",
+    "eruda": "^3.4.3",
     "next": "15.4.11",
     "payload": "^3.0.0",
     "react": "^19.0.0",
@@ -26,12 +28,18 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "tailwindcss": "^4.0.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.0.0"
   },
   "engines": {
     "node": ">=18.20.2"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "sharp", "@img/sharp-linux-x64"]
-  }
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "@img/sharp-linux-x64"
+    ]
+  },
+  "type": "module"
 }
