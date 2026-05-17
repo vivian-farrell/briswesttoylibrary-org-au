@@ -45,8 +45,8 @@ Stored in **1Password**. Manually entered into Vercel environment variables:
 | Phase 0 — HTML/CSS mockup (`mockup.html`) | ✅ Done |
 | Phase 1 — Next.js + Payload bootstrap | ✅ Done |
 | Phase 2 — Content schemas (collections + globals) | ✅ Done |
-| **Phase 3 — Home page sections** | ⬅ **Next** |
-| Phase 4 — Separate pages | Pending |
+| Phase 3 — Home page sections | ✅ Done |
+| **Phase 4 — Separate pages** | ⬅ **Next** |
 | Phase 5 — Polish + production | Pending |
 | Phase 6 — SETLS integration | Future |
 
@@ -77,24 +77,23 @@ Controls the full long-scroll home page. Fields include: `heroType` (carousel/vi
 --color-muted:  #5a7060
 ```
 
-## Phase 3 — What to Build Next
+## Phase 4 — What to Build Next
 
-All components go in `src/components/sections/` and are fetched from Payload via `src/lib/payload.ts` → `getPayloadClient()`.
+Separate pages for returning visitors. Each page fetches its data from Payload and has `generateMetadata`.
 
-| Component | Description |
-|---|---|
-| `HamburgerMenu.tsx` | Fixed top-left floating button, overlay menu — already built in `src/components/layout/` |
-| `SectionDotNav.tsx` | Right-side scroll position dots (home page only) — already built |
-| `HeroCarousel.tsx` | Auto-advancing photo carousel, images from `heroSlides[]` |
-| `HeroVideo.tsx` | Full-screen video background (conditional on `heroType === 'video'`) |
-| `LocationSection.tsx` | Suburb, hours, map embed, directions link |
-| `WhatIsAToyLibrary.tsx` | Short prose + image |
-| `HowItWorksSection.tsx` | 3-step visual process |
-| `MembershipSection.tsx` | Tier cards pulled from `MembershipPage` global |
-| `NewsPreview.tsx` | 2–3 latest published Posts |
-| `ContactSection.tsx` | Map embed, email, phone, social icons |
+| Route | File | Notes |
+|---|---|---|
+| `/toys` | `src/app/(frontend)/toys/page.tsx` | SETLS catalogue embed (iframe) or link card using `SiteSettings.setlsCatalogueUrl` |
+| `/volunteer` | `src/app/(frontend)/volunteer/page.tsx` | Prose layout |
+| `/news` | `src/app/(frontend)/news/page.tsx` | Post grid index |
+| `/news/[slug]` | `src/app/(frontend)/news/[slug]/page.tsx` | Post detail with `generateStaticParams` |
+| `/join` | `src/app/(frontend)/join/page.tsx` | Membership detail — tiers, eligibility, how to join |
+| `/how-it-works` | `src/app/(frontend)/how-it-works/page.tsx` | Expanded step-by-step guide |
+| `/faq` | `src/app/(frontend)/faq/page.tsx` | Accordion grouped by category |
+| `/about` | `src/app/(frontend)/about/page.tsx` | Prose about page |
+| `/contact` | `src/app/(frontend)/contact/page.tsx` | Static contact form (wired in Phase 5) |
 
-Then wire everything together in `src/app/(frontend)/page.tsx`.
+Also add `src/app/(frontend)/sitemap.ts` for SEO.
 
 ## Known Gotchas
 
