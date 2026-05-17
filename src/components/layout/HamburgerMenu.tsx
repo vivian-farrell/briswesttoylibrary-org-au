@@ -4,14 +4,11 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 const NAV_ITEMS = [
-  { label: 'Our Toys',     href: '/toys' },
-  { label: 'How It Works', href: '/how-it-works' },
-  { label: 'Membership',   href: '/#membership' },
-  { label: 'Volunteer',    href: '/volunteer' },
-  { label: 'News',         href: '/news' },
-  { label: 'FAQ',          href: '/faq' },
-  { label: 'About',        href: '/about' },
-  { label: 'Contact',      href: '/contact' },
+  { label: 'Our Toys',  href: '/toys' },
+  { label: 'Volunteer', href: '/volunteer' },
+  { label: 'News',      href: '/news' },
+  { label: 'FAQ',       href: '/faq' },
+  { label: 'Contact',   href: '/#contact' },
 ]
 
 export function HamburgerMenu() {
@@ -88,7 +85,7 @@ export function HamburgerMenu() {
             ))}
             <li>
               <Link
-                href="/join"
+                href="/#membership"
                 onClick={close}
                 className="inline-block text-yellow border-2 border-yellow px-10 py-3 rounded-full font-bold text-[clamp(1rem,3vw,1.4rem)] mt-3 hover:bg-yellow hover:text-dark transition-colors"
               >

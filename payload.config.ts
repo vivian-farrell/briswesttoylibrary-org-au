@@ -18,7 +18,6 @@ import { Footer } from './src/globals/Footer.ts'
 import { Homepage } from './src/globals/Homepage.ts'
 import { MembershipPage } from './src/globals/MembershipPage.ts'
 import { ContactPage } from './src/globals/ContactPage.ts'
-import { AboutPage } from './src/globals/AboutPage.ts'
 import { VolunteerPage } from './src/globals/VolunteerPage.ts'
 
 const filename = fileURLToPath(import.meta.url)
@@ -32,7 +31,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, Posts, FAQs, Toys],
-  globals: [SiteSettings, Navigation, Footer, Homepage, MembershipPage, ContactPage, AboutPage, VolunteerPage],
+  globals: [SiteSettings, Navigation, Footer, Homepage, MembershipPage, ContactPage, VolunteerPage],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'dev-secret-change-in-production',
   typescript: {

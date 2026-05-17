@@ -75,7 +75,7 @@ export default async function HomePage() {
           headline={hp?.heroHeadline ?? 'Toys. Imagination. Community.'}
           tagline={hp?.heroTagline ?? "Borrow quality toys for your child's world — sustainably, affordably, together."}
           ctaLabel={hp?.heroCTALabel ?? 'Join Now'}
-          ctaHref={hp?.heroCTAHref ?? '/join'}
+          ctaHref={hp?.heroCTAHref ?? '/#membership'}
         />
       ) : (
         <HeroCarousel
@@ -83,7 +83,7 @@ export default async function HomePage() {
           headline={hp?.heroHeadline ?? 'Toys. Imagination. Community.'}
           tagline={hp?.heroTagline ?? "Borrow quality toys for your child's world — sustainably, affordably, together."}
           ctaLabel={hp?.heroCTALabel ?? 'Join Now'}
-          ctaHref={hp?.heroCTAHref ?? '/join'}
+          ctaHref={hp?.heroCTAHref ?? '/#membership'}
         />
       )}
 
