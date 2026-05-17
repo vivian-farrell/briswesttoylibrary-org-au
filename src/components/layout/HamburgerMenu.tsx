@@ -4,13 +4,14 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 const NAV_ITEMS = [
-  { label: 'Location',     href: '/#location' },
-  { label: 'About',        href: '/#about' },
-  { label: 'How It Works', href: '/#how-it-works' },
-  { label: 'Membership',   href: '/#membership' },
-  { label: 'News',         href: '/#news' },
-  { label: 'Contact',      href: '/#contact' },
   { label: 'Our Toys',     href: '/toys' },
+  { label: 'How It Works', href: '/how-it-works' },
+  { label: 'Membership',   href: '/#membership' },
+  { label: 'Volunteer',    href: '/volunteer' },
+  { label: 'News',         href: '/news' },
+  { label: 'FAQ',          href: '/faq' },
+  { label: 'About',        href: '/about' },
+  { label: 'Contact',      href: '/contact' },
 ]
 
 export function HamburgerMenu() {
