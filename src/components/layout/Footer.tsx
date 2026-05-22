@@ -1,7 +1,19 @@
 import Link from 'next/link'
 
-const EXPLORE = ['Our Toys', 'How It Works', 'Membership', 'News & Blog', 'FAQ']
-const INVOLVED = ['Join Now', 'Volunteer', 'Donate Toys', 'Contact Us', 'About Us']
+const EXPLORE = [
+  { label: 'Our Toys',     href: '/toys' },
+  { label: 'How It Works', href: '/#how-it-works' },
+  { label: 'Membership',   href: '/#membership' },
+  { label: 'News & Blog',  href: '/news' },
+  { label: 'FAQ',          href: '/faq' },
+]
+
+const INVOLVED = [
+  { label: 'Join Now',    href: '/#membership' },
+  { label: 'Volunteer',   href: '/volunteer' },
+  { label: 'Donate Toys', href: '/#contact' },
+  { label: 'Contact Us',  href: '/#contact' },
+]
 
 export function SiteFooter() {
   return (
@@ -9,6 +21,14 @@ export function SiteFooter() {
       <div className="container-site py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
           <div>
+            {/* Logo — drop public/logo.svg (or logo.png) to activate */}
+            <img
+              src="/logo.svg"
+              alt="Brisbane West Toy Library"
+              className="h-12 w-auto mb-3"
+              style={{ filter: 'brightness(0) invert(1)' }}
+              onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
+            />
             <h3 className="text-white font-bold text-lg mb-2">Brisbane West Toy Library</h3>
             <p className="text-sm leading-relaxed">
               A community toy library serving Kenmore and Brisbane&apos;s west since 1978.
@@ -19,9 +39,9 @@ export function SiteFooter() {
             <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-4">Explore</h4>
             <ul className="flex flex-col gap-2">
               {EXPLORE.map(item => (
-                <li key={item}>
-                  <Link href="#" className="text-sm text-white/55 hover:text-yellow transition-colors">
-                    {item}
+                <li key={item.label}>
+                  <Link href={item.href} className="text-sm text-white/55 hover:text-yellow transition-colors">
+                    {item.label}
                   </Link>
                 </li>
               ))}
@@ -31,9 +51,9 @@ export function SiteFooter() {
             <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-4">Get Involved</h4>
             <ul className="flex flex-col gap-2">
               {INVOLVED.map(item => (
-                <li key={item}>
-                  <Link href="#" className="text-sm text-white/55 hover:text-yellow transition-colors">
-                    {item}
+                <li key={item.label}>
+                  <Link href={item.href} className="text-sm text-white/55 hover:text-yellow transition-colors">
+                    {item.label}
                   </Link>
                 </li>
               ))}

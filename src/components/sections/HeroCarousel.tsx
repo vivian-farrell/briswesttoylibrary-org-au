@@ -40,7 +40,7 @@ export function HeroCarousel({ slides, headline, tagline, ctaLabel, ctaHref }: P
       ) : (
         <div
           className="absolute inset-0"
-          style={{ background: 'linear-gradient(160deg, #142b1e 0%, #1d5c3a 60%, #2e8b5a 100%)' }}
+          style={{ background: 'linear-gradient(160deg, #0a1628 0%, #162040 60%, #1f52b8 100%)' }}
         />
       )}
 
