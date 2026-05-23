@@ -9,15 +9,16 @@ import { NewsPreview } from '@/components/sections/NewsPreview'
 import { ContactSection } from '@/components/sections/ContactSection'
 import { SectionDotNav } from '@/components/layout/SectionDotNav'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600
 
 export default async function HomePage() {
   const payload = await getPayloadClient()
 
-  const [homepage, settings, membership, postsResult] = await Promise.all([
+  const [homepage, settings, membership, contactPage, postsResult] = await Promise.all([
     payload.findGlobal({ slug: 'homepage' }).catch(() => null),
     payload.findGlobal({ slug: 'site-settings' }).catch(() => null),
     payload.findGlobal({ slug: 'membership-page' }).catch(() => null),
+    payload.findGlobal({ slug: 'contact-page' }).catch(() => null),
     payload
       .find({
         collection: 'posts',
@@ -34,6 +35,8 @@ export default async function HomePage() {
   const st = settings as any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mp = membership as any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const cp = contactPage as any
 
   const heroSlides = ((hp?.heroSlides ?? []) as any[])
     .map((s: any) => ({
@@ -75,7 +78,7 @@ export default async function HomePage() {
           headline={hp?.heroHeadline ?? 'Toys. Imagination. Community.'}
           tagline={hp?.heroTagline ?? "Borrow quality toys for your child's world — sustainably, affordably, together."}
           ctaLabel={hp?.heroCTALabel ?? 'Join Now'}
-          ctaHref={hp?.heroCTAHref ?? '/join'}
+          ctaHref={hp?.heroCTAHref ?? '/#membership'}
         />
       ) : (
         <HeroCarousel
@@ -83,7 +86,7 @@ export default async function HomePage() {
           headline={hp?.heroHeadline ?? 'Toys. Imagination. Community.'}
           tagline={hp?.heroTagline ?? "Borrow quality toys for your child's world — sustainably, affordably, together."}
           ctaLabel={hp?.heroCTALabel ?? 'Join Now'}
-          ctaHref={hp?.heroCTAHref ?? '/join'}
+          ctaHref={hp?.heroCTAHref ?? '/#membership'}
         />
       )}
 
@@ -135,6 +138,7 @@ export default async function HomePage() {
         facebook={st?.socialLinks?.facebook}
         instagram={st?.socialLinks?.instagram}
         mapEmbedUrl={hp?.locationSection?.mapEmbedUrl}
+        formEnabled={cp?.formEnabled ?? false}
       />
     </>
   )

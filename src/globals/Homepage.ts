@@ -67,7 +67,7 @@ export const Homepage: GlobalConfig = {
       name: 'heroCTAHref',
       type: 'text',
       label: 'CTA Button Link',
-      defaultValue: '/join',
+      defaultValue: '/#membership',
     },
 
     // ── Location ─────────────────────────────────────────────
@@ -183,4 +183,14 @@ export const Homepage: GlobalConfig = {
       ],
     },
   ],
+  hooks: {
+    afterChange: [
+      async () => {
+        try {
+          const { revalidatePath } = await import('next/cache')
+          revalidatePath('/')
+        } catch {}
+      },
+    ],
+  },
 }

@@ -13,6 +13,7 @@
     "@payloadcms/next": "^3.0.0",
     "@payloadcms/plugin-seo": "^3.0.0",
     "@payloadcms/richtext-lexical": "^3.0.0",
+    "@payloadcms/storage-vercel-blob": "^3.84.1",
     "@payloadcms/ui": "^3.0.0",
     "cross-env": "^7.0.3",
     "eruda": "^3.4.3",
@@ -20,6 +21,7 @@
     "payload": "^3.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "resend": "^6.12.3",
     "sharp": "^0.33.0"
   },
   "devDependencies": {

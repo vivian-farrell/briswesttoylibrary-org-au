@@ -4,13 +4,12 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 const NAV_ITEMS = [
-  { label: 'Location',     href: '/#location' },
-  { label: 'About',        href: '/#about' },
-  { label: 'How It Works', href: '/#how-it-works' },
-  { label: 'Membership',   href: '/#membership' },
-  { label: 'News',         href: '/#news' },
-  { label: 'Contact',      href: '/#contact' },
-  { label: 'Our Toys',     href: '/toys' },
+  { label: 'Home',      href: '/' },
+  { label: 'Our Toys',  href: '/toys' },
+  { label: 'Volunteer', href: '/volunteer' },
+  { label: 'News',      href: '/news' },
+  { label: 'FAQ',       href: '/faq' },
+  { label: 'Contact',   href: '/#contact' },
 ]
 
 export function HamburgerMenu() {
@@ -66,11 +65,26 @@ export function HamburgerMenu() {
         aria-label="Navigation menu"
         onClick={(e) => { if (e.target === e.currentTarget) close() }}
         className={`fixed inset-0 z-[180] flex flex-col items-center justify-center transition-opacity duration-300 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
-        style={{ background: 'linear-gradient(145deg, #142b1e 0%, #1d5c3a 100%)' }}
+        style={{ background: 'linear-gradient(145deg, #0a1628 0%, #162040 100%)' }}
       >
-        <p className="text-white/35 text-xs tracking-[0.12em] uppercase mb-10">
-          Brisbane West Toy Library
-        </p>
+        {/* Logo — drop public/logo.svg (or logo.png) to activate */}
+        <div className="mb-10">
+          <img
+            src="/logo.svg"
+            alt="Brisbane West Toy Library"
+            className="h-16 w-auto"
+            style={{ filter: 'brightness(0) invert(1)' }}
+            onError={(e) => {
+              const el = e.currentTarget
+              el.style.display = 'none'
+              const fallback = el.nextElementSibling as HTMLElement | null
+              if (fallback) fallback.style.display = 'block'
+            }}
+          />
+          <p className="text-white/35 text-xs tracking-[0.12em] uppercase" style={{ display: 'none' }}>
+            Brisbane West Toy Library
+          </p>
+        </div>
 
         <nav>
           <ul className="flex flex-col gap-1 text-center">
@@ -87,7 +101,7 @@ export function HamburgerMenu() {
             ))}
             <li>
               <Link
-                href="/join"
+                href="/#membership"
                 onClick={close}
                 className="inline-block text-yellow border-2 border-yellow px-10 py-3 rounded-full font-bold text-[clamp(1rem,3vw,1.4rem)] mt-3 hover:bg-yellow hover:text-dark transition-colors"
               >

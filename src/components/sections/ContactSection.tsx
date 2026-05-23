@@ -1,3 +1,5 @@
+import { ContactForm } from './ContactForm'
+
 type Props = {
   heading: string
   intro: string
@@ -9,6 +11,7 @@ type Props = {
   facebook?: string | null
   instagram?: string | null
   mapEmbedUrl?: string | null
+  formEnabled?: boolean
 }
 
 export function ContactSection({
@@ -19,6 +22,7 @@ export function ContactSection({
   suburb = 'Kenmore',
   state = 'QLD',
   postcode = '4069',
+  formEnabled = false,
   facebook,
   instagram,
   mapEmbedUrl,
@@ -29,7 +33,7 @@ export function ContactSection({
     <section
       id="contact"
       className="section-pad"
-      style={{ background: 'linear-gradient(135deg, #142b1e 0%, #1d5c3a 100%)' }}
+      style={{ background: 'linear-gradient(135deg, #0a1628 0%, #1f52b8 100%)' }}
     >
       <div className="container-site">
         <div className="text-center mb-12">
@@ -125,6 +129,15 @@ export function ContactSection({
             )}
           </div>
         </div>
+
+        {formEnabled && (
+          <div className="mt-12 pt-10 border-t border-white/10">
+            <h3 className="text-white font-bold text-xl mb-6">Send us a message</h3>
+            <div className="max-w-2xl">
+              <ContactForm />
+            </div>
+          </div>
+        )}
       </div>
     </section>
   )

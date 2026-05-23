@@ -29,7 +29,7 @@ export function HowItWorksSection({ steps = [] }: Props) {
     <section
       id="how-it-works"
       className="section-pad"
-      style={{ background: 'linear-gradient(135deg, #142b1e 0%, #1d5c3a 100%)' }}
+      style={{ background: 'linear-gradient(135deg, #0a1628 0%, #1f52b8 100%)' }}
     >
       <div className="container-site">
         <div className="text-center mb-14">

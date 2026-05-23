@@ -10,6 +10,16 @@ export const FAQs: CollectionConfig = {
   access: {
     read: () => true,
   },
+  hooks: {
+    afterChange: [
+      async () => {
+        try {
+          const { revalidatePath } = await import('next/cache')
+          revalidatePath('/faq')
+        } catch {}
+      },
+    ],
+  },
   fields: [
     {
       name: 'question',

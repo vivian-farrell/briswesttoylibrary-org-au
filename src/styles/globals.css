@@ -5,15 +5,18 @@ html {
 }
 
 @theme {
-  /* Brand colours — match mockup.html CSS variables */
-  --color-forest: #1d5c3a;
-  --color-green:  #2e8b5a;
-  --color-mint:   #a8d5b5;
-  --color-cream:  #f7faf8;
-  --color-orange: #e8632a;
-  --color-yellow: #f5c842;
-  --color-dark:   #142b1e;
-  --color-muted:  #5a7060;
+  /* Brand colours — Brisbane West Toy Library design system */
+  --color-forest:  #1f52b8;   /* royal blue — primary brand */
+  --color-green:   #1a8532;   /* green — secondary */
+  --color-mint:    #c8e0f5;   /* sky blue — soft backgrounds & borders */
+  --color-cream:   #f7faf8;   /* off-white — page background */
+  --color-orange:  #e8601a;   /* orange — CTA accent */
+  --color-yellow:  #f5c800;   /* yellow — highlights */
+  --color-dark:    #162040;   /* navy — primary dark text & dark sections */
+  --color-muted:   #4a5f7a;   /* blue-grey — secondary text */
+  --color-red:     #8b1515;   /* dark red */
+  --color-magenta: #d81b8c;   /* hot pink */
+  --color-sky:     #5ca3d8;   /* medium sky blue */
 
   /* Typography */
   --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -21,6 +24,18 @@ html {
   /* Spacing / radius */
   --radius: 0.75rem;
 }
+
+/* Rich text / prose content */
+.prose p { margin-bottom: 1em; color: var(--color-muted); line-height: 1.75; }
+.prose h2 { font-size: 1.5rem; font-weight: 800; color: var(--color-dark); margin-top: 2em; margin-bottom: 0.5em; }
+.prose h3 { font-size: 1.2rem; font-weight: 700; color: var(--color-dark); margin-top: 1.5em; margin-bottom: 0.4em; }
+.prose ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1em; }
+.prose ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 1em; }
+.prose li { margin-bottom: 0.35em; color: var(--color-muted); line-height: 1.7; }
+.prose strong { font-weight: 700; color: var(--color-dark); }
+.prose em { font-style: italic; }
+.prose a { color: var(--color-forest); text-decoration: underline; }
+.prose blockquote { border-left: 4px solid var(--color-mint); padding-left: 1rem; color: var(--color-muted); font-style: italic; margin-bottom: 1em; }
 
 /* Reusable utility classes */
 @layer utilities {
