@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { LogoImage } from '@/components/ui/LogoImage'
 
 const EXPLORE = [
   { label: 'Our Toys',     href: '/toys' },
@@ -21,14 +22,8 @@ export function SiteFooter() {
       <div className="container-site py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
           <div>
-            {/* Logo — drop public/logo.svg (or logo.png) to activate */}
-            <img
-              src="/logo.svg"
-              alt="Brisbane West Toy Library"
-              className="h-12 w-auto mb-3"
-              style={{ filter: 'brightness(0) invert(1)' }}
-              onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
-            />
+            {/* Logo — drop public/logo.svg to activate */}
+            <LogoImage className="h-12 w-auto mb-3" style={{ filter: 'brightness(0) invert(1)' }} />
             <h3 className="text-white font-bold text-lg mb-2">Brisbane West Toy Library</h3>
             <p className="text-sm leading-relaxed">
               A community toy library serving Kenmore and Brisbane&apos;s west since 1978.
