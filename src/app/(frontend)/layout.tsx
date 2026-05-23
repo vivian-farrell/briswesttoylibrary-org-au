@@ -1,9 +1,29 @@
 import '@/styles/globals.css'
+import { cookies } from 'next/headers'
 import { NavShell } from '@/components/layout/NavShell'
 import { SiteFooter } from '@/components/layout/Footer'
 import { ErudaDevTools } from '@/components/ErudaDevTools'
+import { ComingSoon } from '@/components/ComingSoon'
+import { getPayloadClient } from '@/lib/payload'
 
-export default function FrontendLayout({ children }: { children: React.ReactNode }) {
+export default async function FrontendLayout({ children }: { children: React.ReactNode }) {
+  const payload = await getPayloadClient()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const settings = await payload.findGlobal({ slug: 'site-settings' }).catch(() => null) as any
+
+  const cookieStore = await cookies()
+  const testMode = cookieStore.get('testmode')?.value === '1'
+
+  if (settings?.comingSoon && !testMode) {
+    return (
+      <html lang="en">
+        <body>
+          <ComingSoon />
+        </body>
+      </html>
+    )
+  }
+
   return (
     <html lang="en">
       <body>

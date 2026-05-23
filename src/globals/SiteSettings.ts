@@ -6,6 +6,15 @@ export const SiteSettings: GlobalConfig = {
   admin: { group: 'Settings' },
   fields: [
     {
+      name: 'comingSoon',
+      type: 'checkbox',
+      label: 'Coming Soon mode',
+      defaultValue: false,
+      admin: {
+        description: 'When enabled, all public pages show a "Coming Soon" holding page. The /admin panel is unaffected.',
+      },
+    },
+    {
       name: 'siteName',
       type: 'text',
       defaultValue: 'Brisbane West Toy Library',

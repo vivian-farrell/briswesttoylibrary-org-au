@@ -50,6 +50,27 @@ Stored in **1Password**. Manually entered into Vercel environment variables:
 | Phase 5 — Polish + production | Pending |
 | Phase 6 — SETLS integration | Future |
 
+## Coming Soon Mode
+
+Controlled via **Site Settings → Coming Soon mode** checkbox in the Payload admin.
+
+When enabled, all public frontend routes (`/`, `/join`, `/news`, etc.) render a holding page instead of normal content. `/admin` is unaffected.
+
+**Bypass for stakeholder previews:**
+
+| Action | URL |
+|---|---|
+| Enable bypass | `https://briswesttoylibrary.org.au/?testmode=true` |
+| Disable bypass | `https://briswesttoylibrary.org.au/?testmode=false` |
+
+Visiting with `?testmode=true` sets a `testmode` session cookie (via `src/middleware.ts`). The cookie persists for the browser session — no need to append it to every link. Share the `?testmode=true` URL with anyone who needs to see the real site while it's behind the Coming Soon page.
+
+**Relevant files:**
+- `src/globals/SiteSettings.ts` — `comingSoon` checkbox field
+- `src/middleware.ts` — sets/clears the `testmode` cookie from the query param
+- `src/app/(frontend)/layout.tsx` — checks `comingSoon` flag and `testmode` cookie
+- `src/components/ComingSoon.tsx` — the holding page UI
+
 ## Content Architecture
 
 ### Collections (`src/collections/`)
