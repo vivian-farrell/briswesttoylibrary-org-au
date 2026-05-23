@@ -24,4 +24,14 @@ export const ContactPage: GlobalConfig = {
       },
     },
   ],
+  hooks: {
+    afterChange: [
+      async () => {
+        try {
+          const { revalidatePath } = await import('next/cache')
+          revalidatePath('/')
+        } catch {}
+      },
+    ],
+  },
 }

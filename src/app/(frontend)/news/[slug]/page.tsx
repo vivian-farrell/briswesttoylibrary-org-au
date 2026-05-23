@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { getPayloadClient } from '@/lib/payload'
 import { RichText } from '@/components/ui/RichText'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600
 
 const CATEGORY_LABELS: Record<string, string> = {
   news: 'News',

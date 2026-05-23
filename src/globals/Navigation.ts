@@ -38,4 +38,14 @@ export const Navigation: GlobalConfig = {
       ],
     },
   ],
+  hooks: {
+    afterChange: [
+      async () => {
+        try {
+          const { revalidatePath } = await import('next/cache')
+          revalidatePath('/', 'layout')
+        } catch {}
+      },
+    ],
+  },
 }

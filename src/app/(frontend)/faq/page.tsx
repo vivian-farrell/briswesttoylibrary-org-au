@@ -4,7 +4,7 @@ import { convertLexicalToHTML } from '@payloadcms/richtext-lexical/html'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { FaqAccordion } from '@/components/ui/FaqAccordion'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'FAQ | Brisbane West Toy Library',

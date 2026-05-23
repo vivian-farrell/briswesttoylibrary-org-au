@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { getPayloadClient } from '@/lib/payload'
 import { RichText } from '@/components/ui/RichText'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600
 
 export async function generateMetadata(): Promise<Metadata> {
   const payload = await getPayloadClient()

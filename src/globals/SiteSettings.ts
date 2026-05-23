@@ -58,4 +58,14 @@ export const SiteSettings: GlobalConfig = {
       admin: { description: 'Full URL to the SETLS online toy catalogue for members' },
     },
   ],
+  hooks: {
+    afterChange: [
+      async () => {
+        try {
+          const { revalidatePath } = await import('next/cache')
+          revalidatePath('/', 'layout')
+        } catch {}
+      },
+    ],
+  },
 }

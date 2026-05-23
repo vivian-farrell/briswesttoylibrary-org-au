@@ -4,6 +4,7 @@ import { buildConfig } from 'payload'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { seoPlugin } from '@payloadcms/plugin-seo'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import sharp from 'sharp'
 
 import { Users } from './src/collections/Users.ts'
@@ -49,6 +50,13 @@ export default buildConfig({
       generateTitle: ({ doc }) =>
         `${doc?.title ? `${doc.title} | ` : ''}Brisbane West Toy Library`,
       generateDescription: ({ doc }) => (doc?.excerpt as string) ?? '',
+    }),
+    // Vercel Blob — only active when BLOB_READ_WRITE_TOKEN env var is set.
+    // In Vercel: Storage → Create → Blob store → copy token to env vars.
+    vercelBlobStorage({
+      enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+      collections: { media: true },
+      token: process.env.BLOB_READ_WRITE_TOKEN ?? '',
     }),
   ],
 })

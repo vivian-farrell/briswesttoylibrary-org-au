@@ -13,6 +13,18 @@ export const Posts: CollectionConfig = {
       return { status: { equals: 'published' } }
     },
   },
+  hooks: {
+    afterChange: [
+      async ({ doc }) => {
+        try {
+          const { revalidatePath } = await import('next/cache')
+          revalidatePath('/')
+          revalidatePath('/news')
+          if (doc.slug) revalidatePath(`/news/${doc.slug}`)
+        } catch {}
+      },
+    ],
+  },
   fields: [
     {
       name: 'title',

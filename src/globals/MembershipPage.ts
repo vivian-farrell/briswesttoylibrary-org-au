@@ -69,4 +69,15 @@ export const MembershipPage: GlobalConfig = {
       label: 'Terms & Conditions',
     },
   ],
+  hooks: {
+    afterChange: [
+      async () => {
+        try {
+          const { revalidatePath } = await import('next/cache')
+          revalidatePath('/')
+          revalidatePath('/join')
+        } catch {}
+      },
+    ],
+  },
 }

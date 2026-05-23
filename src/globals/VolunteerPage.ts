@@ -43,4 +43,14 @@ export const VolunteerPage: GlobalConfig = {
       admin: { description: 'mailto link target for the volunteer interest button' },
     },
   ],
+  hooks: {
+    afterChange: [
+      async () => {
+        try {
+          const { revalidatePath } = await import('next/cache')
+          revalidatePath('/volunteer')
+        } catch {}
+      },
+    ],
+  },
 }

@@ -183,4 +183,14 @@ export const Homepage: GlobalConfig = {
       ],
     },
   ],
+  hooks: {
+    afterChange: [
+      async () => {
+        try {
+          const { revalidatePath } = await import('next/cache')
+          revalidatePath('/')
+        } catch {}
+      },
+    ],
+  },
 }
