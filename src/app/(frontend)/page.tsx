@@ -137,7 +137,6 @@ export default async function HomePage() {
         postcode={st?.address?.postcode ?? '4069'}
         facebook={st?.socialLinks?.facebook}
         instagram={st?.socialLinks?.instagram}
-        mapEmbedUrl={hp?.locationSection?.mapEmbedUrl}
         formEnabled={cp?.formEnabled ?? false}
       />
     </>

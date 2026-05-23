@@ -10,7 +10,6 @@ type Props = {
   postcode?: string
   facebook?: string | null
   instagram?: string | null
-  mapEmbedUrl?: string | null
   formEnabled?: boolean
 }
 
@@ -25,9 +24,7 @@ export function ContactSection({
   formEnabled = false,
   facebook,
   instagram,
-  mapEmbedUrl,
 }: Props) {
-  const mapsUrl = `https://maps.google.com/?q=Brisbane+West+Toy+Library+${suburb}+${state}`
 
   return (
     <section
@@ -42,98 +39,46 @@ export function ContactSection({
           <p className="text-mint/80 text-lg max-w-xl mx-auto">{intro}</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-          <div className="flex flex-col gap-5">
-            {email && (
-              <a
-                href={`mailto:${email}`}
-                className="flex items-center gap-4 text-white hover:text-yellow transition-colors group"
-              >
-                <span className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-xl flex-shrink-0 group-hover:bg-white/20 transition-colors">
-                  ✉
-                </span>
-                <span className="font-semibold">{email}</span>
-              </a>
-            )}
-            {phone && (
-              <a
-                href={`tel:${phone}`}
-                className="flex items-center gap-4 text-white hover:text-yellow transition-colors group"
-              >
-                <span className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-xl flex-shrink-0 group-hover:bg-white/20 transition-colors">
-                  📞
-                </span>
-                <span className="font-semibold">{phone}</span>
-              </a>
-            )}
-            <div className="flex items-center gap-4 text-white">
-              <span className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-xl flex-shrink-0">
-                📍
-              </span>
-              <span className="font-semibold">{suburb}, {state} {postcode}</span>
-            </div>
-
-            {(facebook || instagram) && (
-              <div className="flex gap-3 mt-2">
-                {facebook && (
-                  <a
-                    href={facebook}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Facebook"
-                    className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white font-bold hover:bg-white/20 transition-colors"
-                  >
-                    f
-                  </a>
-                )}
-                {instagram && (
-                  <a
-                    href={instagram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Instagram"
-                    className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white font-bold text-sm hover:bg-white/20 transition-colors"
-                  >
-                    IG
-                  </a>
-                )}
-              </div>
-            )}
-          </div>
-
-          <div className="relative rounded-2xl overflow-hidden aspect-[4/3] bg-white/5">
-            {mapEmbedUrl ? (
-              <iframe
-                src={mapEmbedUrl}
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Brisbane West Toy Library map"
-              />
-            ) : (
-              <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-mint/60">
-                <span className="text-5xl">📍</span>
-                <p className="font-semibold text-white/70">{suburb}, {state}</p>
+        <div className="max-w-md mx-auto text-center text-white/90 text-lg leading-loose">
+          <p>{suburb}, {state} {postcode}</p>
+          {email && (
+            <p><a href={`mailto:${email}`} className="hover:text-yellow transition-colors">{email}</a></p>
+          )}
+          {phone && (
+            <p><a href={`tel:${phone}`} className="hover:text-yellow transition-colors">{phone}</a></p>
+          )}
+          {(facebook || instagram) && (
+            <div className="flex justify-center gap-3 mt-4">
+              {facebook && (
                 <a
-                  href={mapsUrl}
+                  href={facebook}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-mint hover:underline"
+                  aria-label="Facebook"
+                  className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white font-bold hover:bg-white/20 transition-colors"
                 >
-                  View on Google Maps
+                  f
                 </a>
-              </div>
-            )}
-          </div>
+              )}
+              {instagram && (
+                <a
+                  href={instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white font-bold text-sm hover:bg-white/20 transition-colors"
+                >
+                  IG
+                </a>
+              )}
+            </div>
+          )}
         </div>
 
         {formEnabled && (
           <div className="mt-12 pt-10 border-t border-white/10">
-            <h3 className="text-white font-bold text-xl mb-6">Send us a message</h3>
-            <div className="max-w-2xl">
+            <div className="max-w-2xl mx-auto">
+              <h3 className="text-white font-bold text-xl mb-6">Send us a message</h3>
               <ContactForm />
             </div>
           </div>

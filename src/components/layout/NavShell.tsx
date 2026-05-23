@@ -113,11 +113,21 @@ export function NavShell() {
         <span className={`${barBase} bg-forest ${isOpen ? 'opacity-0 scale-x-0' : ''}`} />
         <span className={`${barBase} bg-forest ${isOpen ? '-translate-y-[7px] -rotate-45' : ''}`} />
       </button>
-      <Link
-        href="/"
-        className="font-bold text-dark text-[0.95rem] tracking-tight hover:text-forest transition-colors"
-      >
-        Brisbane West Toy Library
+      <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
+        <img
+          src="/logo.svg"
+          alt="Brisbane West Toy Library"
+          className="h-8 w-auto"
+          onError={(e) => {
+            const el = e.currentTarget
+            el.style.display = 'none'
+            const fallback = el.nextElementSibling as HTMLElement | null
+            if (fallback) fallback.style.display = 'block'
+          }}
+        />
+        <span className="font-bold text-dark text-[0.95rem] tracking-tight" style={{ display: 'none' }}>
+          Brisbane West Toy Library
+        </span>
       </Link>
     </header>
   )
@@ -138,13 +148,12 @@ export function NavShell() {
       ].join(' ')}
       style={{ background: 'linear-gradient(145deg, #0a1628 0%, #162040 100%)' }}
     >
-      {/* Logo — drop public/logo.svg (or logo.png) to activate */}
-      <div className="mb-10">
+      {/* Logo */}
+      <div className="mb-10 bg-white/95 rounded-2xl px-5 py-3">
         <img
           src="/logo.svg"
           alt="Brisbane West Toy Library"
-          className="h-16 w-auto"
-          style={{ filter: 'brightness(0) invert(1)' }}
+          className="h-12 w-auto"
           onError={(e) => {
             const el = e.currentTarget
             el.style.display = 'none'

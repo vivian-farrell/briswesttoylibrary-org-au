@@ -76,7 +76,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="bg-orange text-white font-bold px-8 py-3.5 rounded-full hover:brightness-110 transition-all self-start disabled:opacity-60 disabled:cursor-not-allowed"
+        className="bg-orange text-white font-bold px-8 py-3.5 rounded-full hover:brightness-110 transition-all self-start cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {status === 'loading' ? 'Sending…' : 'Send Message'}
       </button>

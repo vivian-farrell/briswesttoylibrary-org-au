@@ -6,12 +6,12 @@ html {
 
 @theme {
   /* Brand colours — Brisbane West Toy Library design system */
-  --color-forest:  #1f52b8;   /* royal blue — primary brand */
+  --color-forest:  #449dff;   /* royal blue — primary brand */
   --color-green:   #1a8532;   /* green — secondary */
   --color-mint:    #c8e0f5;   /* sky blue — soft backgrounds & borders */
-  --color-cream:   #f7faf8;   /* off-white — page background */
-  --color-orange:  #e8601a;   /* orange — CTA accent */
-  --color-yellow:  #f5c800;   /* yellow — highlights */
+  --color-cream:   #fffcf8;   /* off-white — page background */
+  --color-orange:  #ff7800;   /* orange — CTA accent */
+  --color-yellow:  #ffd800;   /* yellow — highlights */
   --color-dark:    #162040;   /* navy — primary dark text & dark sections */
   --color-muted:   #4a5f7a;   /* blue-grey — secondary text */
   --color-red:     #8b1515;   /* dark red */
