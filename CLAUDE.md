@@ -20,9 +20,11 @@ Website for **Brisbane West Toy Library** (briswesttoylibrary.org.au), a communi
 
 ```bash
 pnpm dev                                              # local dev server
-pnpm build                                            # payload migrate && next build
+pnpm build                                            # vitest run && payload migrate && next build
 pnpm payload migrate:create <name>                    # generate migration after schema change
 pnpm payload migrate                                  # apply pending migrations to DB
+pnpm test                                             # run integration tests (creates/destroys test.db)
+pnpm test:watch                                       # re-run tests on file changes
 ```
 
 ## Repository
@@ -115,6 +117,36 @@ Separate pages for returning visitors. Each page fetches its data from Payload a
 | `/contact` | `src/app/(frontend)/contact/page.tsx` | Static contact form (wired in Phase 5) |
 
 Also add `src/app/(frontend)/sitemap.ts` for SEO.
+
+## Integration Tests
+
+Located in `tests/`. Run with `pnpm test` (one-shot) or `pnpm test:watch` (re-runs on save).
+
+**How it works:**
+
+1. `tests/global-setup.ts` deletes any leftover `test.db`, then runs `pnpm payload migrate` against it to create a fresh schema using the real migration files.
+2. All test files share a single Payload instance connected to `test.db` (configured in `vitest.config.ts` via `env.DATABASE_URL`).
+3. After the run, `test.db` is deleted automatically.
+
+**Coverage:**
+
+| File | What is tested |
+|---|---|
+| `tests/collections/posts.test.ts` | All scalar fields, richText content, publishedAt, all category values, access control (draft visibility), home/news page query shape |
+| `tests/collections/faqs.test.ts` | question, richText answer, all 5 category values, order default, sorted rendering query |
+| `tests/collections/toys.test.ts` | name, optional setlsId |
+| `tests/globals/site-settings.test.ts` | comingSoon toggle, siteName, tagline, email, phone, address group, openingHours array, socialLinks group, setlsCatalogueUrl |
+| `tests/globals/homepage.test.ts` | heroType select, all hero text fields, locationSection, aboutSection, howItWorksSection steps array, membershipSection, contactSection, rendering shape |
+| `tests/globals/navigation.test.ts` | items array (label, href, isScrollLink, isCTA) |
+| `tests/globals/footer.test.ts` | acknowledgement, copyright, exploreLinks array, involvedLinks array |
+| `tests/globals/membership-page.test.ts` | heading, richText intro, tiers with nested features array, note, richText T&Cs |
+| `tests/globals/contact-page.test.ts` | heading, intro, formEnabled checkbox toggle |
+| `tests/globals/volunteer-page.test.ts` | heading, intro, richText content, roles array, ctaLabel, ctaEmail |
+
+**When to add a test:** After adding a new field to a collection or global, add a corresponding assertion in the matching test file.
+
+**Payload local API and access control:**
+The Payload local API bypasses access control by default (it is a trusted server-side API). To test that the access function actually filters documents, pass `overrideAccess: false` explicitly — this simulates how the REST API and Next.js page fetches behave for unauthenticated users.
 
 ## Known Gotchas
 
