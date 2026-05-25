@@ -3,6 +3,7 @@ import * as migration_20260517_091247_phase4_about_volunteer_pages from './20260
 import * as migration_20260517_124938_drop_about_page_global from './20260517_124938_drop_about_page_global';
 import * as migration_20260523_150446_add_coming_soon from './20260523_150446_add_coming_soon';
 import * as migration_20260525_133944_add_hero_subtitle from './20260525_133944_add_hero_subtitle';
+import * as migration_20260525_134850_location_section_address_hours from './20260525_134850_location_section_address_hours';
 
 export const migrations = [
   {
@@ -28,6 +29,11 @@ export const migrations = [
   {
     up: migration_20260525_133944_add_hero_subtitle.up,
     down: migration_20260525_133944_add_hero_subtitle.down,
-    name: '20260525_133944_add_hero_subtitle'
+    name: '20260525_133944_add_hero_subtitle',
+  },
+  {
+    up: migration_20260525_134850_location_section_address_hours.up,
+    down: migration_20260525_134850_location_section_address_hours.down,
+    name: '20260525_134850_location_section_address_hours'
   },
 ];

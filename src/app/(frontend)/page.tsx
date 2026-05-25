@@ -94,11 +94,11 @@ export default async function HomePage() {
 
       <LocationSection
         heading={hp?.locationSection?.heading ?? "We're in Kenmore"}
-        suburb={st?.address?.suburb ?? 'Kenmore'}
-        state={st?.address?.state ?? 'QLD'}
-        postcode={st?.address?.postcode ?? '4069'}
-        street={st?.address?.street}
-        openingHours={st?.openingHours ?? []}
+        suburb={hp?.locationSection?.suburb ?? st?.address?.suburb ?? 'Kenmore'}
+        state={hp?.locationSection?.state ?? st?.address?.state ?? 'QLD'}
+        postcode={hp?.locationSection?.postcode ?? st?.address?.postcode ?? '4069'}
+        street={hp?.locationSection?.street ?? st?.address?.street}
+        openingHours={hp?.locationSection?.openingHours ?? st?.openingHours ?? []}
         mapEmbedUrl={hp?.locationSection?.mapEmbedUrl}
         directionsUrl={hp?.locationSection?.directionsUrl}
       />

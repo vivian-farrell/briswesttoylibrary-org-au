@@ -89,6 +89,38 @@ export const Homepage: GlobalConfig = {
           defaultValue: 'We\'re in Kenmore',
         },
         {
+          name: 'street',
+          type: 'text',
+          label: 'Street Address',
+          defaultValue: '8 Brookfield Road',
+        },
+        {
+          name: 'suburb',
+          type: 'text',
+          defaultValue: 'Kenmore',
+        },
+        {
+          name: 'state',
+          type: 'text',
+          label: 'State',
+          defaultValue: 'QLD',
+        },
+        {
+          name: 'postcode',
+          type: 'text',
+          defaultValue: '4069',
+        },
+        {
+          name: 'openingHours',
+          type: 'array',
+          label: 'Opening Hours',
+          admin: { description: 'e.g. Saturday / 9:00 am – 12:00 pm' },
+          fields: [
+            { name: 'day',   type: 'text', required: true },
+            { name: 'hours', type: 'text', required: true },
+          ],
+        },
+        {
           name: 'mapEmbedUrl',
           type: 'text',
           label: 'Google Maps Embed URL',
