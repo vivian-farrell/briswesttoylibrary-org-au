@@ -148,6 +148,25 @@ Located in `tests/`. Run with `pnpm test` (one-shot) or `pnpm test:watch` (re-ru
 **Payload local API and access control:**
 The Payload local API bypasses access control by default (it is a trusted server-side API). To test that the access function actually filters documents, pass `overrideAccess: false` explicitly — this simulates how the REST API and Next.js page fetches behave for unauthenticated users.
 
+## Schema Change Convention
+
+**Always make schema changes additive.** The build pipeline runs `payload migrate` (against the production Turso database) before `next build`. If the Next.js build fails after migration, the old code stays live against the already-migrated schema. An additive change (new column, new table) is safe — old code ignores it. A destructive change (dropped column, renamed field) breaks the live site immediately.
+
+**Additive changes (safe to do in one deploy):**
+- Adding a new field to a collection or global
+- Adding a new collection or global
+- Adding a new option to a `select` field
+
+**Breaking changes — flag clearly and use a multi-step strategy:**
+
+If a breaking change is genuinely needed (rename, drop, restructure), design it as a sequence of deploys with no downtime:
+
+1. **Deploy 1 — add:** Add the new column/field alongside the old one. Migrate data if needed.
+2. **Deploy 2 — cut over:** Update all code to read/write the new column only. Old column ignored but still present.
+3. **Deploy 3 — drop:** Remove the old column once confident no rollback is needed.
+
+When proposing a breaking schema change, always flag it explicitly, explain the risk, and outline which deploy step we're on.
+
 ## Known Gotchas
 
 - `next@15.5.x` incompatible with `payload@3.84.1` — stay on `15.4.11`
