@@ -7,9 +7,14 @@ import { ComingSoon } from '@/components/ComingSoon'
 import { getPayloadClient } from '@/lib/payload'
 
 export default async function FrontendLayout({ children }: { children: React.ReactNode }) {
-  const payload = await getPayloadClient()
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const settings = await payload.findGlobal({ slug: 'site-settings' }).catch(() => null) as any
+  let settings: any = null
+  try {
+    const payload = await getPayloadClient()
+    settings = await payload.findGlobal({ slug: 'site-settings' })
+  } catch {
+    // DB unavailable — render normally, coming soon check skipped
+  }
 
   const cookieStore = await cookies()
   const testMode = cookieStore.get('testmode')?.value === '1'
