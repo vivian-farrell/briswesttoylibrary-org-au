@@ -8,13 +8,14 @@ type Slide = { url: string; alt: string }
 
 type Props = {
   slides: Slide[]
+  subtitle: string
   headline: string
   tagline: string
   ctaLabel: string
   ctaHref: string
 }
 
-export function HeroCarousel({ slides, headline, tagline, ctaLabel, ctaHref }: Props) {
+export function HeroCarousel({ slides, subtitle, headline, tagline, ctaLabel, ctaHref }: Props) {
   const [current, setCurrent] = useState(0)
 
   useEffect(() => {
@@ -48,7 +49,7 @@ export function HeroCarousel({ slides, headline, tagline, ctaLabel, ctaHref }: P
 
       <div className="relative z-10 text-center px-6 max-w-3xl mx-auto">
         <p className="text-mint/80 text-xs tracking-[0.18em] uppercase font-semibold mb-4">
-          Kenmore · Brisbane&apos;s West · Since 1978
+          {subtitle}
         </p>
         <h1 className="text-white font-black text-[clamp(2.2rem,7vw,4.5rem)] leading-[1.1] mb-5">
           {headline}

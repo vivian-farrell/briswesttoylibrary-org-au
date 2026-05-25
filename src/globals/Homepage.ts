@@ -58,6 +58,13 @@ export const Homepage: GlobalConfig = {
       defaultValue: 'Borrow quality toys for your child\'s world — sustainably, affordably, together.',
     },
     {
+      name: 'heroSubtitle',
+      type: 'text',
+      label: 'Hero Subtitle',
+      defaultValue: "Kenmore · Brisbane's West · Since 1978",
+      admin: { description: 'Small text shown above the headline in the hero.' },
+    },
+    {
       name: 'heroCTALabel',
       type: 'text',
       label: 'CTA Button Label',

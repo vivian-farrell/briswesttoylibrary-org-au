@@ -75,6 +75,7 @@ export default async function HomePage() {
       {heroVideoUrl ? (
         <HeroVideo
           videoUrl={heroVideoUrl}
+          subtitle={hp?.heroSubtitle ?? "Kenmore · Brisbane's West · Since 1978"}
           headline={hp?.heroHeadline ?? 'Toys. Imagination. Community.'}
           tagline={hp?.heroTagline ?? "Borrow quality toys for your child's world — sustainably, affordably, together."}
           ctaLabel={hp?.heroCTALabel ?? 'Join Now'}
@@ -83,6 +84,7 @@ export default async function HomePage() {
       ) : (
         <HeroCarousel
           slides={heroSlides}
+          subtitle={hp?.heroSubtitle ?? "Kenmore · Brisbane's West · Since 1978"}
           headline={hp?.heroHeadline ?? 'Toys. Imagination. Community.'}
           tagline={hp?.heroTagline ?? "Borrow quality toys for your child's world — sustainably, affordably, together."}
           ctaLabel={hp?.heroCTALabel ?? 'Join Now'}
