@@ -67,6 +67,70 @@ describe('Homepage global — locationSection group', () => {
     expect(loc.mapEmbedUrl).toBe('https://maps.google.com/embed?test')
     expect(loc.directionsUrl).toBe('https://maps.google.com/directions?test')
   })
+
+  it('saves street, suburb, state, postcode fields', async () => {
+    const payload = await getTestPayload()
+    await payload.updateGlobal({
+      slug: 'homepage',
+      data: {
+        locationSection: {
+          street: '8 Brookfield Road',
+          suburb: 'Kenmore',
+          state: 'QLD',
+          postcode: '4069',
+        },
+      },
+    })
+    const result = await payload.findGlobal({ slug: 'homepage' })
+    const loc = result.locationSection as {
+      street: string
+      suburb: string
+      state: string
+      postcode: string
+    }
+    expect(loc.street).toBe('8 Brookfield Road')
+    expect(loc.suburb).toBe('Kenmore')
+    expect(loc.state).toBe('QLD')
+    expect(loc.postcode).toBe('4069')
+  })
+
+  it('saves openingHours array', async () => {
+    const payload = await getTestPayload()
+    await payload.updateGlobal({
+      slug: 'homepage',
+      data: {
+        locationSection: {
+          openingHours: [
+            { day: 'Saturday', hours: '9:00 am – 12:00 pm' },
+            { day: 'Tuesday', hours: '6:00 pm – 8:00 pm' },
+          ],
+        },
+      },
+    })
+    const result = await payload.findGlobal({ slug: 'homepage' })
+    const loc = result.locationSection as {
+      openingHours: Array<{ day: string; hours: string }>
+    }
+    expect(loc.openingHours).toHaveLength(2)
+    expect(loc.openingHours[0].day).toBe('Saturday')
+    expect(loc.openingHours[0].hours).toBe('9:00 am – 12:00 pm')
+    expect(loc.openingHours[1].day).toBe('Tuesday')
+    expect(loc.openingHours[1].hours).toBe('6:00 pm – 8:00 pm')
+  })
+
+  it('locationSection shape includes all fields expected by LocationSection component', async () => {
+    const payload = await getTestPayload()
+    const hp = await payload.findGlobal({ slug: 'homepage' })
+    const loc = hp.locationSection as object
+    expect(loc).toHaveProperty('heading')
+    expect(loc).toHaveProperty('street')
+    expect(loc).toHaveProperty('suburb')
+    expect(loc).toHaveProperty('state')
+    expect(loc).toHaveProperty('postcode')
+    expect(loc).toHaveProperty('openingHours')
+    expect(loc).toHaveProperty('mapEmbedUrl')
+    expect(loc).toHaveProperty('directionsUrl')
+  })
 })
 
 describe('Homepage global — aboutSection group', () => {
