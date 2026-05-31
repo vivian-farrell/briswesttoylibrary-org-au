@@ -8,7 +8,8 @@
     "start": "next start",
     "payload": "cross-env PAYLOAD_CONFIG_PATH=payload.config.ts payload",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:e2e": "tsx e2e/pre-setup.ts && playwright test"
   },
   "dependencies": {
     "@payloadcms/db-sqlite": "^3.0.0",
@@ -27,6 +28,7 @@
     "sharp": "^0.33.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^20.0.0",
     "@types/react": "^19.0.0",
