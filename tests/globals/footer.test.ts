@@ -2,6 +2,30 @@ import { describe, it, expect } from 'vitest'
 import { getTestPayload } from '../helpers/payload.ts'
 
 describe('Footer global — field persistence', () => {
+  it('saves aboutText field', async () => {
+    const payload = await getTestPayload()
+    await payload.updateGlobal({
+      slug: 'footer',
+      data: { aboutText: 'A community toy library since 1978.' },
+    })
+    const result = await payload.findGlobal({ slug: 'footer' })
+    expect(result.aboutText).toBe('A community toy library since 1978.')
+  })
+
+  it('saves exploreColumnHeading and involvedColumnHeading fields', async () => {
+    const payload = await getTestPayload()
+    await payload.updateGlobal({
+      slug: 'footer',
+      data: {
+        exploreColumnHeading: 'Browse',
+        involvedColumnHeading: 'Get Involved',
+      },
+    })
+    const result = await payload.findGlobal({ slug: 'footer' })
+    expect(result.exploreColumnHeading).toBe('Browse')
+    expect(result.involvedColumnHeading).toBe('Get Involved')
+  })
+
   it('saves acknowledgement and copyright text fields', async () => {
     const payload = await getTestPayload()
     await payload.updateGlobal({
@@ -54,9 +78,12 @@ describe('Footer global — field persistence', () => {
     expect(links[1].label).toBe('Volunteer')
   })
 
-  it('renders onto site: footer has required fields for Footer component', async () => {
+  it('renders onto site: footer has all fields expected by SiteFooter component', async () => {
     const payload = await getTestPayload()
     const footer = await payload.findGlobal({ slug: 'footer' })
+    expect(footer).toHaveProperty('aboutText')
+    expect(footer).toHaveProperty('exploreColumnHeading')
+    expect(footer).toHaveProperty('involvedColumnHeading')
     expect(footer).toHaveProperty('acknowledgement')
     expect(footer).toHaveProperty('copyright')
     expect(footer).toHaveProperty('exploreLinks')

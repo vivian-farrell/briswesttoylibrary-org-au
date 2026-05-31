@@ -42,6 +42,13 @@ describe('Homepage global — hero fields', () => {
     expect(result.heroCTALabel).toBe('Sign Up Today')
     expect(result.heroCTAHref).toBe('/join')
   })
+
+  it('saves scrollLabel field', async () => {
+    const payload = await getTestPayload()
+    await payload.updateGlobal({ slug: 'homepage', data: { scrollLabel: 'Scroll down' } })
+    const result = await payload.findGlobal({ slug: 'homepage' })
+    expect(result.scrollLabel).toBe('Scroll down')
+  })
 })
 
 describe('Homepage global — locationSection group', () => {
@@ -118,11 +125,41 @@ describe('Homepage global — locationSection group', () => {
     expect(loc.openingHours[1].hours).toBe('6:00 pm – 8:00 pm')
   })
 
+  it('saves sectionLabel, openingHoursLabel, directionsLabel, mapsLabel fields', async () => {
+    const payload = await getTestPayload()
+    await payload.updateGlobal({
+      slug: 'homepage',
+      data: {
+        locationSection: {
+          sectionLabel: 'Find Us',
+          openingHoursLabel: 'When We Are Open',
+          directionsLabel: 'Get Directions →',
+          mapsLabel: 'Open in Maps',
+        },
+      },
+    })
+    const result = await payload.findGlobal({ slug: 'homepage' })
+    const loc = result.locationSection as {
+      sectionLabel: string
+      openingHoursLabel: string
+      directionsLabel: string
+      mapsLabel: string
+    }
+    expect(loc.sectionLabel).toBe('Find Us')
+    expect(loc.openingHoursLabel).toBe('When We Are Open')
+    expect(loc.directionsLabel).toBe('Get Directions →')
+    expect(loc.mapsLabel).toBe('Open in Maps')
+  })
+
   it('locationSection shape includes all fields expected by LocationSection component', async () => {
     const payload = await getTestPayload()
     const hp = await payload.findGlobal({ slug: 'homepage' })
     const loc = hp.locationSection as object
     expect(loc).toHaveProperty('heading')
+    expect(loc).toHaveProperty('sectionLabel')
+    expect(loc).toHaveProperty('openingHoursLabel')
+    expect(loc).toHaveProperty('directionsLabel')
+    expect(loc).toHaveProperty('mapsLabel')
     expect(loc).toHaveProperty('street')
     expect(loc).toHaveProperty('suburb')
     expect(loc).toHaveProperty('state')
@@ -150,9 +187,59 @@ describe('Homepage global — aboutSection group', () => {
     expect(about.heading).toBe('More toys. Less clutter.')
     expect(about.body).toBe('A toy library is exactly what it sounds like.')
   })
+
+  it('saves sectionLabel field', async () => {
+    const payload = await getTestPayload()
+    await payload.updateGlobal({
+      slug: 'homepage',
+      data: { aboutSection: { sectionLabel: 'Who We Are' } },
+    })
+    const result = await payload.findGlobal({ slug: 'homepage' })
+    const about = result.aboutSection as { sectionLabel: string }
+    expect(about.sectionLabel).toBe('Who We Are')
+  })
+
+  it('saves features array with icon and label', async () => {
+    const payload = await getTestPayload()
+    await payload.updateGlobal({
+      slug: 'homepage',
+      data: {
+        aboutSection: {
+          features: [
+            { icon: '🪀', label: 'Quality toys' },
+            { icon: '♻️', label: 'Sustainable' },
+            { icon: '🤝', label: 'Community' },
+          ],
+        },
+      },
+    })
+    const result = await payload.findGlobal({ slug: 'homepage' })
+    const about = result.aboutSection as { features: Array<{ icon: string; label: string }> }
+    expect(about.features).toHaveLength(3)
+    expect(about.features[0].icon).toBe('🪀')
+    expect(about.features[0].label).toBe('Quality toys')
+    expect(about.features[2].label).toBe('Community')
+  })
 })
 
-describe('Homepage global — howItWorksSection steps array', () => {
+describe('Homepage global — howItWorksSection', () => {
+  it('saves sectionLabel and heading fields', async () => {
+    const payload = await getTestPayload()
+    await payload.updateGlobal({
+      slug: 'homepage',
+      data: {
+        howItWorksSection: {
+          sectionLabel: 'Easy Steps',
+          heading: 'How It Works',
+        },
+      },
+    })
+    const result = await payload.findGlobal({ slug: 'homepage' })
+    const section = result.howItWorksSection as { sectionLabel: string; heading: string }
+    expect(section.sectionLabel).toBe('Easy Steps')
+    expect(section.heading).toBe('How It Works')
+  })
+
   it('saves steps with icon, heading, and body', async () => {
     const payload = await getTestPayload()
     await payload.updateGlobal({
@@ -177,6 +264,27 @@ describe('Homepage global — howItWorksSection steps array', () => {
   })
 })
 
+describe('Homepage global — newsSection group', () => {
+  it('saves sectionLabel, heading, allNewsLabel fields', async () => {
+    const payload = await getTestPayload()
+    await payload.updateGlobal({
+      slug: 'homepage',
+      data: {
+        newsSection: {
+          sectionLabel: 'Latest News',
+          heading: "What's On",
+          allNewsLabel: 'All news →',
+        },
+      },
+    })
+    const result = await payload.findGlobal({ slug: 'homepage' })
+    const news = result.newsSection as { sectionLabel: string; heading: string; allNewsLabel: string }
+    expect(news.sectionLabel).toBe('Latest News')
+    expect(news.heading).toBe("What's On")
+    expect(news.allNewsLabel).toBe('All news →')
+  })
+})
+
 describe('Homepage global — membershipSection and contactSection', () => {
   it('saves membershipSection heading and subheading', async () => {
     const payload = await getTestPayload()
@@ -195,6 +303,32 @@ describe('Homepage global — membershipSection and contactSection', () => {
     expect(mem.subheading).toBe('One fee. Unlimited toys.')
   })
 
+  it('saves membershipSection label fields', async () => {
+    const payload = await getTestPayload()
+    await payload.updateGlobal({
+      slug: 'homepage',
+      data: {
+        membershipSection: {
+          sectionLabel: 'Become a Member',
+          popularBadge: 'Best Value',
+          priceSuffix: '/yr',
+          disclaimer: 'Fees subject to change.',
+        },
+      },
+    })
+    const result = await payload.findGlobal({ slug: 'homepage' })
+    const mem = result.membershipSection as {
+      sectionLabel: string
+      popularBadge: string
+      priceSuffix: string
+      disclaimer: string
+    }
+    expect(mem.sectionLabel).toBe('Become a Member')
+    expect(mem.popularBadge).toBe('Best Value')
+    expect(mem.priceSuffix).toBe('/yr')
+    expect(mem.disclaimer).toBe('Fees subject to change.')
+  })
+
   it('saves contactSection heading and intro', async () => {
     const payload = await getTestPayload()
     await payload.updateGlobal({
@@ -211,23 +345,41 @@ describe('Homepage global — membershipSection and contactSection', () => {
     expect(contact.heading).toBe("We'd love to hear from you")
     expect(contact.intro).toBe('Questions? Drop us a line.')
   })
+
+  it('saves contactSection sectionLabel and formHeading fields', async () => {
+    const payload = await getTestPayload()
+    await payload.updateGlobal({
+      slug: 'homepage',
+      data: {
+        contactSection: {
+          sectionLabel: 'Say Hello',
+          formHeading: 'Send us a message',
+        },
+      },
+    })
+    const result = await payload.findGlobal({ slug: 'homepage' })
+    const contact = result.contactSection as { sectionLabel: string; formHeading: string }
+    expect(contact.sectionLabel).toBe('Say Hello')
+    expect(contact.formHeading).toBe('Send us a message')
+  })
 })
 
 describe('Homepage global — rendering data shape', () => {
   it('findGlobal returns all fields expected by the home page component', async () => {
     const payload = await getTestPayload()
     const hp = await payload.findGlobal({ slug: 'homepage' })
-    // These are the fields the page.tsx accesses
     expect(hp).toHaveProperty('heroType')
     expect(hp).toHaveProperty('heroHeadline')
     expect(hp).toHaveProperty('heroTagline')
     expect(hp).toHaveProperty('heroSubtitle')
+    expect(hp).toHaveProperty('scrollLabel')
     expect(hp).toHaveProperty('heroCTALabel')
     expect(hp).toHaveProperty('heroCTAHref')
     expect(hp).toHaveProperty('heroSlides')
     expect(hp).toHaveProperty('locationSection')
     expect(hp).toHaveProperty('aboutSection')
     expect(hp).toHaveProperty('howItWorksSection')
+    expect(hp).toHaveProperty('newsSection')
     expect(hp).toHaveProperty('membershipSection')
     expect(hp).toHaveProperty('contactSection')
   })
