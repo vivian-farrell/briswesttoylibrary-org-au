@@ -7,6 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 export default defineConfig({
   test: {
     globalSetup: './tests/global-setup.ts',
+    exclude: ['**/node_modules/**', '**/e2e/**'],
     environment: 'node',
     testTimeout: 60_000,
     hookTimeout: 60_000,
