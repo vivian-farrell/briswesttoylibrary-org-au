@@ -8,9 +8,14 @@ type Post = {
   category?: string | null
 }
 
-type Props = { posts: Post[] }
+type Props = {
+  posts: Post[]
+  sectionLabel?: string
+  heading?: string
+  allNewsLabel?: string
+}
 
-export function NewsPreview({ posts }: Props) {
+export function NewsPreview({ posts, sectionLabel = 'Latest News', heading = "What's On", allNewsLabel = 'All news →' }: Props) {
   if (posts.length === 0) return null
 
   return (
@@ -18,14 +23,14 @@ export function NewsPreview({ posts }: Props) {
       <div className="container-site">
         <div className="flex items-end justify-between mb-10">
           <div>
-            <p className="section-label mb-3">Latest News</p>
-            <h2 className="text-3xl md:text-4xl font-black text-dark">What&apos;s On</h2>
+            <p className="section-label mb-3">{sectionLabel}</p>
+            <h2 className="text-3xl md:text-4xl font-black text-dark">{heading}</h2>
           </div>
           <Link
             href="/news"
             className="text-forest font-semibold hover:text-green transition-colors hidden sm:block"
           >
-            All news →
+            {allNewsLabel}
           </Link>
         </div>
 
@@ -62,7 +67,7 @@ export function NewsPreview({ posts }: Props) {
 
         <div className="text-center mt-8 sm:hidden">
           <Link href="/news" className="text-forest font-semibold hover:text-green">
-            All news →
+            {allNewsLabel}
           </Link>
         </div>
       </div>

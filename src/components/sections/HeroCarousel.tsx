@@ -13,9 +13,10 @@ type Props = {
   tagline: string
   ctaLabel: string
   ctaHref: string
+  scrollLabel?: string
 }
 
-export function HeroCarousel({ slides, subtitle, headline, tagline, ctaLabel, ctaHref }: Props) {
+export function HeroCarousel({ slides, subtitle, headline, tagline, ctaLabel, ctaHref, scrollLabel = 'Scroll' }: Props) {
   const [current, setCurrent] = useState(0)
 
   useEffect(() => {
@@ -79,7 +80,7 @@ export function HeroCarousel({ slides, subtitle, headline, tagline, ctaLabel, ct
       )}
 
       <div className="absolute bottom-8 right-8 hidden md:flex flex-col items-center gap-1.5 z-10 opacity-50">
-        <span className="text-white text-[0.55rem] tracking-[0.22em] uppercase [writing-mode:vertical-rl]">Scroll</span>
+        <span className="text-white text-[0.55rem] tracking-[0.22em] uppercase [writing-mode:vertical-rl]">{scrollLabel}</span>
         <span className="text-white animate-bounce">↓</span>
       </div>
     </section>

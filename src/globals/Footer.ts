@@ -6,6 +6,24 @@ export const Footer: GlobalConfig = {
   admin: { group: 'Settings' },
   fields: [
     {
+      name: 'aboutText',
+      type: 'textarea',
+      label: 'About blurb',
+      defaultValue: "A community toy library serving Kenmore and Brisbane's west since 1978. Not-for-profit, volunteer-run, and proud of it.",
+    },
+    {
+      name: 'exploreColumnHeading',
+      type: 'text',
+      label: 'Explore column heading',
+      defaultValue: 'Explore',
+    },
+    {
+      name: 'involvedColumnHeading',
+      type: 'text',
+      label: 'Get Involved column heading',
+      defaultValue: 'Get Involved',
+    },
+    {
       name: 'acknowledgement',
       type: 'textarea',
       label: 'Acknowledgement of Country',

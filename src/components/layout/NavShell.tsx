@@ -4,7 +4,14 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-const NAV_ITEMS = [
+type NavItem = { label: string; href: string; isCTA?: boolean; isScrollLink?: boolean }
+
+type Props = {
+  navItems?: NavItem[]
+  copyright?: string
+}
+
+const DEFAULT_NAV_ITEMS: NavItem[] = [
   { label: 'Home',      href: '/' },
   { label: 'Our Toys',  href: '/toys' },
   { label: 'Volunteer', href: '/volunteer' },
@@ -13,13 +20,19 @@ const NAV_ITEMS = [
   { label: 'Contact',   href: '/#contact' },
 ]
 
-export function NavShell() {
+const DEFAULT_CTA: NavItem = { label: 'Join Now →', href: '/#membership', isCTA: true }
+
+export function NavShell({ navItems, copyright = 'Brisbane West Toy Library Inc.' }: Props) {
   const pathname = usePathname()
   const isHome = pathname === '/'
 
   const [isOpen, setIsOpen] = useState(false)
   const [overHero, setOverHero] = useState(true)
   const overlayRef = useRef<HTMLDivElement>(null)
+
+  const items = navItems ?? DEFAULT_NAV_ITEMS
+  const regularItems = items.filter(i => !i.isCTA)
+  const ctaItem = items.find(i => i.isCTA) ?? DEFAULT_CTA
 
   // On home: switch floating button styling once user scrolls past the hero
   useEffect(() => {
@@ -168,7 +181,7 @@ export function NavShell() {
 
       <nav>
         <ul className="flex flex-col gap-1 text-center">
-          {NAV_ITEMS.map(item => (
+          {regularItems.map(item => (
             <li key={item.label}>
               <Link
                 href={item.href}
@@ -181,18 +194,18 @@ export function NavShell() {
           ))}
           <li>
             <Link
-              href="/#membership"
+              href={ctaItem.href}
               onClick={close}
               className="inline-block text-yellow border-2 border-yellow px-10 py-3 rounded-full font-bold text-[clamp(1rem,3vw,1.4rem)] mt-3 hover:bg-yellow hover:text-dark transition-colors"
             >
-              Join Now →
+              {ctaItem.label}
             </Link>
           </li>
         </ul>
       </nav>
 
       <p className="absolute bottom-8 text-white/25 text-xs">
-        © {new Date().getFullYear()} Brisbane West Toy Library Inc.
+        © {new Date().getFullYear()} {copyright}
       </p>
     </div>
   )

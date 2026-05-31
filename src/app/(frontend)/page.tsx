@@ -80,6 +80,7 @@ export default async function HomePage() {
           tagline={hp?.heroTagline ?? "Borrow quality toys for your child's world — sustainably, affordably, together."}
           ctaLabel={hp?.heroCTALabel ?? 'Join Now'}
           ctaHref={hp?.heroCTAHref ?? '/#membership'}
+          scrollLabel={hp?.scrollLabel}
         />
       ) : (
         <HeroCarousel
@@ -89,6 +90,7 @@ export default async function HomePage() {
           tagline={hp?.heroTagline ?? "Borrow quality toys for your child's world — sustainably, affordably, together."}
           ctaLabel={hp?.heroCTALabel ?? 'Join Now'}
           ctaHref={hp?.heroCTAHref ?? '/#membership'}
+          scrollLabel={hp?.scrollLabel}
         />
       )}
 
@@ -101,6 +103,10 @@ export default async function HomePage() {
         openingHours={hp?.locationSection?.openingHours ?? st?.openingHours ?? []}
         mapEmbedUrl={hp?.locationSection?.mapEmbedUrl}
         directionsUrl={hp?.locationSection?.directionsUrl}
+        sectionLabel={hp?.locationSection?.sectionLabel}
+        openingHoursLabel={hp?.locationSection?.openingHoursLabel}
+        directionsLabel={hp?.locationSection?.directionsLabel}
+        mapsLabel={hp?.locationSection?.mapsLabel}
       />
 
       <WhatIsAToyLibrary
@@ -111,9 +117,15 @@ export default async function HomePage() {
         }
         imageUrl={aboutImageUrl}
         imageAlt={aboutImageAlt}
+        sectionLabel={hp?.aboutSection?.sectionLabel}
+        features={hp?.aboutSection?.features}
       />
 
-      <HowItWorksSection steps={hp?.howItWorksSection?.steps ?? []} />
+      <HowItWorksSection
+        steps={hp?.howItWorksSection?.steps ?? []}
+        sectionLabel={hp?.howItWorksSection?.sectionLabel}
+        heading={hp?.howItWorksSection?.heading}
+      />
 
       <MembershipSection
         heading={hp?.membershipSection?.heading ?? 'Simple, affordable membership'}
@@ -122,9 +134,18 @@ export default async function HomePage() {
           'One annual fee. Unlimited borrowing. No hidden costs. Concession rates available.'
         }
         tiers={mp?.tiers ?? []}
+        sectionLabel={hp?.membershipSection?.sectionLabel}
+        popularBadge={hp?.membershipSection?.popularBadge}
+        priceSuffix={hp?.membershipSection?.priceSuffix}
+        disclaimer={hp?.membershipSection?.disclaimer}
       />
 
-      <NewsPreview posts={posts} />
+      <NewsPreview
+        posts={posts}
+        sectionLabel={hp?.newsSection?.sectionLabel}
+        heading={hp?.newsSection?.heading}
+        allNewsLabel={hp?.newsSection?.allNewsLabel}
+      />
 
       <ContactSection
         heading={hp?.contactSection?.heading ?? "We'd love to hear from you"}
@@ -140,6 +161,8 @@ export default async function HomePage() {
         facebook={st?.socialLinks?.facebook}
         instagram={st?.socialLinks?.instagram}
         formEnabled={cp?.formEnabled ?? false}
+        sectionLabel={hp?.contactSection?.sectionLabel}
+        formHeading={hp?.contactSection?.formHeading}
       />
     </>
   )

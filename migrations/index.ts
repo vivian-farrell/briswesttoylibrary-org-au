@@ -4,6 +4,7 @@ import * as migration_20260517_124938_drop_about_page_global from './20260517_12
 import * as migration_20260523_150446_add_coming_soon from './20260523_150446_add_coming_soon';
 import * as migration_20260525_133944_add_hero_subtitle from './20260525_133944_add_hero_subtitle';
 import * as migration_20260525_134850_location_section_address_hours from './20260525_134850_location_section_address_hours';
+import * as migration_20260531_123635_cms_all_section_labels from './20260531_123635_cms_all_section_labels';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20260525_134850_location_section_address_hours.up,
     down: migration_20260525_134850_location_section_address_hours.down,
-    name: '20260525_134850_location_section_address_hours'
+    name: '20260525_134850_location_section_address_hours',
+  },
+  {
+    up: migration_20260531_123635_cms_all_section_labels.up,
+    down: migration_20260531_123635_cms_all_section_labels.down,
+    name: '20260531_123635_cms_all_section_labels'
   },
 ];

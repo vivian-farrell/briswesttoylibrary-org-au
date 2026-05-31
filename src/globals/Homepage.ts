@@ -46,6 +46,13 @@ export const Homepage: GlobalConfig = {
       },
     },
     {
+      name: 'scrollLabel',
+      type: 'text',
+      label: 'Scroll indicator label',
+      defaultValue: 'Scroll',
+      admin: { description: 'Small vertical text shown in the bottom-right of the hero.' },
+    },
+    {
       name: 'heroHeadline',
       type: 'text',
       label: 'Headline',
@@ -87,6 +94,30 @@ export const Homepage: GlobalConfig = {
           name: 'heading',
           type: 'text',
           defaultValue: 'We\'re in Kenmore',
+        },
+        {
+          name: 'sectionLabel',
+          type: 'text',
+          label: 'Section label',
+          defaultValue: 'Find Us',
+        },
+        {
+          name: 'openingHoursLabel',
+          type: 'text',
+          label: 'Opening hours heading',
+          defaultValue: 'Opening Hours',
+        },
+        {
+          name: 'directionsLabel',
+          type: 'text',
+          label: 'Directions button label',
+          defaultValue: 'Get Directions →',
+        },
+        {
+          name: 'mapsLabel',
+          type: 'text',
+          label: '"View on Google Maps" link label',
+          defaultValue: 'View on Google Maps',
         },
         {
           name: 'street',
@@ -146,6 +177,12 @@ export const Homepage: GlobalConfig = {
       label: 'What Is a Toy Library?',
       fields: [
         {
+          name: 'sectionLabel',
+          type: 'text',
+          label: 'Section label',
+          defaultValue: 'About',
+        },
+        {
           name: 'heading',
           type: 'text',
           defaultValue: 'More toys. Less clutter. More community.',
@@ -161,6 +198,16 @@ export const Homepage: GlobalConfig = {
           type: 'upload',
           relationTo: 'media',
         },
+        {
+          name: 'features',
+          type: 'array',
+          label: 'Feature badges',
+          admin: { description: 'Small icon + label badges shown below the body text.' },
+          fields: [
+            { name: 'icon',  type: 'text', required: true, admin: { description: 'Emoji, e.g. 🪀' } },
+            { name: 'label', type: 'text', required: true },
+          ],
+        },
       ],
     },
 
@@ -170,6 +217,17 @@ export const Homepage: GlobalConfig = {
       type: 'group',
       label: 'How It Works',
       fields: [
+        {
+          name: 'sectionLabel',
+          type: 'text',
+          label: 'Section label',
+          defaultValue: 'Simple Process',
+        },
+        {
+          name: 'heading',
+          type: 'text',
+          defaultValue: 'How It Works',
+        },
         {
           name: 'steps',
           type: 'array',
@@ -184,12 +242,44 @@ export const Homepage: GlobalConfig = {
       ],
     },
 
+    // ── News preview ─────────────────────────────────────────
+    {
+      name: 'newsSection',
+      type: 'group',
+      label: 'News Preview Section',
+      fields: [
+        {
+          name: 'sectionLabel',
+          type: 'text',
+          label: 'Section label',
+          defaultValue: 'Latest News',
+        },
+        {
+          name: 'heading',
+          type: 'text',
+          defaultValue: "What's On",
+        },
+        {
+          name: 'allNewsLabel',
+          type: 'text',
+          label: '"All news" link label',
+          defaultValue: 'All news →',
+        },
+      ],
+    },
+
     // ── Membership (home page preview) ───────────────────────
     {
       name: 'membershipSection',
       type: 'group',
       label: 'Membership Section',
       fields: [
+        {
+          name: 'sectionLabel',
+          type: 'text',
+          label: 'Section label',
+          defaultValue: 'Membership',
+        },
         {
           name: 'heading',
           type: 'text',
@@ -199,6 +289,24 @@ export const Homepage: GlobalConfig = {
           name: 'subheading',
           type: 'text',
           defaultValue: 'One annual fee. Unlimited borrowing. No hidden costs. Concession rates available.',
+        },
+        {
+          name: 'popularBadge',
+          type: 'text',
+          label: '"Most Popular" badge text',
+          defaultValue: 'Most Popular',
+        },
+        {
+          name: 'priceSuffix',
+          type: 'text',
+          label: 'Price suffix',
+          defaultValue: '/year',
+        },
+        {
+          name: 'disclaimer',
+          type: 'text',
+          label: 'Small print disclaimer',
+          defaultValue: 'Lost or damaged toys may incur a replacement fee. See our T&Cs for details.',
         },
       ],
     },
@@ -210,6 +318,12 @@ export const Homepage: GlobalConfig = {
       label: 'Contact Section',
       fields: [
         {
+          name: 'sectionLabel',
+          type: 'text',
+          label: 'Section label',
+          defaultValue: 'Get In Touch',
+        },
+        {
           name: 'heading',
           type: 'text',
           defaultValue: 'We\'d love to hear from you',
@@ -218,6 +332,12 @@ export const Homepage: GlobalConfig = {
           name: 'intro',
           type: 'text',
           defaultValue: 'Questions about membership, toys, or volunteering? Drop us a line.',
+        },
+        {
+          name: 'formHeading',
+          type: 'text',
+          label: 'Contact form heading',
+          defaultValue: 'Send us a message',
         },
       ],
     },

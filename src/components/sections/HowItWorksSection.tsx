@@ -1,6 +1,10 @@
 type Step = { icon?: string | null; heading: string; body: string }
 
-type Props = { steps?: Step[] }
+type Props = {
+  steps?: Step[]
+  sectionLabel?: string
+  heading?: string
+}
 
 const DEFAULT_STEPS: Step[] = [
   {
@@ -22,7 +26,7 @@ const DEFAULT_STEPS: Step[] = [
 
 const FALLBACK_ICONS = ['📋', '🧸', '🔄']
 
-export function HowItWorksSection({ steps = [] }: Props) {
+export function HowItWorksSection({ steps = [], sectionLabel = 'Simple Process', heading = 'How It Works' }: Props) {
   const display = steps.length >= 3 ? steps.slice(0, 3) : DEFAULT_STEPS
 
   return (
@@ -33,8 +37,8 @@ export function HowItWorksSection({ steps = [] }: Props) {
     >
       <div className="container-site">
         <div className="text-center mb-14">
-          <p className="text-mint/70 text-xs tracking-[0.18em] uppercase font-semibold mb-3">Simple Process</p>
-          <h2 className="text-3xl md:text-4xl font-black text-white">How It Works</h2>
+          <p className="text-mint/70 text-xs tracking-[0.18em] uppercase font-semibold mb-3">{sectionLabel}</p>
+          <h2 className="text-3xl md:text-4xl font-black text-white">{heading}</h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">

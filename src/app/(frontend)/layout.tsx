@@ -9,9 +9,17 @@ import { getPayloadClient } from '@/lib/payload'
 export default async function FrontendLayout({ children }: { children: React.ReactNode }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let settings: any = null
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let nav: any = null
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let footer: any = null
   try {
     const payload = await getPayloadClient()
-    settings = await payload.findGlobal({ slug: 'site-settings' })
+    ;[settings, nav, footer] = await Promise.all([
+      payload.findGlobal({ slug: 'site-settings' }),
+      payload.findGlobal({ slug: 'navigation' }),
+      payload.findGlobal({ slug: 'footer' }),
+    ])
   } catch {
     // DB unavailable — render normally, coming soon check skipped
   }
@@ -29,6 +37,13 @@ export default async function FrontendLayout({ children }: { children: React.Rea
     )
   }
 
+  const navItems = (nav?.items ?? []).map((i: any) => ({
+    label: i.label as string,
+    href: i.href as string,
+    isCTA: i.isCTA as boolean,
+    isScrollLink: i.isScrollLink as boolean,
+  }))
+
   return (
     <html lang="en">
       <body>
@@ -38,9 +53,20 @@ export default async function FrontendLayout({ children }: { children: React.Rea
         >
           Skip to main content
         </a>
-        <NavShell />
+        <NavShell
+          navItems={navItems.length > 0 ? navItems : undefined}
+          copyright={footer?.copyright}
+        />
         <main id="main-content">{children}</main>
-        <SiteFooter />
+        <SiteFooter
+          aboutText={footer?.aboutText}
+          exploreColumnHeading={footer?.exploreColumnHeading}
+          involvedColumnHeading={footer?.involvedColumnHeading}
+          exploreLinks={footer?.exploreLinks}
+          involvedLinks={footer?.involvedLinks}
+          acknowledgement={footer?.acknowledgement}
+          copyright={footer?.copyright}
+        />
         {process.env.NEXT_PUBLIC_DEVTOOLS === 'true' && <ErudaDevTools />}
       </body>
     </html>

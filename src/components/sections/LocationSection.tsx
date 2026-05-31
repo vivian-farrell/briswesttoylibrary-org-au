@@ -9,6 +9,10 @@ type Props = {
   openingHours?: OpeningHour[]
   mapEmbedUrl?: string | null
   directionsUrl?: string | null
+  sectionLabel?: string
+  openingHoursLabel?: string
+  directionsLabel?: string
+  mapsLabel?: string
 }
 
 const FALLBACK_HOURS: OpeningHour[] = [
@@ -25,6 +29,10 @@ export function LocationSection({
   openingHours,
   mapEmbedUrl,
   directionsUrl,
+  sectionLabel = 'Find Us',
+  openingHoursLabel = 'Opening Hours',
+  directionsLabel = 'Get Directions →',
+  mapsLabel = 'View on Google Maps',
 }: Props) {
   const hours = openingHours && openingHours.length > 0 ? openingHours : FALLBACK_HOURS
   const mapsUrl = directionsUrl ?? `https://maps.google.com/?q=Brisbane+West+Toy+Library+${suburb}+${state}`
@@ -34,7 +42,7 @@ export function LocationSection({
       <div className="container-site">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <p className="section-label mb-3">Find Us</p>
+            <p className="section-label mb-3">{sectionLabel}</p>
             <h2 className="text-3xl md:text-4xl font-black text-dark mb-6">{heading}</h2>
 
             {street && <p className="text-muted mb-1">{street}</p>}
@@ -43,7 +51,7 @@ export function LocationSection({
             </p>
 
             <div className="mb-8">
-              <h3 className="text-xs font-bold uppercase tracking-widest text-muted mb-4">Opening Hours</h3>
+              <h3 className="text-xs font-bold uppercase tracking-widest text-muted mb-4">{openingHoursLabel}</h3>
               <ul className="flex flex-col gap-3">
                 {hours.map(h => (
                   <li key={h.day} className="flex items-baseline gap-3">
@@ -60,7 +68,7 @@ export function LocationSection({
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-forest text-white font-bold px-7 py-3.5 rounded-full hover:brightness-110 transition-all"
             >
-              Get Directions →
+              {directionsLabel}
             </a>
           </div>
 
@@ -86,7 +94,7 @@ export function LocationSection({
                   rel="noopener noreferrer"
                   className="text-sm text-green hover:underline"
                 >
-                  View on Google Maps
+                  {mapsLabel}
                 </a>
               </div>
             )}

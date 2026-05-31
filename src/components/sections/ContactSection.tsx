@@ -11,6 +11,8 @@ type Props = {
   facebook?: string | null
   instagram?: string | null
   formEnabled?: boolean
+  sectionLabel?: string
+  formHeading?: string
 }
 
 export function ContactSection({
@@ -24,6 +26,8 @@ export function ContactSection({
   formEnabled = false,
   facebook,
   instagram,
+  sectionLabel = 'Get In Touch',
+  formHeading = 'Send us a message',
 }: Props) {
 
   return (
@@ -34,7 +38,7 @@ export function ContactSection({
     >
       <div className="container-site">
         <div className="text-center mb-12">
-          <p className="text-mint/70 text-xs tracking-[0.18em] uppercase font-semibold mb-3">Get In Touch</p>
+          <p className="text-mint/70 text-xs tracking-[0.18em] uppercase font-semibold mb-3">{sectionLabel}</p>
           <h2 className="text-3xl md:text-4xl font-black text-white mb-4">{heading}</h2>
           <p className="text-mint/80 text-lg max-w-xl mx-auto">{intro}</p>
         </div>
@@ -78,7 +82,7 @@ export function ContactSection({
         {formEnabled && (
           <div className="mt-12 pt-10 border-t border-white/10">
             <div className="max-w-2xl mx-auto">
-              <h3 className="text-white font-bold text-xl mb-6">Send us a message</h3>
+              <h3 className="text-white font-bold text-xl mb-6">{formHeading}</h3>
               <ContactForm />
             </div>
           </div>

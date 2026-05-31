@@ -13,6 +13,10 @@ type Props = {
   heading: string
   subheading: string
   tiers: Tier[]
+  sectionLabel?: string
+  popularBadge?: string
+  priceSuffix?: string
+  disclaimer?: string
 }
 
 const FALLBACK_TIERS: Tier[] = [
@@ -42,14 +46,22 @@ const FALLBACK_TIERS: Tier[] = [
   },
 ]
 
-export function MembershipSection({ heading, subheading, tiers }: Props) {
+export function MembershipSection({
+  heading,
+  subheading,
+  tiers,
+  sectionLabel = 'Membership',
+  popularBadge = 'Most Popular',
+  priceSuffix = '/year',
+  disclaimer = 'Lost or damaged toys may incur a replacement fee. See our T&Cs for details.',
+}: Props) {
   const display = tiers.length > 0 ? tiers : FALLBACK_TIERS
 
   return (
     <section id="membership" className="bg-cream section-pad">
       <div className="container-site">
         <div className="text-center mb-12">
-          <p className="section-label mb-3">Membership</p>
+          <p className="section-label mb-3">{sectionLabel}</p>
           <h2 className="text-3xl md:text-4xl font-black text-dark mb-4">{heading}</h2>
           <p className="text-muted text-lg max-w-xl mx-auto">{subheading}</p>
         </div>
@@ -66,7 +78,7 @@ export function MembershipSection({ heading, subheading, tiers }: Props) {
             >
               {tier.isFeatured && (
                 <span className="text-xs font-bold uppercase tracking-widest text-orange bg-orange/15 px-3 py-1 rounded-full self-start">
-                  Most Popular
+                  {popularBadge}
                 </span>
               )}
               <div>
@@ -85,7 +97,7 @@ export function MembershipSection({ heading, subheading, tiers }: Props) {
                   ${tier.price}
                 </span>
                 <span className={`text-sm mb-2 ${tier.isFeatured ? 'text-mint/70' : 'text-muted'}`}>
-                  /year
+                  {priceSuffix}
                 </span>
               </div>
 
@@ -117,9 +129,7 @@ export function MembershipSection({ heading, subheading, tiers }: Props) {
           ))}
         </div>
 
-        <p className="text-center text-muted/70 text-sm mt-8">
-          Lost or damaged toys may incur a replacement fee. See our T&amp;Cs for details.
-        </p>
+        <p className="text-center text-muted/70 text-sm mt-8">{disclaimer}</p>
       </div>
     </section>
   )
