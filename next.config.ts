@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
     ],
   },
   serverExternalPackages: ['@payloadcms/db-sqlite', 'libsql', '@libsql/client'],
+  experimental: {
+    optimizePackageImports: ['@payloadcms/richtext-lexical'],
+  },
 }
 
 export default withPayload(nextConfig)
