@@ -3,8 +3,10 @@ import { fileURLToPath } from 'url'
 import { buildConfig } from 'payload'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
+import nodemailer from 'nodemailer'
 import sharp from 'sharp'
 
 import { Users } from './src/collections/Users.ts'
@@ -35,6 +37,18 @@ export default buildConfig({
   globals: [SiteSettings, Navigation, Footer, Homepage, MembershipPage, ContactPage, VolunteerPage],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'dev-secret-change-in-production',
+  email: nodemailerAdapter({
+    defaultFromAddress: 'noreply@briswesttoylibrary.org.au',
+    defaultFromName: 'Brisbane West Toy Library',
+    transport: process.env.RESEND_API_KEY
+      ? nodemailer.createTransport({
+          host: 'smtp.resend.com',
+          port: 465,
+          secure: true,
+          auth: { user: 'resend', pass: process.env.RESEND_API_KEY },
+        })
+      : nodemailer.createTransport({ jsonTransport: true }),
+  }),
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },

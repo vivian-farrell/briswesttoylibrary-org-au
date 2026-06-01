@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@payloadcms/db-sqlite": "^3.0.0",
+    "@payloadcms/email-nodemailer": "^3.85.0",
     "@payloadcms/next": "^3.0.0",
     "@payloadcms/plugin-seo": "^3.0.0",
     "@payloadcms/richtext-lexical": "^3.0.0",
@@ -21,6 +22,7 @@
     "cross-env": "^7.0.3",
     "eruda": "^3.4.3",
     "next": "15.4.11",
+    "nodemailer": "^8.0.10",
     "payload": "^3.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
