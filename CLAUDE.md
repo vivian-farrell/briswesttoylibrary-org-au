@@ -173,7 +173,30 @@ When proposing a breaking schema change, always flag it explicitly, explain the 
 - Import `withPayload` from `@payloadcms/next/withPayload` (no default export on root package)
 - `serverExternalPackages` must include `['@payloadcms/db-sqlite', 'libsql', '@libsql/client']`
 - **Do NOT** add `drizzle-kit` or `@payloadcms/drizzle` to `serverExternalPackages` → causes `WebpackError is not a constructor` during build
+- **Do NOT** add `@payloadcms/richtext-lexical` or `@payloadcms/ui` to `serverExternalPackages` → both have CSS side-effects; Node's ESM loader throws `ERR_UNKNOWN_FILE_EXTENSION` on the `.css` import, breaking the admin
 - **Do NOT** add `src/instrumentation.ts` with dynamic payload imports → same webpack error
 - `"type": "module"` is required in `package.json` — without it tsx serves TypeScript as CJS, causing ESM loading cycles in Node 22
 - Vercel Framework Preset must be **Next.js** (not "Other")
 - `payload migrate` runs as part of `pnpm build` — after any schema change, run `migrate:create`, commit the output, then push
+
+## Debugging
+
+### Reproduce locally before reading code
+
+When a production route returns 500, Vercel logs only show the generic Next.js wrapper — useless for diagnosis. **Run `pnpm dev` and hit the failing URL first.** The dev server shows full stack traces. This resolves most diagnoses in under 2 minutes.
+
+Only fall back to code inspection when local reproduction isn't possible. If the error is env-specific, add `console.error` and redeploy rather than reading source blind.
+
+### Vercel vendor-chunk cache poisoning
+
+**Symptom:** a single route 500s persistently after a commit that changed `package.json` or `pnpm-lock.yaml`; other routes work; local dev (with a stale `.next`) shows `Cannot find module './vendor-chunks/some-package@version_hash.js'`.
+
+**Cause:** Vercel restores the previous `.next` build cache. Adding/updating a package changes webpack vendor-chunk hashes. Some pages are rebuilt with new hash references in their `page.js`, but the chunk files for those new hashes are never written (the pages that "own" the chunk were served from cache). The rebuilt page references a hash that doesn't exist.
+
+**Fix:** make any change to `next.config.ts`. Next.js invalidates its entire webpack cache when the config changes, forcing a full fresh compilation on the next deploy.
+
+**To confirm:** grep the broken page's compiled bundle for the missing chunk name, then check `.next/server/vendor-chunks/` — if the file isn't there, it's a stale-cache issue, not a code bug.
+
+### `@payloadcms/ui` in a frontend bundle is a red flag
+
+`@payloadcms/ui` is admin-only code. If it appears in a `.next/server/app/(frontend)/...` bundle, something is wrong with the build. The `news/[slug]` page is the only frontend page that imports from `@payloadcms/richtext-lexical/html` (via `RichText`); in a non-tree-shaken (dev or stale-cache) build this transitively pulls in `@payloadcms/ui`. A clean production build tree-shakes it out.
