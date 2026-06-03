@@ -18,7 +18,7 @@ const DEFAULT_EXPLORE: FooterLink[] = [
   { label: 'How It Works', href: '/#how-it-works' },
   { label: 'Membership',   href: '/#membership' },
   { label: 'News & Blog',  href: '/news' },
-  { label: 'FAQ',          href: '/faq' },
+  { label: 'FAQ',          href: '/#faq' },
 ]
 
 const DEFAULT_INVOLVED: FooterLink[] = [

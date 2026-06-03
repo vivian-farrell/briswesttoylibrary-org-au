@@ -8,6 +8,7 @@ const SECTIONS = [
   { id: 'about',        label: 'About' },
   { id: 'how-it-works', label: 'How It Works' },
   { id: 'membership',   label: 'Membership' },
+  { id: 'faq',          label: 'FAQ' },
   { id: 'news',         label: 'News' },
   { id: 'contact',      label: 'Contact' },
 ]

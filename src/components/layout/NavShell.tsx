@@ -16,7 +16,7 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
   { label: 'Our Toys',  href: '/toys' },
   { label: 'Volunteer', href: '/volunteer' },
   { label: 'News',      href: '/news' },
-  { label: 'FAQ',       href: '/faq' },
+  { label: 'FAQ',       href: '/#faq' },
   { label: 'Contact',   href: '/#contact' },
 ]
 
@@ -34,7 +34,7 @@ export function NavShell({ navItems, copyright = 'Brisbane West Toy Library Inc.
   const regularItems = items.filter(i => !i.isCTA)
   const ctaItem = items.find(i => i.isCTA) ?? DEFAULT_CTA
 
-  // On home: switch floating button styling once user scrolls past the hero
+  // On home: track when user scrolls past the hero section
   useEffect(() => {
     if (!isHome) {
       setOverHero(false)
@@ -76,14 +76,12 @@ export function NavShell({ navItems, copyright = 'Brisbane West Toy Library Inc.
     }
   }, [isOpen])
 
-  const open = () => setIsOpen(true)
   const close = () => setIsOpen(false)
   const toggle = () => setIsOpen(o => !o)
 
-  // Shared bar classes
   const barBase = 'block w-5 h-0.5 rounded-sm transition-all duration-250'
 
-  // ─── Floating button (home only) ──────────────────────────────────────────
+  // ─── Floating button (home page while hero is visible) ────────────────────
   const FloatingButton = (
     <button
       onClick={toggle}
@@ -93,30 +91,34 @@ export function NavShell({ navItems, copyright = 'Brisbane West Toy Library Inc.
         'fixed top-5 left-5 z-[200] w-12 h-12 rounded-full',
         'flex flex-col items-center justify-center gap-[5px]',
         'backdrop-blur-md border transition-all shadow-md cursor-pointer',
-        !isOpen && !overHero
-          ? 'bg-forest/10 border-forest/25'
-          : 'bg-white/[0.18] border-white/35',
+        'bg-white/[0.18] border-white/35',
       ].join(' ')}
     >
-      <span className={`${barBase} ${!isOpen && !overHero ? 'bg-forest' : 'bg-white'} ${isOpen ? 'translate-y-[7px] rotate-45' : ''}`} />
-      <span className={`${barBase} ${!isOpen && !overHero ? 'bg-forest' : 'bg-white'} ${isOpen ? 'opacity-0 scale-x-0' : ''}`} />
-      <span className={`${barBase} ${!isOpen && !overHero ? 'bg-forest' : 'bg-white'} ${isOpen ? '-translate-y-[7px] -rotate-45' : ''}`} />
+      <span className={`${barBase} bg-white ${isOpen ? 'translate-y-[7px] rotate-45' : ''}`} />
+      <span className={`${barBase} bg-white ${isOpen ? 'opacity-0 scale-x-0' : ''}`} />
+      <span className={`${barBase} bg-white ${isOpen ? '-translate-y-[7px] -rotate-45' : ''}`} />
     </button>
   )
 
-  // ─── Sticky header (inner pages) ──────────────────────────────────────────
+  // ─── Sticky header (always in DOM; slides in/out on home page) ────────────
   const StickyHeader = (
     <header className={[
-      'sticky top-0 z-[150] h-14 w-full',
-      'flex items-center px-4 gap-3',
+      isHome ? 'fixed' : 'sticky',
+      'top-0 left-0 right-0 z-[150] h-14 w-full',
+      'flex items-center px-4 md:px-6',
       'bg-cream/95 backdrop-blur-sm border-b border-mint/40',
       'shadow-[0_1px_8px_0_rgba(20,43,30,0.07)]',
+      isHome ? 'transition-transform duration-300' : '',
+      isHome && overHero ? '-translate-y-full' : 'translate-y-0',
     ].join(' ')}>
+
+      {/* Hamburger — mobile only */}
       <button
         onClick={toggle}
         aria-expanded={isOpen}
         aria-label={isOpen ? 'Close menu' : 'Open menu'}
         className={[
+          'flex-none md:hidden',
           'w-10 h-10 rounded-full flex flex-col items-center justify-center gap-[5px]',
           'cursor-pointer bg-forest/[0.08] border border-forest/15',
           'hover:bg-forest/15 transition-colors',
@@ -126,7 +128,12 @@ export function NavShell({ navItems, copyright = 'Brisbane West Toy Library Inc.
         <span className={`${barBase} bg-forest ${isOpen ? 'opacity-0 scale-x-0' : ''}`} />
         <span className={`${barBase} bg-forest ${isOpen ? '-translate-y-[7px] -rotate-45' : ''}`} />
       </button>
-      <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
+
+      {/* Logo — absolute-centered on mobile, left-flow on desktop */}
+      <Link
+        href="/"
+        className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 md:flex-none flex items-center hover:opacity-80 transition-opacity"
+      >
         <img
           src="/logo.svg"
           alt="Brisbane West Toy Library"
@@ -142,6 +149,25 @@ export function NavShell({ navItems, copyright = 'Brisbane West Toy Library Inc.
           Brisbane West Toy Library
         </span>
       </Link>
+
+      {/* Desktop nav links — hidden on mobile */}
+      <nav className="hidden md:flex flex-1 items-center justify-end gap-5 ml-8">
+        {regularItems.map(item => (
+          <Link
+            key={item.label}
+            href={item.href}
+            className="text-sm font-semibold text-dark hover:text-forest transition-colors"
+          >
+            {item.label}
+          </Link>
+        ))}
+        <Link
+          href={ctaItem.href}
+          className="ml-2 bg-orange text-white px-4 py-1.5 rounded-full text-sm font-bold hover:opacity-90 transition-opacity"
+        >
+          {ctaItem.label}
+        </Link>
+      </nav>
     </header>
   )
 
@@ -161,7 +187,6 @@ export function NavShell({ navItems, copyright = 'Brisbane West Toy Library Inc.
       ].join(' ')}
       style={{ background: 'linear-gradient(145deg, #0a1628 0%, #162040 100%)' }}
     >
-      {/* Logo */}
       <div className="mb-10 bg-white/95 rounded-2xl px-5 py-3">
         <img
           src="/logo.svg"
@@ -212,7 +237,8 @@ export function NavShell({ navItems, copyright = 'Brisbane West Toy Library Inc.
 
   return (
     <>
-      {isHome ? FloatingButton : StickyHeader}
+      {isHome && overHero && FloatingButton}
+      {StickyHeader}
       {NavOverlay}
     </>
   )

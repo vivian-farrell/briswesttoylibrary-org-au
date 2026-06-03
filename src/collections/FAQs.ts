@@ -15,7 +15,7 @@ export const FAQs: CollectionConfig = {
       async () => {
         try {
           const { revalidatePath } = await import('next/cache')
-          revalidatePath('/faq')
+          revalidatePath('/')
         } catch {}
       },
     ],

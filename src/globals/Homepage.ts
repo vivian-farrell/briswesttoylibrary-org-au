@@ -311,6 +311,26 @@ export const Homepage: GlobalConfig = {
       ],
     },
 
+    // ── FAQ ──────────────────────────────────────────────────
+    {
+      name: 'faqSection',
+      type: 'group',
+      label: 'FAQ Section',
+      fields: [
+        {
+          name: 'sectionLabel',
+          type: 'text',
+          label: 'Section label',
+          defaultValue: 'Help',
+        },
+        {
+          name: 'heading',
+          type: 'text',
+          defaultValue: 'Frequently Asked Questions',
+        },
+      ],
+    },
+
     // ── Contact ──────────────────────────────────────────────
     {
       name: 'contactSection',

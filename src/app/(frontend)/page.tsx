@@ -1,20 +1,32 @@
 import { getPayloadClient } from '@/lib/payload'
+import { convertLexicalToHTML } from '@payloadcms/richtext-lexical/html'
+import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { HeroCarousel } from '@/components/sections/HeroCarousel'
 import { HeroVideo } from '@/components/sections/HeroVideo'
 import { LocationSection } from '@/components/sections/LocationSection'
 import { WhatIsAToyLibrary } from '@/components/sections/WhatIsAToyLibrary'
 import { HowItWorksSection } from '@/components/sections/HowItWorksSection'
 import { MembershipSection } from '@/components/sections/MembershipSection'
+import { FaqSection } from '@/components/sections/FaqSection'
 import { NewsPreview } from '@/components/sections/NewsPreview'
 import { ContactSection } from '@/components/sections/ContactSection'
 import { SectionDotNav } from '@/components/layout/SectionDotNav'
 
 export const revalidate = 3600
 
+const CATEGORY_ORDER = ['membership', 'borrowing', 'toys', 'volunteering', 'general']
+const CATEGORY_LABELS: Record<string, string> = {
+  membership: 'Membership',
+  borrowing: 'Borrowing',
+  toys: 'Toys',
+  volunteering: 'Volunteering',
+  general: 'General',
+}
+
 export default async function HomePage() {
   const payload = await getPayloadClient()
 
-  const [homepage, settings, membership, contactPage, postsResult] = await Promise.all([
+  const [homepage, settings, membership, contactPage, postsResult, faqsResult] = await Promise.all([
     payload.findGlobal({ slug: 'homepage' }).catch(() => null),
     payload.findGlobal({ slug: 'site-settings' }).catch(() => null),
     payload.findGlobal({ slug: 'membership-page' }).catch(() => null),
@@ -25,6 +37,13 @@ export default async function HomePage() {
         where: { status: { equals: 'published' } },
         sort: '-publishedAt',
         limit: 3,
+      })
+      .catch(() => ({ docs: [] })),
+    payload
+      .find({
+        collection: 'faqs',
+        sort: 'order',
+        limit: 100,
       })
       .catch(() => ({ docs: [] })),
   ])
@@ -67,6 +86,27 @@ export default async function HomePage() {
     publishedAt: p.publishedAt as string | null,
     category: p.category as string | null,
   }))
+
+  // Group FAQs by category
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const faqs: any[] = (faqsResult as any).docs ?? []
+  const grouped: Record<string, { question: string; answerHtml: string }[]> = {}
+  for (const faq of faqs) {
+    const cat: string = faq.category ?? 'general'
+    if (!grouped[cat]) grouped[cat] = []
+    const answerHtml = faq.answer
+      ? convertLexicalToHTML({ data: faq.answer as SerializedEditorState, disableContainer: true })
+      : ''
+    grouped[cat].push({ question: faq.question as string, answerHtml })
+  }
+  const faqCategories = CATEGORY_ORDER
+    .filter(cat => grouped[cat]?.length)
+    .map(cat => ({ label: CATEGORY_LABELS[cat] ?? cat, items: grouped[cat] }))
+  for (const cat of Object.keys(grouped)) {
+    if (!CATEGORY_ORDER.includes(cat)) {
+      faqCategories.push({ label: CATEGORY_LABELS[cat] ?? cat, items: grouped[cat] })
+    }
+  }
 
   return (
     <>
@@ -138,6 +178,12 @@ export default async function HomePage() {
         popularBadge={hp?.membershipSection?.popularBadge}
         priceSuffix={hp?.membershipSection?.priceSuffix}
         disclaimer={hp?.membershipSection?.disclaimer}
+      />
+
+      <FaqSection
+        categories={faqCategories}
+        heading={hp?.faqSection?.heading}
+        sectionLabel={hp?.faqSection?.sectionLabel}
       />
 
       <NewsPreview

@@ -5,6 +5,7 @@ import * as migration_20260523_150446_add_coming_soon from './20260523_150446_ad
 import * as migration_20260525_133944_add_hero_subtitle from './20260525_133944_add_hero_subtitle';
 import * as migration_20260525_134850_location_section_address_hours from './20260525_134850_location_section_address_hours';
 import * as migration_20260531_123635_cms_all_section_labels from './20260531_123635_cms_all_section_labels';
+import * as migration_20260603_112249_add_faq_section from './20260603_112249_add_faq_section';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20260531_123635_cms_all_section_labels.up,
     down: migration_20260531_123635_cms_all_section_labels.down,
-    name: '20260531_123635_cms_all_section_labels'
+    name: '20260531_123635_cms_all_section_labels',
+  },
+  {
+    up: migration_20260603_112249_add_faq_section.up,
+    down: migration_20260603_112249_add_faq_section.down,
+    name: '20260603_112249_add_faq_section'
   },
 ];

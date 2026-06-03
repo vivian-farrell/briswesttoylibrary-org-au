@@ -364,6 +364,25 @@ describe('Homepage global — membershipSection and contactSection', () => {
   })
 })
 
+describe('Homepage global — faqSection group', () => {
+  it('saves faqSection sectionLabel and heading', async () => {
+    const payload = await getTestPayload()
+    await payload.updateGlobal({
+      slug: 'homepage',
+      data: {
+        faqSection: {
+          sectionLabel: 'Help',
+          heading: 'Frequently Asked Questions',
+        },
+      },
+    })
+    const result = await payload.findGlobal({ slug: 'homepage' })
+    const faq = result.faqSection as { sectionLabel: string; heading: string }
+    expect(faq.sectionLabel).toBe('Help')
+    expect(faq.heading).toBe('Frequently Asked Questions')
+  })
+})
+
 describe('Homepage global — rendering data shape', () => {
   it('findGlobal returns all fields expected by the home page component', async () => {
     const payload = await getTestPayload()
@@ -381,6 +400,7 @@ describe('Homepage global — rendering data shape', () => {
     expect(hp).toHaveProperty('howItWorksSection')
     expect(hp).toHaveProperty('newsSection')
     expect(hp).toHaveProperty('membershipSection')
+    expect(hp).toHaveProperty('faqSection')
     expect(hp).toHaveProperty('contactSection')
   })
 })
