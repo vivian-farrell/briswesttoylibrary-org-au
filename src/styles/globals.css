@@ -4,19 +4,65 @@ html {
   scroll-behavior: smooth;
 }
 
+:root {
+  /* ── Colour palette ──────────────────────────────────────────────────────
+     All available brand swatches. Only edit hex values here.
+     Palette vars are not used directly in components — reference them
+     via the semantic layer below.                                          */
+
+  --palette-navy:       #162040;
+  --palette-navy-deep:  #041947;
+  --palette-cobalt:     #0048ce;
+  --palette-sky:        #449dff;
+  --palette-sky-mid:    #5ca3d8;
+  --palette-periwinkle: #c8e0f5;
+  --palette-forest:     #1a8532;
+  --palette-green:      #1c9347;
+  --palette-orange:     #ff7800;
+  --palette-pink:       #fd20a6;
+  --palette-magenta:    #d81b8c;
+  --palette-yellow:     #ffd800;
+  --palette-crimson:    #8b1515;
+  --palette-scarlet:    #a40000;
+  --palette-slate:      #4a5f7a;
+  --palette-cream:      #fffcf8;
+}
+
 @theme {
-  /* Brand colours — Brisbane West Toy Library design system */
-  --color-forest:  #449dff;   /* royal blue — primary brand */
-  --color-green:   #1a8532;   /* green — secondary */
-  --color-mint:    #c8e0f5;   /* sky blue — soft backgrounds & borders */
-  --color-cream:   #fffcf8;   /* off-white — page background */
-  --color-orange:  #ff7800;   /* orange — CTA accent */
-  --color-yellow:  #ffd800;   /* yellow — highlights */
-  --color-dark:    #162040;   /* navy — primary dark text & dark sections */
-  --color-muted:   #4a5f7a;   /* blue-grey — secondary text */
-  --color-red:     #8b1515;   /* dark red */
-  --color-magenta: #d81b8c;   /* hot pink */
-  --color-sky:     #5ca3d8;   /* medium sky blue */
+  /* ── Semantic colours — swap palette references here to retheme ──────────
+     Each variable name describes its role. To try a different colour for
+     a role, change var(--palette-x) to var(--palette-y).                  */
+
+  --color-primary:       var(--palette-sky);        /* links, interactive elements, hover states */
+  --color-primary-tint:  var(--palette-periwinkle); /* soft borders, tints, text on dark sections */
+  --color-label:         var(--palette-forest);     /* section labels */
+  --color-background:    var(--palette-cream);      /* page background */
+  --color-cta:           var(--palette-orange);     /* call-to-action buttons */
+  --color-accent:        var(--palette-yellow);     /* highlights, secondary accent */
+  --color-heading:       var(--palette-navy);       /* headings and dark text */
+  --color-section-bg:              var(--palette-navy);       /* dark section backgrounds, footer */
+  --color-section-bg-gradient-dark:  var(--palette-navy-deep); /* gradient sections — dark stop */
+  --color-section-bg-gradient-light: var(--palette-cobalt);    /* gradient sections — light stop */
+  --color-body:          var(--palette-slate);      /* body / secondary text */
+  --color-error:         var(--palette-crimson);    /* error / danger */
+  --color-highlight:     var(--palette-magenta);    /* high-contrast accent */
+  --color-mid:           var(--palette-sky-mid);    /* mid-tone secondary blue */
+
+  /* ── Backward-compat aliases ────────────────────────────────────────────
+     Existing Tailwind classes (text-forest, bg-dark, etc.) still work.
+     Migrate component files to semantic names over time.                  */
+
+  --color-forest:  var(--color-primary);
+  --color-mint:    var(--color-primary-tint);
+  --color-green:   var(--color-label);
+  --color-cream:   var(--color-background);
+  --color-orange:  var(--color-cta);
+  --color-yellow:  var(--color-accent);
+  --color-dark:    var(--color-heading);
+  --color-muted:   var(--color-body);
+  --color-red:     var(--color-error);
+  --color-magenta: var(--color-highlight);
+  --color-sky:     var(--color-mid);
 
   /* Typography */
   --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -25,17 +71,21 @@ html {
   --radius: 0.75rem;
 }
 
+body {
+  background-color: var(--color-background);
+}
+
 /* Rich text / prose content */
-.prose p { margin-bottom: 1em; color: var(--color-muted); line-height: 1.75; }
-.prose h2 { font-size: 1.5rem; font-weight: 800; color: var(--color-dark); margin-top: 2em; margin-bottom: 0.5em; }
-.prose h3 { font-size: 1.2rem; font-weight: 700; color: var(--color-dark); margin-top: 1.5em; margin-bottom: 0.4em; }
+.prose p { margin-bottom: 1em; color: var(--color-body); line-height: 1.75; }
+.prose h2 { font-size: 1.5rem; font-weight: 800; color: var(--color-heading); margin-top: 2em; margin-bottom: 0.5em; }
+.prose h3 { font-size: 1.2rem; font-weight: 700; color: var(--color-heading); margin-top: 1.5em; margin-bottom: 0.4em; }
 .prose ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1em; }
 .prose ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 1em; }
-.prose li { margin-bottom: 0.35em; color: var(--color-muted); line-height: 1.7; }
-.prose strong { font-weight: 700; color: var(--color-dark); }
+.prose li { margin-bottom: 0.35em; color: var(--color-body); line-height: 1.7; }
+.prose strong { font-weight: 700; color: var(--color-heading); }
 .prose em { font-style: italic; }
-.prose a { color: var(--color-forest); text-decoration: underline; }
-.prose blockquote { border-left: 4px solid var(--color-mint); padding-left: 1rem; color: var(--color-muted); font-style: italic; margin-bottom: 1em; }
+.prose a { color: var(--color-primary); text-decoration: underline; }
+.prose blockquote { border-left: 4px solid var(--color-primary-tint); padding-left: 1rem; color: var(--color-body); font-style: italic; margin-bottom: 1em; }
 
 /* Reusable utility classes */
 @layer utilities {
@@ -44,7 +94,7 @@ html {
     letter-spacing: 0.12em;
     font-size: 0.78rem;
     font-weight: 700;
-    color: var(--color-green);
+    color: var(--color-label);
   }
 
   .container-site {

@@ -8,7 +8,7 @@ type Props = {
 export function LogoImage({ className, style }: Props) {
   return (
     <img
-      src="/logo.svg"
+      src="/ibis-flat.svg"
       alt="Brisbane West Toy Library"
       className={className}
       style={style}

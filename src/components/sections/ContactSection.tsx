@@ -34,7 +34,7 @@ export function ContactSection({
     <section
       id="contact"
       className="section-pad"
-      style={{ background: 'linear-gradient(135deg, #0a1628 0%, #1f52b8 100%)' }}
+      style={{ background: 'linear-gradient(135deg, var(--color-section-bg-gradient-dark) 0%, var(--color-section-bg-gradient-light) 100%)' }}
     >
       <div className="container-site">
         <div className="text-center mb-12">

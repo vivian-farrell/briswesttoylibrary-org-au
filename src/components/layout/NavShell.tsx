@@ -135,7 +135,7 @@ export function NavShell({ navItems, copyright = 'Brisbane West Toy Library Inc.
         className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 md:flex-none flex items-center hover:opacity-80 transition-opacity"
       >
         <img
-          src="/logo.svg"
+          src="/ibis-flat.svg"
           alt="Brisbane West Toy Library"
           className="h-12 w-auto"
           onError={(e) => {
@@ -182,14 +182,14 @@ export function NavShell({ navItems, copyright = 'Brisbane West Toy Library Inc.
       onClick={(e) => { if (e.target === e.currentTarget) close() }}
       className={[
         'fixed inset-0 z-[180] flex flex-col items-center justify-center',
+        'bg-cream/50 backdrop-blur-md',
         'transition-opacity duration-300',
         isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none',
       ].join(' ')}
-      style={{ background: 'linear-gradient(145deg, #0a1628 0%, #162040 100%)' }}
     >
-      <div className="mb-10 bg-white/95 rounded-2xl px-5 py-3">
+      <div className="mb-10 px-5 py-3">
         <img
-          src="/logo.svg"
+          src="/ibis-flat.svg"
           alt="Brisbane West Toy Library"
           className="h-12 w-auto"
           onError={(e) => {
@@ -199,7 +199,7 @@ export function NavShell({ navItems, copyright = 'Brisbane West Toy Library Inc.
             if (fallback) fallback.style.display = 'block'
           }}
         />
-        <p className="text-white/35 text-xs tracking-[0.12em] uppercase" style={{ display: 'none' }}>
+        <p className="text-dark/50 text-xs tracking-[0.12em] uppercase" style={{ display: 'none' }}>
           Brisbane West Toy Library
         </p>
       </div>
@@ -211,7 +211,7 @@ export function NavShell({ navItems, copyright = 'Brisbane West Toy Library Inc.
               <Link
                 href={item.href}
                 onClick={close}
-                className="block text-white/88 font-bold text-[clamp(1.5rem,5vw,2.25rem)] px-6 py-2 rounded-lg hover:text-yellow hover:bg-white/5 transition-colors"
+                className="block text-forest font-bold text-[clamp(1.5rem,5vw,2.25rem)] px-6 py-2 rounded-lg hover:text-orange hover:bg-forest/8 transition-colors"
               >
                 {item.label}
               </Link>
@@ -221,7 +221,7 @@ export function NavShell({ navItems, copyright = 'Brisbane West Toy Library Inc.
             <Link
               href={ctaItem.href}
               onClick={close}
-              className="inline-block text-yellow border-2 border-yellow px-10 py-3 rounded-full font-bold text-[clamp(1rem,3vw,1.4rem)] mt-3 hover:bg-yellow hover:text-dark transition-colors"
+              className="inline-block text-orange border-2 border-orange px-10 py-3 rounded-full font-bold text-[clamp(1rem,3vw,1.4rem)] mt-3 hover:bg-orange hover:text-white transition-colors"
             >
               {ctaItem.label}
             </Link>
@@ -229,7 +229,7 @@ export function NavShell({ navItems, copyright = 'Brisbane West Toy Library Inc.
         </ul>
       </nav>
 
-      <p className="absolute bottom-8 text-white/25 text-xs">
+      <p className="absolute bottom-8 text-dark/35 text-xs">
         © {new Date().getFullYear()} {copyright}
       </p>
     </div>
