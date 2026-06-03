@@ -104,7 +104,7 @@ export function NavShell({ navItems, copyright = 'Brisbane West Toy Library Inc.
   const StickyHeader = (
     <header className={[
       isHome ? 'fixed' : 'sticky',
-      'top-0 left-0 right-0 z-[150] h-14 w-full',
+      'top-0 left-0 right-0 z-[150] h-16 w-full',
       'flex items-center px-4 md:px-6',
       'bg-cream/95 backdrop-blur-sm border-b border-mint/40',
       'shadow-[0_1px_8px_0_rgba(20,43,30,0.07)]',
@@ -137,7 +137,7 @@ export function NavShell({ navItems, copyright = 'Brisbane West Toy Library Inc.
         <img
           src="/logo.svg"
           alt="Brisbane West Toy Library"
-          className="h-8 w-auto"
+          className="h-12 w-auto"
           onError={(e) => {
             const el = e.currentTarget
             el.style.display = 'none'
