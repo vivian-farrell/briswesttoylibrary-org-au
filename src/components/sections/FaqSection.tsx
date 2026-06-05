@@ -15,10 +15,9 @@ export function FaqSection({
   sectionLabel = 'Help',
 }: Props) {
   return (
-    <section id="faq" className="bg-cream section-pad">
+    <section id="faq" className="section-pad" style={{ backgroundColor: 'var(--palette-sky)' }}>
       <div className="container-site">
         <div className="mb-10">
-          <p className="section-label mb-3">{sectionLabel}</p>
           <h2 className="text-3xl md:text-4xl font-black text-dark">{heading}</h2>
         </div>
         {categories.length === 0 ? (

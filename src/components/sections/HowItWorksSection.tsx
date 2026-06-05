@@ -33,25 +33,24 @@ export function HowItWorksSection({ steps = [], sectionLabel = 'Simple Process',
     <section
       id="how-it-works"
       className="section-pad"
-      style={{ background: 'linear-gradient(135deg, var(--color-section-bg-gradient-dark) 0%, var(--color-section-bg-gradient-light) 100%)' }}
+      style={{ background: 'var(--palette-mint)' }}
     >
       <div className="container-site">
         <div className="text-center mb-14">
-          <p className="text-mint/70 text-xs tracking-[0.18em] uppercase font-semibold mb-3">{sectionLabel}</p>
-          <h2 className="text-3xl md:text-4xl font-black text-white">{heading}</h2>
+          <h2 className="text-3xl md:text-4xl font-black text-dark">{heading}</h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {display.map((step, i) => (
             <div key={i} className="flex flex-col items-center text-center">
-              <div className="w-24 h-24 rounded-full bg-white/10 border border-mint/30 flex items-center justify-center mb-5 text-4xl">
+              <div className="w-24 h-24 rounded-full bg-white/50 border border-white/60 flex items-center justify-center mb-5 text-4xl">
                 {step.icon ?? FALLBACK_ICONS[i]}
               </div>
-              <span className="text-mint/60 text-xs font-bold tracking-widest uppercase mb-2">
+              <span className="text-dark/50 text-xs font-bold tracking-widest uppercase mb-2">
                 Step {i + 1}
               </span>
-              <h3 className="text-white font-bold text-xl mb-3">{step.heading}</h3>
-              <p className="text-mint/80 leading-relaxed">{step.body}</p>
+              <h3 className="text-dark font-bold text-xl mb-3">{step.heading}</h3>
+              <p className="text-dark/80 leading-relaxed">{step.body}</p>
             </div>
           ))}
         </div>

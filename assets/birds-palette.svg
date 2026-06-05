@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="58.78936mm"
+   height="163.84886mm"
+   viewBox="0 0 58.78936 163.84886"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg">
+  <g id="layer1" transform="translate(-79.11042,-66.675006)">
+    <rect id="swatch-ink"     x="79.15928" y="66.675006"  width="58.69164" height="23.4001" fill="#201447" />
+    <rect id="swatch-coral"   x="79.15928" y="90.075107"  width="58.69164" height="23.4001" fill="#ff595c" />
+    <rect id="swatch-pink"    x="79.15928" y="113.47486"  width="58.69164" height="23.4001" fill="#e10186" />
+    <rect id="swatch-mint"    x="79.15928" y="136.87496"  width="58.69164" height="23.4001" fill="#00db96" />
+    <rect id="swatch-sky"     x="79.15928" y="160.27506"  width="58.69164" height="23.4001" fill="#90dcff" />
+    <rect id="swatch-yellow"  x="79.15928" y="183.67481"  width="58.69164" height="23.4001" fill="#fdfb76" />
+    <rect id="swatch-cream"   x="79.15928" y="207.07491"  width="58.69164" height="23.4001" fill="#fffdf7" stroke="#000000" stroke-width="0.1" />
+  </g>
+</svg>

@@ -42,16 +42,13 @@ export function HeroCarousel({ slides, subtitle, headline, tagline, ctaLabel, ct
       ) : (
         <div
           className="absolute inset-0"
-          style={{ background: 'linear-gradient(160deg, #0a1628 0%, #162040 60%, #1f52b8 100%)' }}
+          style={{ background: 'linear-gradient(160deg, var(--palette-pink) 0%, var(--palette-coral) 100%)' }}
         />
       )}
 
       <div className="absolute inset-0 bg-black/45" />
 
       <div className="relative z-10 text-center px-6 max-w-3xl mx-auto">
-        <p className="text-mint/80 text-xs tracking-[0.18em] uppercase font-semibold mb-4">
-          {subtitle}
-        </p>
         <h1 className="text-white font-black text-[clamp(2.2rem,7vw,4.5rem)] leading-[1.1] mb-5">
           {headline}
         </h1>
@@ -60,7 +57,7 @@ export function HeroCarousel({ slides, subtitle, headline, tagline, ctaLabel, ct
         </p>
         <Link
           href={ctaHref}
-          className="inline-block bg-orange text-white font-bold text-lg px-10 py-4 rounded-full shadow-lg hover:brightness-110 transition-all"
+          className="inline-block bg-yellow text-heading font-bold text-lg px-10 py-4 rounded-full shadow-lg hover:brightness-105 transition-all"
         >
           {ctaLabel}
         </Link>

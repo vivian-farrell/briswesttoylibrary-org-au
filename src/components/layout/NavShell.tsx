@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { LogoImage } from '@/components/ui/LogoImage'
 
 type NavItem = { label: string; href: string; isCTA?: boolean; isScrollLink?: boolean }
 
@@ -163,7 +164,7 @@ export function NavShell({ navItems, copyright = 'Brisbane West Toy Library Inc.
         ))}
         <Link
           href={ctaItem.href}
-          className="ml-2 bg-orange text-white px-4 py-1.5 rounded-full text-sm font-bold hover:opacity-90 transition-opacity"
+          className="ml-2 bg-yellow text-heading px-4 py-1.5 rounded-full text-sm font-bold hover:opacity-90 transition-opacity"
         >
           {ctaItem.label}
         </Link>
@@ -188,20 +189,7 @@ export function NavShell({ navItems, copyright = 'Brisbane West Toy Library Inc.
       ].join(' ')}
     >
       <div className="mb-10 px-5 py-3">
-        <img
-          src="/ibis-flat.svg"
-          alt="Brisbane West Toy Library"
-          className="h-12 w-auto"
-          onError={(e) => {
-            const el = e.currentTarget
-            el.style.display = 'none'
-            const fallback = el.nextElementSibling as HTMLElement | null
-            if (fallback) fallback.style.display = 'block'
-          }}
-        />
-        <p className="text-dark/50 text-xs tracking-[0.12em] uppercase" style={{ display: 'none' }}>
-          Brisbane West Toy Library
-        </p>
+        <LogoImage variant="compact" className="h-20 w-auto" />
       </div>
 
       <nav>
@@ -221,7 +209,7 @@ export function NavShell({ navItems, copyright = 'Brisbane West Toy Library Inc.
             <Link
               href={ctaItem.href}
               onClick={close}
-              className="inline-block text-orange border-2 border-orange px-10 py-3 rounded-full font-bold text-[clamp(1rem,3vw,1.4rem)] mt-3 hover:bg-orange hover:text-white transition-colors"
+              className="inline-block bg-yellow text-heading px-10 py-3 rounded-full font-bold text-[clamp(1rem,3vw,1.4rem)] mt-3 hover:opacity-90 transition-opacity"
             >
               {ctaItem.label}
             </Link>

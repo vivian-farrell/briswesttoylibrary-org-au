@@ -48,7 +48,7 @@ export function SiteFooter({
       <div className="container-site py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
           <div>
-            <LogoImage className="h-12 w-auto mb-3" style={{ filter: 'brightness(0) invert(1)' }} />
+            <LogoImage variant="compact" className="h-16 w-auto mb-3" style={{ filter: 'brightness(0) invert(1)' }} />
             <h3 className="text-white font-bold text-lg mb-2">Brisbane West Toy Library</h3>
             <p className="text-sm leading-relaxed">{aboutText}</p>
           </div>

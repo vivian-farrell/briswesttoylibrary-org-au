@@ -34,13 +34,12 @@ export function ContactSection({
     <section
       id="contact"
       className="section-pad"
-      style={{ background: 'linear-gradient(135deg, var(--color-section-bg-gradient-dark) 0%, var(--color-section-bg-gradient-light) 100%)' }}
+      style={{ background: 'var(--palette-pink)' }}
     >
       <div className="container-site">
         <div className="text-center mb-12">
-          <p className="text-mint/70 text-xs tracking-[0.18em] uppercase font-semibold mb-3">{sectionLabel}</p>
           <h2 className="text-3xl md:text-4xl font-black text-white mb-4">{heading}</h2>
-          <p className="text-mint/80 text-lg max-w-xl mx-auto">{intro}</p>
+          <p className="text-white/85 text-lg max-w-xl mx-auto">{intro}</p>
         </div>
 
         <div className="max-w-md mx-auto text-center text-white/90 text-lg leading-loose">

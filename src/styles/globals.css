@@ -5,64 +5,38 @@ html {
 }
 
 :root {
-  /* ── Colour palette ──────────────────────────────────────────────────────
-     All available brand swatches. Only edit hex values here.
-     Palette vars are not used directly in components — reference them
-     via the semantic layer below.                                          */
+  /* ── Birds palette ───────────────────────────────────────────────────────────
+     Source: assets/birds-palette.svg. Edit hex values here only.             */
 
-  --palette-navy:       #162040;
-  --palette-navy-deep:  #041947;
-  --palette-cobalt:     #0048ce;
-  --palette-sky:        #449dff;
-  --palette-sky-mid:    #5ca3d8;
-  --palette-periwinkle: #c8e0f5;
-  --palette-forest:     #1a8532;
-  --palette-green:      #1c9347;
-  --palette-orange:     #ff7800;
-  --palette-pink:       #fd20a6;
-  --palette-magenta:    #d81b8c;
-  --palette-yellow:     #ffd800;
-  --palette-crimson:    #8b1515;
-  --palette-scarlet:    #a40000;
-  --palette-slate:      #4a5f7a;
-  --palette-cream:      #fffcf8;
+  --palette-ink:    #201447;   /* deep purple-navy  — text & headings */
+  --palette-coral:  #ff595c;   /* bright coral red  — warm sections, hero */
+  --palette-pink:   #e10186;   /* vivid hot pink    — accent sections */
+  --palette-mint:   #00db96;   /* electric mint     — fresh sections */
+  --palette-sky:    #90dcff;   /* light sky blue    — tints, borders */
+  --palette-yellow: #fdfb76;   /* bright yellow     — CTA buttons */
+  --palette-cream:  #fffdf7;   /* warm near-white   — page background */
 }
 
 @theme {
-  /* ── Semantic colours — swap palette references here to retheme ──────────
-     Each variable name describes its role. To try a different colour for
-     a role, change var(--palette-x) to var(--palette-y).                  */
+  /* ── Semantic roles ─────────────────────────────────────────────────────── */
 
-  --color-primary:       var(--palette-sky);        /* links, interactive elements, hover states */
-  --color-primary-tint:  var(--palette-periwinkle); /* soft borders, tints, text on dark sections */
-  --color-label:         var(--palette-forest);     /* section labels */
-  --color-background:    var(--palette-cream);      /* page background */
-  --color-cta:           var(--palette-orange);     /* call-to-action buttons */
-  --color-accent:        var(--palette-yellow);     /* highlights, secondary accent */
-  --color-heading:       var(--palette-navy);       /* headings and dark text */
-  --color-section-bg:              var(--palette-navy);       /* dark section backgrounds, footer */
-  --color-section-bg-gradient-dark:  var(--palette-navy-deep); /* gradient sections — dark stop */
-  --color-section-bg-gradient-light: var(--palette-cobalt);    /* gradient sections — light stop */
-  --color-body:          var(--palette-slate);      /* body / secondary text */
-  --color-error:         var(--palette-crimson);    /* error / danger */
-  --color-highlight:     var(--palette-magenta);    /* high-contrast accent */
-  --color-mid:           var(--palette-sky-mid);    /* mid-tone secondary blue */
+  --color-heading:    var(--palette-ink);
+  --color-body:       var(--palette-ink);
+  --color-link:       var(--palette-pink);    /* 4.6:1 on white — AA compliant */
+  --color-background: var(--palette-cream);
+  --color-cta:        var(--palette-yellow);
+  --color-accent:     var(--palette-coral);
 
-  /* ── Backward-compat aliases ────────────────────────────────────────────
-     Existing Tailwind classes (text-forest, bg-dark, etc.) still work.
-     Migrate component files to semantic names over time.                  */
+  /* ── Backward-compat aliases (existing Tailwind classes keep working) ───── */
 
-  --color-forest:  var(--color-primary);
-  --color-mint:    var(--color-primary-tint);
-  --color-green:   var(--color-label);
-  --color-cream:   var(--color-background);
-  --color-orange:  var(--color-cta);
-  --color-yellow:  var(--color-accent);
   --color-dark:    var(--color-heading);
   --color-muted:   var(--color-body);
-  --color-red:     var(--color-error);
-  --color-magenta: var(--color-highlight);
-  --color-sky:     var(--color-mid);
+  --color-cream:   var(--color-background);
+  --color-forest:  var(--color-link);
+  --color-orange:  var(--color-accent);
+  --color-yellow:  var(--color-cta);
+  --color-mint:    var(--palette-sky);        /* soft sky tint for borders */
+  --color-sky:     var(--palette-sky);
 
   /* Typography */
   --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -73,9 +47,10 @@ html {
 
 body {
   background-color: var(--color-background);
+  color: var(--color-body);
 }
 
-/* Rich text / prose content */
+/* Rich text / prose */
 .prose p { margin-bottom: 1em; color: var(--color-body); line-height: 1.75; }
 .prose h2 { font-size: 1.5rem; font-weight: 800; color: var(--color-heading); margin-top: 2em; margin-bottom: 0.5em; }
 .prose h3 { font-size: 1.2rem; font-weight: 700; color: var(--color-heading); margin-top: 1.5em; margin-bottom: 0.4em; }
@@ -84,19 +59,11 @@ body {
 .prose li { margin-bottom: 0.35em; color: var(--color-body); line-height: 1.7; }
 .prose strong { font-weight: 700; color: var(--color-heading); }
 .prose em { font-style: italic; }
-.prose a { color: var(--color-primary); text-decoration: underline; }
-.prose blockquote { border-left: 4px solid var(--color-primary-tint); padding-left: 1rem; color: var(--color-body); font-style: italic; margin-bottom: 1em; }
+.prose a { color: var(--color-link); text-decoration: underline; }
+.prose blockquote { border-left: 4px solid var(--palette-mint); padding-left: 1rem; color: var(--color-body); font-style: italic; margin-bottom: 1em; }
 
-/* Reusable utility classes */
+/* Utilities */
 @layer utilities {
-  .section-label {
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: var(--color-label);
-  }
-
   .container-site {
     max-width: 1100px;
     margin-inline: auto;

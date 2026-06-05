@@ -61,7 +61,6 @@ export function MembershipSection({
     <section id="membership" className="bg-cream section-pad">
       <div className="container-site">
         <div className="text-center mb-12">
-          <p className="section-label mb-3">{sectionLabel}</p>
           <h2 className="text-3xl md:text-4xl font-black text-dark mb-4">{heading}</h2>
           <p className="text-muted text-lg max-w-xl mx-auto">{subheading}</p>
         </div>
@@ -72,31 +71,32 @@ export function MembershipSection({
               key={i}
               className={`rounded-2xl p-8 flex flex-col gap-5 ${
                 tier.isFeatured
-                  ? 'bg-forest text-white shadow-xl ring-2 ring-orange/60'
+                  ? 'text-dark shadow-xl'
                   : 'bg-white text-dark shadow-md border border-mint/40'
               }`}
+              style={tier.isFeatured ? { background: 'var(--palette-mint)' } : undefined}
             >
               {tier.isFeatured && (
-                <span className="text-xs font-bold uppercase tracking-widest text-orange bg-orange/15 px-3 py-1 rounded-full self-start">
+                <span className="text-xs font-bold uppercase tracking-widest text-dark/70 bg-dark/10 px-3 py-1 rounded-full self-start">
                   {popularBadge}
                 </span>
               )}
               <div>
-                <h3 className={`text-xl font-bold mb-1 ${tier.isFeatured ? 'text-white' : 'text-dark'}`}>
+                <h3 className={`text-xl font-bold mb-1 ${tier.isFeatured ? 'text-dark' : 'text-dark'}`}>
                   {tier.name}
                 </h3>
                 {tier.description && (
-                  <p className={`text-sm ${tier.isFeatured ? 'text-mint/80' : 'text-muted'}`}>
+                  <p className={`text-sm ${tier.isFeatured ? 'text-dark/70' : 'text-muted'}`}>
                     {tier.description}
                   </p>
                 )}
               </div>
 
               <div className="flex items-end gap-1">
-                <span className={`text-5xl font-black ${tier.isFeatured ? 'text-yellow' : 'text-forest'}`}>
+                <span className={`text-5xl font-black ${tier.isFeatured ? 'text-dark' : 'text-forest'}`}>
                   ${tier.price}
                 </span>
-                <span className={`text-sm mb-2 ${tier.isFeatured ? 'text-mint/70' : 'text-muted'}`}>
+                <span className={`text-sm mb-2 ${tier.isFeatured ? 'text-dark/60' : 'text-muted'}`}>
                   {priceSuffix}
                 </span>
               </div>
@@ -106,9 +106,9 @@ export function MembershipSection({
                   {tier.features.map(({ feature }, j) => (
                     <li
                       key={j}
-                      className={`flex items-start gap-2 text-sm ${tier.isFeatured ? 'text-mint/90' : 'text-muted'}`}
+                      className={`flex items-start gap-2 text-sm ${tier.isFeatured ? 'text-dark/80' : 'text-muted'}`}
                     >
-                      <span className="text-green mt-0.5 flex-shrink-0">✓</span>
+                      <span className={`mt-0.5 flex-shrink-0 ${tier.isFeatured ? 'text-dark' : 'text-forest'}`}>✓</span>
                       {feature}
                     </li>
                   ))}
@@ -119,7 +119,7 @@ export function MembershipSection({
                 href="/join"
                 className={`mt-auto text-center font-bold py-3.5 rounded-full transition-all ${
                   tier.isFeatured
-                    ? 'bg-orange text-white hover:brightness-110'
+                    ? 'bg-yellow text-heading hover:brightness-105'
                     : 'bg-forest text-white hover:brightness-110'
                 }`}
               >
