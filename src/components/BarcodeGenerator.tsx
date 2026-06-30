@@ -143,7 +143,7 @@ export default function BarcodeGenerator() {
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="text-sm font-semibold text-forest hover:brightness-110 transition-all"
+                className="text-sm font-semibold text-forest hover:brightness-110 transition-all cursor-pointer"
               >
                 Upload CSV ↑
               </button>
