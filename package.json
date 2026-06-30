@@ -20,7 +20,6 @@
     "@payloadcms/storage-vercel-blob": "^3.84.1",
     "@payloadcms/ui": "^3.0.0",
     "cross-env": "^7.0.3",
-    "eruda": "^3.4.3",
     "jsbarcode": "^3.12.3",
     "next": "15.4.11",
     "nodemailer": "^8.0.10",

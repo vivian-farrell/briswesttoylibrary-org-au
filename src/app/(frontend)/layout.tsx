@@ -2,7 +2,6 @@ import '@/styles/globals.css'
 import { cookies } from 'next/headers'
 import { NavShell } from '@/components/layout/NavShell'
 import { SiteFooter } from '@/components/layout/Footer'
-import { ErudaDevTools } from '@/components/ErudaDevTools'
 import { ComingSoon } from '@/components/ComingSoon'
 import { getPayloadClient } from '@/lib/payload'
 
@@ -67,7 +66,6 @@ export default async function FrontendLayout({ children }: { children: React.Rea
           acknowledgement={footer?.acknowledgement}
           copyright={footer?.copyright}
         />
-        {process.env.NEXT_PUBLIC_DEVTOOLS === 'true' && <ErudaDevTools />}
       </body>
     </html>
   )
