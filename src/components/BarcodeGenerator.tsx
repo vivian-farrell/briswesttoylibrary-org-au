@@ -227,7 +227,7 @@ export default function BarcodeGenerator() {
             <button
               onClick={() => window.print()}
               disabled={entries.length === 0}
-              className="inline-block bg-forest text-white font-bold px-7 py-3.5 rounded-full hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              className="inline-block bg-forest text-white font-bold px-7 py-3.5 rounded-full hover:brightness-110 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
             >
               Print barcodes
             </button>
