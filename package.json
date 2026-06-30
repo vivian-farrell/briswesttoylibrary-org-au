@@ -21,6 +21,7 @@
     "@payloadcms/ui": "^3.0.0",
     "cross-env": "^7.0.3",
     "eruda": "^3.4.3",
+    "jsbarcode": "^3.12.3",
     "next": "15.4.11",
     "nodemailer": "^8.0.10",
     "payload": "^3.0.0",
@@ -32,6 +33,7 @@
   "devDependencies": {
     "@playwright/test": "^1.60.0",
     "@tailwindcss/postcss": "^4.0.0",
+    "@types/jsbarcode": "^3.11.4",
     "@types/node": "^20.0.0",
     "@types/nodemailer": "^8.0.0",
     "@types/react": "^19.0.0",
