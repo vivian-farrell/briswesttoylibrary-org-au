@@ -94,27 +94,61 @@ test.describe('/barcode', () => {
   test('two-column CSV shows toy title below barcode', async ({ page }) => {
     await page.getByLabel(/Codes/).fill('T001,Mega Bloks 80-piece')
     await expect(page.locator('.barcode-cell')).toHaveCount(1)
-    await expect(page.locator('.barcode-cell').getByText('Mega Bloks 80-piece')).toBeVisible()
+    await expect(page.locator('.barcode-wrapper').getByText('Mega Bloks 80-piece')).toBeVisible()
   })
 
   test('mix of codes-only and code+title lines renders correctly', async ({ page }) => {
+    // Clear the default label so only title p elements are counted
+    await page.getByLabel('Label').clear()
     await page.getByLabel(/Codes/).fill('T001\nT002,Fisher-Price Farm\nT003')
     await expect(page.locator('.barcode-cell')).toHaveCount(3)
-    await expect(page.locator('.barcode-cell').getByText('Fisher-Price Farm')).toBeVisible()
-    // Cells without a title should not show spurious text beyond the barcode value
-    const titlesVisible = await page.locator('.barcode-cell p').count()
+    await expect(page.locator('.barcode-wrapper').getByText('Fisher-Price Farm')).toBeVisible()
+    // Only 1 title paragraph — cells without a title show nothing extra
+    const titlesVisible = await page.locator('.barcode-wrapper p').count()
     expect(titlesVisible).toBe(1)
   })
 
   test('title is not uppercased — preserves original casing', async ({ page }) => {
     await page.getByLabel(/Codes/).fill('T001,Mega Bloks Set')
-    await expect(page.locator('.barcode-cell').getByText('Mega Bloks Set')).toBeVisible()
+    await expect(page.locator('.barcode-wrapper').getByText('Mega Bloks Set')).toBeVisible()
   })
 
   test('title with commas must be quoted to include the commas', async ({ page }) => {
     await page.getByLabel(/Codes/).fill('T001,"Red, Blue and Green blocks"')
     await expect(page.locator('.barcode-cell')).toHaveCount(1)
-    await expect(page.locator('.barcode-cell').getByText('Red, Blue and Green blocks')).toBeVisible()
+    await expect(page.locator('.barcode-wrapper').getByText('Red, Blue and Green blocks')).toBeVisible()
+  })
+
+  // ── Label field ─────────────────────────────────────────────────────────────
+
+  test('label defaults to Brisbane West Toy Library and appears on each barcode', async ({ page }) => {
+    await page.getByLabel(/Codes/).fill('T001\nT002')
+    await expect(page.locator('.barcode-cell')).toHaveCount(2)
+    await expect(page.locator('.barcode-cell').first().getByText('Brisbane West Toy Library')).toBeVisible()
+    await expect(page.locator('.barcode-cell').nth(1).getByText('Brisbane West Toy Library')).toBeVisible()
+  })
+
+  test('label can be changed via the Label input', async ({ page }) => {
+    await page.getByLabel('Label').fill('My Toy Library')
+    await page.getByLabel(/Codes/).fill('T001')
+    await expect(page.locator('.barcode-cell').getByText('My Toy Library')).toBeVisible()
+  })
+
+  test('clearing the label hides it from all cells', async ({ page }) => {
+    await page.getByLabel('Label').clear()
+    await page.getByLabel(/Codes/).fill('T001')
+    const labelText = await page.locator('.barcode-cell').getByText('Brisbane West Toy Library').count()
+    expect(labelText).toBe(0)
+  })
+
+  test('label appears between barcode and toy title', async ({ page }) => {
+    await page.getByLabel('Label').fill('TEST LIBRARY')
+    await page.getByLabel(/Codes/).fill('T001,My Toy')
+    // Label is inside .barcode-cell; title is outside it in .barcode-wrapper
+    const cell = page.locator('.barcode-cell').first()
+    await expect(cell.locator('p')).toHaveCount(1)
+    await expect(cell.locator('p').first()).toHaveText('TEST LIBRARY')
+    await expect(page.locator('.barcode-wrapper').getByText('My Toy')).toBeVisible()
   })
 
   // ── Quote stripping ─────────────────────────────────────────────────────────
@@ -123,14 +157,14 @@ test.describe('/barcode', () => {
     await page.getByLabel(/Codes/).fill('"T001","Mega Bloks 80-piece"')
     await expect(page.locator('.barcode-cell')).toHaveCount(1)
     await expect(page.locator('.barcode-cell', { hasText: 'Invalid' })).toHaveCount(0)
-    await expect(page.locator('.barcode-cell').getByText('Mega Bloks 80-piece')).toBeVisible()
+    await expect(page.locator('.barcode-wrapper').getByText('Mega Bloks 80-piece')).toBeVisible()
   })
 
   test('single quotes are stripped from codes and titles', async ({ page }) => {
     await page.getByLabel(/Codes/).fill("'T001','Fisher-Price Farm'")
     await expect(page.locator('.barcode-cell')).toHaveCount(1)
     await expect(page.locator('.barcode-cell', { hasText: 'Invalid' })).toHaveCount(0)
-    await expect(page.locator('.barcode-cell').getByText('Fisher-Price Farm')).toBeVisible()
+    await expect(page.locator('.barcode-wrapper').getByText('Fisher-Price Farm')).toBeVisible()
   })
 
   test('uploading a quoted CSV strips quotes and renders correctly', async ({ page }) => {
@@ -140,8 +174,8 @@ test.describe('/barcode', () => {
     await page.locator('input[aria-label="Upload CSV file"]').setInputFiles(csvPath)
     await expect(page.locator('.barcode-cell')).toHaveCount(2)
     await expect(page.locator('.barcode-cell', { hasText: 'Invalid' })).toHaveCount(0)
-    await expect(page.locator('.barcode-cell').getByText('Mega Bloks 80-piece')).toBeVisible()
-    await expect(page.locator('.barcode-cell').getByText('Fisher-Price Farm')).toBeVisible()
+    await expect(page.locator('.barcode-wrapper').getByText('Mega Bloks 80-piece')).toBeVisible()
+    await expect(page.locator('.barcode-wrapper').getByText('Fisher-Price Farm')).toBeVisible()
   })
 
   test('multi-column SETLS export uses only code and title columns, ignores the rest', async ({ page }) => {
@@ -155,8 +189,8 @@ test.describe('/barcode', () => {
     await page.locator('input[aria-label="Upload CSV file"]').setInputFiles(csvPath)
     await expect(page.locator('.barcode-cell')).toHaveCount(2)
     await expect(page.locator('.barcode-cell', { hasText: 'Invalid' })).toHaveCount(0)
-    await expect(page.locator('.barcode-cell').getByText('Zoomee Ride-On Trike (Giraffe)')).toBeVisible()
-    await expect(page.locator('.barcode-cell').getByText('Fisher-Price Farm')).toBeVisible()
+    await expect(page.locator('.barcode-wrapper').getByText('Zoomee Ride-On Trike (Giraffe)')).toBeVisible()
+    await expect(page.locator('.barcode-wrapper').getByText('Fisher-Price Farm')).toBeVisible()
   })
 
   // ── CSV file upload ─────────────────────────────────────────────────────────
@@ -176,7 +210,7 @@ test.describe('/barcode', () => {
 
     await page.locator('input[aria-label="Upload CSV file"]').setInputFiles(csvPath)
     await expect(page.locator('.barcode-cell')).toHaveCount(2)
-    await expect(page.locator('.barcode-cell').getByText('Mega Bloks 80-piece')).toBeVisible()
-    await expect(page.locator('.barcode-cell').getByText('Fisher-Price Farm')).toBeVisible()
+    await expect(page.locator('.barcode-wrapper').getByText('Mega Bloks 80-piece')).toBeVisible()
+    await expect(page.locator('.barcode-wrapper').getByText('Fisher-Price Farm')).toBeVisible()
   })
 })
