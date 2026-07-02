@@ -102,19 +102,24 @@ test.describe('homepage CMS wiring', () => {
     await expect(page.getByText('E2E membership subheading')).toBeVisible()
   })
 
-  test('membership: tier names, prices, descriptions', async ({ page }) => {
+  test('membership: tier names, prices (12-month default), descriptions', async ({ page }) => {
     // exact: true avoids case-insensitive substring matches against desc/feature/CTA text
     await expect(page.getByRole('heading', { name: 'E2E Standard', exact: true })).toBeVisible()
-    await expect(page.getByText(/\$85/)).toBeVisible()
+    await expect(page.getByText(/\$130/)).toBeVisible()
     await expect(page.getByText('E2E standard desc')).toBeVisible()
     await expect(page.getByRole('heading', { name: 'E2E Concession', exact: true })).toBeVisible()
-    await expect(page.getByText(/\$45/)).toBeVisible()
+    await expect(page.getByText(/\$95/)).toBeVisible()
     await expect(page.getByText('E2E concession desc')).toBeVisible()
   })
 
-  test('membership: popular badge, price suffix, disclaimer', async ({ page }) => {
+  test('membership: 6-month toggle switches displayed price', async ({ page }) => {
+    const standardToggle = page.getByRole('group', { name: 'E2E Standard membership duration' })
+    await standardToggle.getByRole('button', { name: '6 months' }).click()
+    await expect(page.getByText(/\$75/)).toBeVisible()
+  })
+
+  test('membership: popular badge and disclaimer', async ({ page }) => {
     await expect(page.getByText('E2E Popular')).toBeVisible()
-    await expect(page.getByText('/E2E-yr').first()).toBeVisible()
     await expect(page.getByText('E2E disclaimer text')).toBeVisible()
   })
 
@@ -123,6 +128,13 @@ test.describe('homepage CMS wiring', () => {
     await expect(page.getByText('E2E Concession CTA')).toBeVisible()
     await expect(page.getByText('E2E standard feature')).toBeVisible()
     await expect(page.getByText('E2E concession feature')).toBeVisible()
+  })
+
+  test('membership: trial card price, bond, and CTA', async ({ page }) => {
+    await expect(page.getByText('Try it out')).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'E2E Trial', exact: true })).toBeVisible()
+    await expect(page.getByText('E2E bond note')).toBeVisible()
+    await expect(page.getByText('E2E Trial CTA')).toBeVisible()
   })
 
   // ── Contact Section ───────────────────────────────────────────────────────
