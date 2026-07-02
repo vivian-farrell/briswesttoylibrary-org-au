@@ -55,8 +55,8 @@ function parseEntries(raw: string): Entry[] {
 }
 
 function BarcodeItem({
-  code, label, barWidth, barHeight,
-}: { code: string; label: string; barWidth: number; barHeight: number }) {
+  code, title, label, barWidth, barHeight,
+}: { code: string; title?: string; label: string; barWidth: number; barHeight: number }) {
   const svgRef = useRef<SVGSVGElement>(null)
   const [error, setError] = useState(false)
 
@@ -88,9 +88,12 @@ function BarcodeItem({
 
   return (
     <>
-      <svg ref={svgRef} className="w-full" />
       {label && (
-        <p className="text-xs text-center leading-tight px-1 pb-1 w-full truncate">{label}</p>
+        <p className="text-xs text-center leading-tight px-1 pb-0.5 w-full min-w-0 truncate">{label}</p>
+      )}
+      <svg ref={svgRef} className="w-full" />
+      {title && (
+        <p className="text-xs text-center leading-tight px-1 pt-0.5 w-full min-w-0 truncate">{title}</p>
       )}
     </>
   )
@@ -124,7 +127,7 @@ export default function BarcodeGenerator() {
         @media print {
           nav, header, footer, #barcode-controls { display: none !important; }
           #barcode-grid { display: grid !important; gap: 0.5rem; }
-          .barcode-wrapper { break-inside: avoid; page-break-inside: avoid; }
+          .barcode-cell { break-inside: avoid; page-break-inside: avoid; }
           @page { margin: 1cm; }
         }
       `}</style>
@@ -236,7 +239,7 @@ export default function BarcodeGenerator() {
               placeholder="e.g. bris west toy library"
               className="w-full rounded-xl border border-mint/40 bg-cream px-4 py-2 text-dark focus:outline-none focus:border-forest/50 transition-colors"
             />
-            <p className="text-xs text-muted/60 mt-1">Printed between the barcode and toy name — leave blank to omit</p>
+            <p className="text-xs text-muted/60 mt-1">Printed above each barcode — leave blank to omit</p>
           </div>
 
           <div className="flex items-center gap-4 flex-wrap">
@@ -263,15 +266,11 @@ export default function BarcodeGenerator() {
           className="grid gap-2"
         >
           {entries.map(({ code, title }, i) => (
-            <div key={`${code}-${i}`} className="barcode-wrapper flex flex-col items-center">
-              <div className="barcode-cell border border-black p-1 w-full flex flex-col items-center justify-center text-center">
-                <BarcodeItem code={code} label={label} barWidth={barWidth} barHeight={barHeight} />
-              </div>
-              <div className="w-full px-1 pt-0.5" style={{ minHeight: '2.4em' }}>
-                {title && (
-                  <p className="text-xs text-center leading-tight line-clamp-2">{title}</p>
-                )}
-              </div>
+            <div
+              key={`${code}-${i}`}
+              className="barcode-cell border border-black p-1 min-w-0 flex flex-col items-center justify-center text-center"
+            >
+              <BarcodeItem code={code} title={title} label={label} barWidth={barWidth} barHeight={barHeight} />
             </div>
           ))}
         </div>
