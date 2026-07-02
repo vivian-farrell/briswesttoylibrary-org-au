@@ -16,8 +16,12 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function VolunteerPage() {
   const payload = await getPayloadClient()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const page = await payload.findGlobal({ slug: 'volunteer-page' }).catch(() => null) as any
+  const [page, settings] = await Promise.all([
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    payload.findGlobal({ slug: 'volunteer-page' }).catch(() => null) as Promise<any>,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    payload.findGlobal({ slug: 'site-settings' }).catch(() => null) as Promise<any>,
+  ])
 
   const heading: string = page?.heading ?? 'Volunteer With Us'
   const intro: string | null = page?.intro ?? null
@@ -26,6 +30,7 @@ export default async function VolunteerPage() {
   const roles: any[] = page?.roles ?? []
   const ctaLabel: string = page?.ctaLabel ?? 'Express Your Interest'
   const ctaEmail: string | null = page?.ctaEmail ?? null
+  const calendarUrl: string | null = settings?.setlsCalendarUrl ?? null
 
   return (
     <div className="bg-cream min-h-screen">
@@ -80,14 +85,27 @@ export default async function VolunteerPage() {
           </div>
         )}
 
-        {ctaEmail && (
-          <a
-            href={`mailto:${ctaEmail}?subject=Volunteer%20Interest`}
-            className="inline-block bg-orange text-white font-bold px-8 py-4 rounded-full hover:brightness-110 transition-all"
-          >
-            {ctaLabel} →
-          </a>
-        )}
+        <div className="flex flex-wrap items-center gap-4">
+          {calendarUrl && (
+            <a
+              href={calendarUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-mint/40 text-dark font-bold px-6 py-3 rounded-full hover:brightness-95 transition-all"
+            >
+              View Volunteer Shift Calendar →
+            </a>
+          )}
+
+          {ctaEmail && (
+            <a
+              href={`mailto:${ctaEmail}?subject=Volunteer%20Interest`}
+              className="inline-block bg-orange text-white font-bold px-8 py-4 rounded-full hover:brightness-110 transition-all"
+            >
+              {ctaLabel} →
+            </a>
+          )}
+        </div>
       </div>
     </div>
   )

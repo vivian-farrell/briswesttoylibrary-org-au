@@ -66,6 +66,12 @@ export const SiteSettings: GlobalConfig = {
       label: 'SETLS Catalogue URL',
       admin: { description: 'Full URL to the SETLS online toy catalogue for members' },
     },
+    {
+      name: 'setlsCalendarUrl',
+      type: 'text',
+      label: 'SETLS Calendar URL',
+      admin: { description: 'Full URL to the SETLS volunteer shift calendar' },
+    },
   ],
   hooks: {
     afterChange: [

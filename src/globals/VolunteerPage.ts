@@ -14,7 +14,7 @@ export const VolunteerPage: GlobalConfig = {
       name: 'intro',
       type: 'textarea',
       defaultValue:
-        'Brisbane West Toy Library is run entirely by volunteers. We need a small amount of help from our members to keep the library going.',
+        'Brisbane West Toy Library is run entirely by volunteers. Members contribute 2 shifts per year and receive 1 month of membership free — a small effort that keeps the library running for everyone.',
     },
     {
       name: 'content',

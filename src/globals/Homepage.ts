@@ -234,7 +234,8 @@ export const Homepage: GlobalConfig = {
           maxRows: 3,
           admin: { description: 'Exactly 3 steps displayed side-by-side' },
           fields: [
-            { name: 'icon',    type: 'text', admin: { description: 'Emoji, e.g. 📋' } },
+            { name: 'icon',    type: 'text', admin: { description: 'Emoji, e.g. 📋 (unused — see photo below)' } },
+            { name: 'image',   type: 'upload', relationTo: 'media' },
             { name: 'heading', type: 'text', required: true },
             { name: 'body',    type: 'text', required: true },
           ],

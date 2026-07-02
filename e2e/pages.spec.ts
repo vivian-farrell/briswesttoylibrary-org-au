@@ -27,6 +27,12 @@ test.describe('/volunteer CMS wiring', () => {
     await expect(cta).toBeVisible()
     await expect(cta).toHaveAttribute('href', 'mailto:volunteer@e2e.example?subject=Volunteer%20Interest')
   })
+
+  test('SETLS calendar link', async ({ page }) => {
+    const link = page.getByRole('link', { name: 'View Volunteer Shift Calendar →' })
+    await expect(link).toBeVisible()
+    await expect(link).toHaveAttribute('href', 'https://setls.e2e.example/calendar')
+  })
 })
 
 // ── /faq ───────────────────────────────────────────────────────────────────────

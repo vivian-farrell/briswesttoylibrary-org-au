@@ -12,12 +12,36 @@ type Category = {
   items: FaqItem[]
 }
 
-export function FaqAccordion({ categories }: { categories: Category[] }) {
+const DEFAULT_INITIAL_LIMIT = 5
+
+export function FaqAccordion({
+  categories,
+  initialLimit = DEFAULT_INITIAL_LIMIT,
+}: {
+  categories: Category[]
+  initialLimit?: number
+}) {
   const [openKey, setOpenKey] = useState<string | null>(null)
+  const [expanded, setExpanded] = useState(false)
+
+  const totalItems = categories.reduce((sum, cat) => sum + cat.items.length, 0)
+  const hasMore = totalItems > initialLimit
+
+  let remaining = initialLimit
+  const visibleCategories = expanded
+    ? categories
+    : categories
+        .map(cat => {
+          if (remaining <= 0) return { ...cat, items: [] }
+          const items = cat.items.slice(0, remaining)
+          remaining -= items.length
+          return { ...cat, items }
+        })
+        .filter(cat => cat.items.length > 0)
 
   return (
     <div className="flex flex-col gap-10">
-      {categories.map((cat) => (
+      {visibleCategories.map((cat) => (
         <div key={cat.label}>
           <h2 className="text-xl font-bold text-forest mb-4 pb-2 border-b border-mint/40">
             {cat.label}
@@ -50,6 +74,16 @@ export function FaqAccordion({ categories }: { categories: Category[] }) {
           </div>
         </div>
       ))}
+
+      {hasMore && (
+        <button
+          type="button"
+          onClick={() => setExpanded(e => !e)}
+          className="self-center text-sm font-semibold text-forest hover:brightness-110 transition-all cursor-pointer"
+        >
+          {expanded ? 'Show less' : `Show ${totalItems - initialLimit} more`}
+        </button>
+      )}
     </div>
   )
 }

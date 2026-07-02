@@ -28,8 +28,18 @@ export const MembershipPage: GlobalConfig = {
         {
           name: 'price',
           type: 'number',
-          required: true,
-          admin: { description: 'Annual price in AUD (whole dollars)' },
+          required: false,
+          admin: { description: 'Legacy — no longer displayed. Use the 6 & 12 month prices below.' },
+        },
+        {
+          name: 'price6Month',
+          type: 'number',
+          label: '6 Month Price (AUD)',
+        },
+        {
+          name: 'price12Month',
+          type: 'number',
+          label: '12 Month Price (AUD)',
         },
         {
           name: 'description',
@@ -55,6 +65,26 @@ export const MembershipPage: GlobalConfig = {
           label: 'Button label',
           defaultValue: 'Join Now',
         },
+      ],
+    },
+    {
+      name: 'trial',
+      type: 'group',
+      label: '6-Week Trial',
+      fields: [
+        { name: 'name', type: 'text', defaultValue: '6 Week Trial' },
+        { name: 'price', type: 'number', defaultValue: 20, label: 'Trial Price (AUD)' },
+        { name: 'bondPrice', type: 'number', defaultValue: 20, label: 'Refundable Bond (AUD)' },
+        { name: 'bondNote', type: 'text', defaultValue: 'Fully refundable when toys are returned' },
+        { name: 'description', type: 'text' },
+        {
+          name: 'features',
+          type: 'array',
+          fields: [
+            { name: 'feature', type: 'text', required: true },
+          ],
+        },
+        { name: 'ctaLabel', type: 'text', defaultValue: 'Start Your Trial', label: 'Button label' },
       ],
     },
     {

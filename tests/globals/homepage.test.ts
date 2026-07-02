@@ -262,6 +262,40 @@ describe('Homepage global — howItWorksSection', () => {
     expect(section.steps[1].heading).toBe('Borrow')
     expect(section.steps[2].body).toBe('Bring them back next time.')
   })
+
+  it('saves an optional image upload per step and resolves it as a media relation', async () => {
+    const payload = await getTestPayload()
+    // 1x1 transparent PNG
+    const pngData = Buffer.from(
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
+      'base64',
+    )
+    const media = await payload.create({
+      collection: 'media',
+      data: { alt: 'Step photo' },
+      file: { data: pngData, mimetype: 'image/png', name: 'step.png', size: pngData.length },
+    })
+
+    await payload.updateGlobal({
+      slug: 'homepage',
+      data: {
+        howItWorksSection: {
+          steps: [
+            { heading: 'Join', body: 'Pay your annual fee.', image: media.id },
+            { heading: 'Borrow', body: 'Choose toys each session.' },
+            { heading: 'Return', body: 'Bring them back next time.' },
+          ],
+        },
+      },
+    })
+    const result = await payload.findGlobal({ slug: 'homepage' })
+    const section = result.howItWorksSection as {
+      steps: Array<{ heading: string; image?: { url: string; alt: string } | null }>
+    }
+    expect(section.steps[0].image?.url).toBeTruthy()
+    expect(section.steps[0].image?.alt).toBe('Step photo')
+    expect(section.steps[1].image ?? null).toBeNull()
+  })
 })
 
 describe('Homepage global — newsSection group', () => {

@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'picsum.photos' },
+      { protocol: 'https', hostname: 'placekitten.com' },
       // Vercel Blob — activated when BLOB_READ_WRITE_TOKEN is set
       { protocol: 'https', hostname: '*.public.blob.vercel.storage' },
     ],

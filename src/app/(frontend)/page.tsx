@@ -78,6 +78,13 @@ export default async function HomePage() {
       ? (hp.aboutSection.image?.alt as string | undefined)
       : undefined
 
+  const howItWorksSteps = ((hp?.howItWorksSection?.steps ?? []) as any[]).map((s: any) => ({
+    heading: s.heading as string,
+    body: s.body as string,
+    imageUrl: typeof s.image === 'object' ? (s.image?.url as string | undefined) : undefined,
+    imageAlt: typeof s.image === 'object' ? (s.image?.alt as string | undefined) : undefined,
+  }))
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const posts = ((postsResult as any).docs ?? []).map((p: any) => ({
     title: p.title as string,
@@ -162,7 +169,7 @@ export default async function HomePage() {
       />
 
       <HowItWorksSection
-        steps={hp?.howItWorksSection?.steps ?? []}
+        steps={howItWorksSteps}
         sectionLabel={hp?.howItWorksSection?.sectionLabel}
         heading={hp?.howItWorksSection?.heading}
       />
@@ -174,9 +181,9 @@ export default async function HomePage() {
           'One annual fee. Unlimited borrowing. No hidden costs. Concession rates available.'
         }
         tiers={mp?.tiers ?? []}
+        trial={mp?.trial}
         sectionLabel={hp?.membershipSection?.sectionLabel}
         popularBadge={hp?.membershipSection?.popularBadge}
-        priceSuffix={hp?.membershipSection?.priceSuffix}
         disclaimer={hp?.membershipSection?.disclaimer}
       />
 

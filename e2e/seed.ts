@@ -26,6 +26,7 @@ await payload.updateGlobal({
       instagram: 'https://instagram.com/e2e-test',
     },
     setlsCatalogueUrl: 'https://setls.e2e.example/catalogue',
+    setlsCalendarUrl: 'https://setls.e2e.example/calendar',
   },
 })
 
@@ -83,7 +84,6 @@ await payload.updateGlobal({
       heading: 'E2E Membership Heading',
       subheading: 'E2E membership subheading',
       popularBadge: 'E2E Popular',
-      priceSuffix: '/E2E-yr',
       disclaimer: 'E2E disclaimer text',
     },
     contactSection: {
@@ -111,7 +111,8 @@ await payload.updateGlobal({
     tiers: [
       {
         name: 'E2E Standard',
-        price: 85,
+        price6Month: 75,
+        price12Month: 130,
         description: 'E2E standard desc',
         isFeatured: false,
         ctaLabel: 'E2E Standard CTA',
@@ -119,13 +120,21 @@ await payload.updateGlobal({
       },
       {
         name: 'E2E Concession',
-        price: 45,
+        price6Month: 55,
+        price12Month: 95,
         description: 'E2E concession desc',
         isFeatured: true,
         ctaLabel: 'E2E Concession CTA',
         features: [{ feature: 'E2E concession feature' }],
       },
     ],
+    trial: {
+      name: 'E2E Trial',
+      price: 20,
+      bondPrice: 20,
+      bondNote: 'E2E bond note',
+      ctaLabel: 'E2E Trial CTA',
+    },
     note: 'E2E membership note',
   },
 })

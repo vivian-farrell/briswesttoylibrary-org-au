@@ -108,6 +108,16 @@ describe('SiteSettings global — field persistence', () => {
     expect(result.setlsCatalogueUrl).toBe('https://setls.catalogue.example.com')
   })
 
+  it('saves setlsCalendarUrl field', async () => {
+    const payload = await getTestPayload()
+    await payload.updateGlobal({
+      slug: 'site-settings',
+      data: { setlsCalendarUrl: 'https://setls.calendar.example.com' },
+    })
+    const result = await payload.findGlobal({ slug: 'site-settings' })
+    expect(result.setlsCalendarUrl).toBe('https://setls.calendar.example.com')
+  })
+
   it('renders onto site: address fields are accessible for contact display', async () => {
     const payload = await getTestPayload()
     const settings = await payload.findGlobal({ slug: 'site-settings' })
