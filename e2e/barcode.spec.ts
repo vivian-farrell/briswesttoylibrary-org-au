@@ -21,13 +21,31 @@ test.describe('/barcode', () => {
     await expect(page.getByText('4 barcodes ready')).toBeVisible()
   })
 
-  test('each barcode cell has a solid black border', async ({ page }) => {
+  test('barcode cells have no border', async ({ page }) => {
     await page.getByLabel(/Codes/).fill('T001')
     const cell = page.locator('.barcode-cell').first()
-    const borderStyle = await cell.evaluate(el => window.getComputedStyle(el).borderStyle)
-    const borderColor = await cell.evaluate(el => window.getComputedStyle(el).borderColor)
-    expect(borderStyle).toBe('solid')
-    expect(borderColor).toBe('rgb(0, 0, 0)')
+    const borderWidth = await cell.evaluate(el => window.getComputedStyle(el).borderWidth)
+    expect(borderWidth).toBe('0px')
+  })
+
+  test('crosshair marks appear only at interior grid intersections', async ({ page }) => {
+    await page.getByLabel('Columns per row').fill('2')
+    // 2x2 full grid plus one extra cell starting a ragged 3rd row (indices 0-3 full, index 4 ragged).
+    await page.getByLabel(/Codes/).fill('T001\nT002\nT003\nT004\nT005')
+    await expect(page.locator('.barcode-cell')).toHaveCount(5)
+
+    // Cell 0 (top-left of sheet): only its BR corner touches the interior intersection.
+    const cell0 = page.locator('.barcode-cell').nth(0)
+    await expect(cell0.locator('[aria-hidden="true"]')).toHaveCount(1)
+
+    // Cell 3 (bottom-right of the full 2x2 block, diagonal neighbor at index 5 doesn't exist):
+    // only its TL corner is interior — BR must NOT be drawn despite bottomEdge/rightEdge both false.
+    const cell3 = page.locator('.barcode-cell').nth(3)
+    await expect(cell3.locator('[aria-hidden="true"]')).toHaveCount(1)
+
+    // Cell 4 (lone cell in the ragged last row) has no neighbors at all, so no marks.
+    const cell4 = page.locator('.barcode-cell').nth(4)
+    await expect(cell4.locator('[aria-hidden="true"]')).toHaveCount(0)
   })
 
   test('SVG barcode contains bar elements', async ({ page }) => {

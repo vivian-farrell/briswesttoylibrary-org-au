@@ -56,6 +56,35 @@ function parseEntries(raw: string): Entry[] {
 
 type LabelPosition = 'above' | 'middle'
 
+// Matches the grid gap (gap-2 / 0.5rem) so marks center on the cut line between cells.
+const GAP = 8
+
+type Corner = 'tl' | 'tr' | 'bl' | 'br'
+
+function CrosshairMark({ corner }: { corner: Corner }) {
+  const half = GAP / 2
+  const pos: React.CSSProperties = {
+    position: 'absolute',
+    width: '10px',
+    height: '10px',
+    transform: 'translate(-50%, -50%)',
+    left: corner === 'tl' || corner === 'bl' ? `-${half}px` : `calc(100% + ${half}px)`,
+    top: corner === 'tl' || corner === 'tr' ? `-${half}px` : `calc(100% + ${half}px)`,
+  }
+  return (
+    <span style={pos} aria-hidden="true" className="pointer-events-none">
+      <span
+        className="absolute left-0 top-1/2 bg-black"
+        style={{ width: '10px', height: '0.5px', transform: 'translateY(-50%)' }}
+      />
+      <span
+        className="absolute left-1/2 top-0 bg-black"
+        style={{ width: '0.5px', height: '10px', transform: 'translateX(-50%)' }}
+      />
+    </span>
+  )
+}
+
 function BarcodeItem({
   code, title, label, labelPosition, barWidth, barHeight,
 }: { code: string; title?: string; label: string; labelPosition: LabelPosition; barWidth: number; barHeight: number }) {
@@ -297,14 +326,29 @@ export default function BarcodeGenerator() {
           style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}
           className="grid gap-2"
         >
-          {entries.map(({ code, title }, i) => (
-            <div
-              key={`${code}-${i}`}
-              className="barcode-cell border border-black p-1 min-w-0 flex flex-col items-center justify-center text-center"
-            >
-              <BarcodeItem code={code} title={title} label={label} labelPosition={labelPosition} barWidth={barWidth} barHeight={barHeight} />
-            </div>
-          ))}
+          {entries.map(({ code, title }, i) => {
+            const topEdge = i < columns
+            const bottomEdge = i + columns >= entries.length
+            const leftEdge = i % columns === 0
+            const rightEdge = (i + 1) % columns === 0 || i === entries.length - 1
+            const showTL = !topEdge && !leftEdge
+            const showTR = !topEdge && !rightEdge
+            const showBL = !bottomEdge && !leftEdge
+            const showBR = !bottomEdge && !rightEdge && i + columns + 1 < entries.length
+
+            return (
+              <div
+                key={`${code}-${i}`}
+                className="barcode-cell relative p-1 min-w-0 flex flex-col items-center justify-center text-center"
+              >
+                {showTL && <CrosshairMark corner="tl" />}
+                {showTR && <CrosshairMark corner="tr" />}
+                {showBL && <CrosshairMark corner="bl" />}
+                {showBR && <CrosshairMark corner="br" />}
+                <BarcodeItem code={code} title={title} label={label} labelPosition={labelPosition} barWidth={barWidth} barHeight={barHeight} />
+              </div>
+            )
+          })}
         </div>
       )}
     </>
