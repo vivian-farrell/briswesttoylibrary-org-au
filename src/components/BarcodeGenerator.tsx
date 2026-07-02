@@ -54,9 +54,11 @@ function parseEntries(raw: string): Entry[] {
     .filter(entry => entry.code.length > 0)
 }
 
+type LabelPosition = 'above' | 'middle'
+
 function BarcodeItem({
-  code, title, label, barWidth, barHeight,
-}: { code: string; title?: string; label: string; barWidth: number; barHeight: number }) {
+  code, title, label, labelPosition, barWidth, barHeight,
+}: { code: string; title?: string; label: string; labelPosition: LabelPosition; barWidth: number; barHeight: number }) {
   const svgRef = useRef<SVGSVGElement>(null)
   const [error, setError] = useState(false)
 
@@ -88,10 +90,13 @@ function BarcodeItem({
 
   return (
     <>
-      {label && (
+      {label && labelPosition === 'above' && (
         <p className="text-xs text-center leading-tight px-1 pb-0.5 w-full min-w-0 truncate">{label}</p>
       )}
       <svg ref={svgRef} className="w-full" />
+      {label && labelPosition === 'middle' && (
+        <p className="text-xs text-center leading-tight px-1 pt-0.5 w-full min-w-0 truncate">{label}</p>
+      )}
       {title && (
         <p className="text-xs text-center leading-tight px-1 pt-0.5 w-full min-w-0 truncate">{title}</p>
       )}
@@ -102,6 +107,7 @@ function BarcodeItem({
 export default function BarcodeGenerator() {
   const [rawInput, setRawInput] = useState('')
   const [label, setLabel] = useState('Brisbane West Toy Library')
+  const [labelPosition, setLabelPosition] = useState<LabelPosition>('above')
   const [barWidth, setBarWidth] = useState(1.5)
   const [barHeight, setBarHeight] = useState(70)
   const [columns, setColumns] = useState(4)
@@ -239,7 +245,33 @@ export default function BarcodeGenerator() {
               placeholder="e.g. bris west toy library"
               className="w-full rounded-xl border border-mint/40 bg-cream px-4 py-2 text-dark focus:outline-none focus:border-forest/50 transition-colors"
             />
-            <p className="text-xs text-muted/60 mt-1">Printed above each barcode — leave blank to omit</p>
+            <p className="text-xs text-muted/60 mt-1">Leave blank to omit</p>
+          </div>
+
+          <div>
+            <span className="block text-sm font-semibold text-dark mb-1">Label position</span>
+            <div role="group" aria-label="Label position" className="inline-flex rounded-xl border border-mint/40 bg-cream p-1 gap-1">
+              <button
+                type="button"
+                aria-pressed={labelPosition === 'above'}
+                onClick={() => setLabelPosition('above')}
+                className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors cursor-pointer ${
+                  labelPosition === 'above' ? 'bg-forest text-white' : 'text-muted hover:text-dark'
+                }`}
+              >
+                Above barcode
+              </button>
+              <button
+                type="button"
+                aria-pressed={labelPosition === 'middle'}
+                onClick={() => setLabelPosition('middle')}
+                className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors cursor-pointer ${
+                  labelPosition === 'middle' ? 'bg-forest text-white' : 'text-muted hover:text-dark'
+                }`}
+              >
+                Between code &amp; title
+              </button>
+            </div>
           </div>
 
           <div className="flex items-center gap-4 flex-wrap">
@@ -270,7 +302,7 @@ export default function BarcodeGenerator() {
               key={`${code}-${i}`}
               className="barcode-cell border border-black p-1 min-w-0 flex flex-col items-center justify-center text-center"
             >
-              <BarcodeItem code={code} title={title} label={label} barWidth={barWidth} barHeight={barHeight} />
+              <BarcodeItem code={code} title={title} label={label} labelPosition={labelPosition} barWidth={barWidth} barHeight={barHeight} />
             </div>
           ))}
         </div>

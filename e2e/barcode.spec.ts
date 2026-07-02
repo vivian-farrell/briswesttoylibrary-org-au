@@ -99,7 +99,7 @@ test.describe('/barcode', () => {
 
   test('mix of codes-only and code+title lines renders correctly', async ({ page }) => {
     // Clear the default label so only title p elements are counted
-    await page.getByLabel('Label').clear()
+    await page.getByLabel('Label', { exact: true }).clear()
     await page.getByLabel(/Codes/).fill('T001\nT002,Fisher-Price Farm\nT003')
     await expect(page.locator('.barcode-cell')).toHaveCount(3)
     await expect(page.locator('.barcode-cell').getByText('Fisher-Price Farm')).toBeVisible()
@@ -146,26 +146,63 @@ test.describe('/barcode', () => {
   })
 
   test('label can be changed via the Label input', async ({ page }) => {
-    await page.getByLabel('Label').fill('My Toy Library')
+    await page.getByLabel('Label', { exact: true }).fill('My Toy Library')
     await page.getByLabel(/Codes/).fill('T001')
     await expect(page.locator('.barcode-cell').getByText('My Toy Library')).toBeVisible()
   })
 
   test('clearing the label hides it from all cells', async ({ page }) => {
-    await page.getByLabel('Label').clear()
+    await page.getByLabel('Label', { exact: true }).clear()
     await page.getByLabel(/Codes/).fill('T001')
     const labelText = await page.locator('.barcode-cell').getByText('Brisbane West Toy Library').count()
     expect(labelText).toBe(0)
   })
 
   test('label appears above the barcode, title appears below it', async ({ page }) => {
-    await page.getByLabel('Label').fill('TEST LIBRARY')
+    await page.getByLabel('Label', { exact: true }).fill('TEST LIBRARY')
     await page.getByLabel(/Codes/).fill('T001,My Toy')
     const cell = page.locator('.barcode-cell').first()
     const paragraphs = cell.locator('p')
     await expect(paragraphs).toHaveCount(2)
     await expect(paragraphs.first()).toHaveText('TEST LIBRARY')
     await expect(paragraphs.nth(1)).toHaveText('My Toy')
+  })
+
+  // ── Label position toggle ────────────────────────────────────────────────────
+
+  test('label position defaults to "Above barcode"', async ({ page }) => {
+    await expect(page.getByRole('button', { name: 'Above barcode' })).toHaveAttribute('aria-pressed', 'true')
+    await expect(page.getByRole('button', { name: 'Between code & title' })).toHaveAttribute('aria-pressed', 'false')
+  })
+
+  test('toggling label position to "Between code & title" moves the label after the barcode SVG', async ({ page }) => {
+    await page.getByLabel('Label', { exact: true }).fill('TEST LIBRARY')
+    await page.getByRole('button', { name: 'Between code & title' }).click()
+    await expect(page.getByRole('button', { name: 'Between code & title' })).toHaveAttribute('aria-pressed', 'true')
+    await expect(page.getByRole('button', { name: 'Above barcode' })).toHaveAttribute('aria-pressed', 'false')
+
+    await page.getByLabel(/Codes/).fill('T001,My Toy')
+    const cell = page.locator('.barcode-cell').first()
+    // Order in the DOM: svg, then label paragraph, then title paragraph
+    const children = cell.locator('svg, p')
+    await expect(children).toHaveCount(3)
+    await expect(children.nth(0)).toHaveJSProperty('tagName', 'svg')
+    await expect(children.nth(1)).toHaveText('TEST LIBRARY')
+    await expect(children.nth(2)).toHaveText('My Toy')
+  })
+
+  test('switching back to "Above barcode" restores the label before the SVG', async ({ page }) => {
+    await page.getByLabel('Label', { exact: true }).fill('TEST LIBRARY')
+    await page.getByRole('button', { name: 'Between code & title' }).click()
+    await page.getByRole('button', { name: 'Above barcode' }).click()
+
+    await page.getByLabel(/Codes/).fill('T001,My Toy')
+    const cell = page.locator('.barcode-cell').first()
+    const children = cell.locator('svg, p')
+    await expect(children).toHaveCount(3)
+    await expect(children.nth(0)).toHaveText('TEST LIBRARY')
+    await expect(children.nth(1)).toHaveJSProperty('tagName', 'svg')
+    await expect(children.nth(2)).toHaveText('My Toy')
   })
 
   // ── Quote stripping ─────────────────────────────────────────────────────────
