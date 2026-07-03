@@ -273,7 +273,9 @@ describe('Homepage global — howItWorksSection', () => {
     const media = await payload.create({
       collection: 'media',
       data: { alt: 'Step photo' },
-      file: { data: pngData, mimetype: 'image/png', name: 'step.png', size: pngData.length },
+      // Unique filename per run — Vercel Blob storage persists across builds (unlike test.db,
+      // which is recreated fresh each time), so a fixed name collides with a prior build's blob.
+      file: { data: pngData, mimetype: 'image/png', name: `step-${Date.now()}.png`, size: pngData.length },
     })
 
     await payload.updateGlobal({
