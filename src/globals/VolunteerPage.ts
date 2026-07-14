@@ -6,6 +6,13 @@ export const VolunteerPage: GlobalConfig = {
   admin: { group: 'Content' },
   fields: [
     {
+      name: 'sectionLabel',
+      type: 'text',
+      label: 'Section label',
+      defaultValue: 'Volunteering',
+      admin: { description: 'Small uppercase eyebrow text shown above the heading' },
+    },
+    {
       name: 'heading',
       type: 'text',
       defaultValue: 'Volunteer With Us',
@@ -21,6 +28,12 @@ export const VolunteerPage: GlobalConfig = {
       type: 'richText',
     },
     {
+      name: 'rolesHeading',
+      type: 'text',
+      label: 'Roles list heading',
+      defaultValue: 'Volunteer Roles',
+    },
+    {
       name: 'roles',
       type: 'array',
       label: 'Volunteer Roles',
@@ -29,6 +42,13 @@ export const VolunteerPage: GlobalConfig = {
         { name: 'description', type: 'textarea' },
         { name: 'commitment', type: 'text', admin: { description: 'e.g. "2 hours per month"' } },
       ],
+    },
+    {
+      name: 'calendarLabel',
+      type: 'text',
+      label: 'Shift calendar button label',
+      defaultValue: 'View Volunteer Shift Calendar →',
+      admin: { description: 'Button linking to the SETLS calendar URL from Site Settings' },
     },
     {
       name: 'ctaLabel',

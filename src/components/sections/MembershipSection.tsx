@@ -13,6 +13,7 @@ type Tier = {
 
 type Trial = {
   name?: string | null
+  badge?: string | null
   price?: number | null
   bondPrice?: number | null
   bondNote?: string | null
@@ -89,6 +90,7 @@ export function MembershipSection({
     <section id="membership" className="bg-cream section-pad">
       <div className="container-site">
         <div className="text-center mb-12">
+          <p className="section-label mb-3">{sectionLabel}</p>
           <h2 className="text-3xl md:text-4xl font-black text-dark mb-4">{heading}</h2>
           <p className="text-muted text-lg max-w-xl mx-auto">{subheading}</p>
         </div>
@@ -96,7 +98,7 @@ export function MembershipSection({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           <div className="rounded-2xl p-8 flex flex-col gap-5 bg-white text-dark shadow-md border-2 border-orange">
             <span className="text-xs font-bold uppercase tracking-widest text-white bg-orange px-3 py-1 rounded-full self-start">
-              Try it out
+              {displayTrial.badge ?? 'Try it out'}
             </span>
 
             <div>

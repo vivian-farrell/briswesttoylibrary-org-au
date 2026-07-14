@@ -20,8 +20,9 @@ import { Navigation } from './src/globals/Navigation.ts'
 import { Footer } from './src/globals/Footer.ts'
 import { Homepage } from './src/globals/Homepage.ts'
 import { MembershipPage } from './src/globals/MembershipPage.ts'
-import { ContactPage } from './src/globals/ContactPage.ts'
 import { VolunteerPage } from './src/globals/VolunteerPage.ts'
+import { ToysPage } from './src/globals/ToysPage.ts'
+import { NewsPage } from './src/globals/NewsPage.ts'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -34,7 +35,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, Posts, FAQs, Toys],
-  globals: [SiteSettings, Navigation, Footer, Homepage, MembershipPage, ContactPage, VolunteerPage],
+  globals: [SiteSettings, Navigation, Footer, Homepage, MembershipPage, VolunteerPage, ToysPage, NewsPage],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'dev-secret-change-in-production',
   email: nodemailerAdapter({

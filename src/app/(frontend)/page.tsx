@@ -11,6 +11,7 @@ import { FaqSection } from '@/components/sections/FaqSection'
 import { NewsPreview } from '@/components/sections/NewsPreview'
 import { ContactSection } from '@/components/sections/ContactSection'
 import { SectionDotNav } from '@/components/layout/SectionDotNav'
+import { postCategoryLabel } from '@/lib/postCategories'
 
 export const revalidate = 3600
 
@@ -26,11 +27,10 @@ const CATEGORY_LABELS: Record<string, string> = {
 export default async function HomePage() {
   const payload = await getPayloadClient()
 
-  const [homepage, settings, membership, contactPage, postsResult, faqsResult] = await Promise.all([
+  const [homepage, settings, membership, postsResult, faqsResult] = await Promise.all([
     payload.findGlobal({ slug: 'homepage' }).catch(() => null),
     payload.findGlobal({ slug: 'site-settings' }).catch(() => null),
     payload.findGlobal({ slug: 'membership-page' }).catch(() => null),
-    payload.findGlobal({ slug: 'contact-page' }).catch(() => null),
     payload
       .find({
         collection: 'posts',
@@ -54,8 +54,6 @@ export default async function HomePage() {
   const st = settings as any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mp = membership as any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const cp = contactPage as any
 
   const heroSlides = ((hp?.heroSlides ?? []) as any[])
     .map((s: any) => ({
@@ -91,7 +89,7 @@ export default async function HomePage() {
     slug: p.slug as string,
     excerpt: p.excerpt as string | null,
     publishedAt: p.publishedAt as string | null,
-    category: p.category as string | null,
+    category: postCategoryLabel(p.category as string | null),
   }))
 
   // Group FAQs by category
@@ -143,11 +141,11 @@ export default async function HomePage() {
 
       <LocationSection
         heading={hp?.locationSection?.heading ?? "We're in Kenmore"}
-        suburb={hp?.locationSection?.suburb ?? st?.address?.suburb ?? 'Kenmore'}
-        state={hp?.locationSection?.state ?? st?.address?.state ?? 'QLD'}
-        postcode={hp?.locationSection?.postcode ?? st?.address?.postcode ?? '4069'}
-        street={hp?.locationSection?.street ?? st?.address?.street}
-        openingHours={hp?.locationSection?.openingHours ?? st?.openingHours ?? []}
+        suburb={hp?.locationSection?.suburb ?? 'Kenmore'}
+        state={hp?.locationSection?.state ?? 'QLD'}
+        postcode={hp?.locationSection?.postcode ?? '4069'}
+        street={hp?.locationSection?.street}
+        openingHours={hp?.locationSection?.openingHours ?? []}
         mapEmbedUrl={hp?.locationSection?.mapEmbedUrl}
         directionsUrl={hp?.locationSection?.directionsUrl}
         sectionLabel={hp?.locationSection?.sectionLabel}
@@ -208,12 +206,12 @@ export default async function HomePage() {
         }
         email={st?.email}
         phone={st?.phone}
-        suburb={st?.address?.suburb ?? 'Kenmore'}
-        state={st?.address?.state ?? 'QLD'}
-        postcode={st?.address?.postcode ?? '4069'}
+        suburb={hp?.locationSection?.suburb ?? 'Kenmore'}
+        state={hp?.locationSection?.state ?? 'QLD'}
+        postcode={hp?.locationSection?.postcode ?? '4069'}
         facebook={st?.socialLinks?.facebook}
         instagram={st?.socialLinks?.instagram}
-        formEnabled={cp?.formEnabled ?? false}
+        formEnabled={hp?.contactSection?.formEnabled ?? false}
         sectionLabel={hp?.contactSection?.sectionLabel}
         formHeading={hp?.contactSection?.formHeading}
       />

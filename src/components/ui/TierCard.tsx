@@ -19,13 +19,14 @@ export function TierCard({ tier, popularBadge = 'Most Popular' }: { tier: Tier; 
 
   return (
     <div
-      className={`rounded-2xl p-8 flex flex-col gap-5 ${
-        tier.isFeatured ? 'text-dark shadow-xl' : 'bg-white text-dark shadow-md border border-mint/40'
+      className={`rounded-2xl p-8 flex flex-col gap-5 bg-white text-dark ${
+        // Featured floats above the page on a soft neutral shadow.
+        // Standard sits flatter with a hairline sky-tint border.
+        tier.isFeatured ? 'shadow-float' : 'shadow-md border border-mint/40'
       }`}
-      style={tier.isFeatured ? { background: 'var(--palette-mint)' } : undefined}
     >
       {tier.isFeatured && (
-        <span className="text-xs font-bold uppercase tracking-widest text-dark/70 bg-dark/10 px-3 py-1 rounded-full self-start">
+        <span className="text-xs font-bold uppercase tracking-widest text-white bg-accent px-3 py-1 rounded-full self-start">
           {popularBadge}
         </span>
       )}
@@ -33,7 +34,7 @@ export function TierCard({ tier, popularBadge = 'Most Popular' }: { tier: Tier; 
       <div>
         <h3 className="text-xl font-bold mb-1 text-dark">{tier.name}</h3>
         {tier.description && (
-          <p className={`text-sm ${tier.isFeatured ? 'text-dark/70' : 'text-muted'}`}>{tier.description}</p>
+          <p className="text-sm text-muted">{tier.description}</p>
         )}
       </div>
 
@@ -47,7 +48,7 @@ export function TierCard({ tier, popularBadge = 'Most Popular' }: { tier: Tier; 
           aria-pressed={duration === '6'}
           onClick={() => setDuration('6')}
           className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors cursor-pointer ${
-            duration === '6' ? 'bg-forest text-white' : 'text-muted hover:text-dark'
+            duration === '6' ? 'bg-accent text-white' : 'text-muted hover:text-dark'
           }`}
         >
           6 months
@@ -57,7 +58,7 @@ export function TierCard({ tier, popularBadge = 'Most Popular' }: { tier: Tier; 
           aria-pressed={duration === '12'}
           onClick={() => setDuration('12')}
           className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors cursor-pointer ${
-            duration === '12' ? 'bg-forest text-white' : 'text-muted hover:text-dark'
+            duration === '12' ? 'bg-accent text-white' : 'text-muted hover:text-dark'
           }`}
         >
           12 months
@@ -65,10 +66,10 @@ export function TierCard({ tier, popularBadge = 'Most Popular' }: { tier: Tier; 
       </div>
 
       <div className="flex items-end gap-1">
-        <span className={`text-5xl font-black ${tier.isFeatured ? 'text-dark' : 'text-forest'}`}>
+        <span className="text-5xl font-black text-dark">
           {price != null ? `$${price}` : '—'}
         </span>
-        <span className={`text-sm mb-2 ${tier.isFeatured ? 'text-dark/60' : 'text-muted'}`}>
+        <span className="text-sm mb-2 text-muted">
           for {duration} months
         </span>
       </div>
@@ -76,23 +77,21 @@ export function TierCard({ tier, popularBadge = 'Most Popular' }: { tier: Tier; 
       {tier.features && tier.features.length > 0 && (
         <ul className="flex flex-col gap-2.5">
           {tier.features.map(({ feature }, j) => (
-            <li
-              key={j}
-              className={`flex items-start gap-2 text-sm ${tier.isFeatured ? 'text-dark/80' : 'text-muted'}`}
-            >
-              <span className={`mt-0.5 flex-shrink-0 ${tier.isFeatured ? 'text-dark' : 'text-forest'}`}>✓</span>
+            <li key={j} className="flex items-start gap-2 text-sm text-muted">
+              <span className="mt-0.5 flex-shrink-0 text-accent">✓</span>
               {feature}
             </li>
           ))}
         </ul>
       )}
 
+      {/* Featured → primary (solid coral). Standard → secondary (coral outline). */}
       <Link
         href="/join"
         className={`mt-auto text-center font-bold py-3.5 rounded-full transition-all ${
           tier.isFeatured
-            ? 'bg-yellow text-heading hover:brightness-105'
-            : 'bg-forest text-white hover:brightness-110'
+            ? 'bg-accent text-white hover:brightness-105'
+            : 'border-2 border-accent text-accent bg-transparent hover:bg-accent hover:text-white'
         }`}
       >
         {tier.ctaLabel ?? 'Join Now'}

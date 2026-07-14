@@ -42,6 +42,7 @@ export function LocationSection({
       <div className="container-site">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
+            <p className="section-label mb-3">{sectionLabel}</p>
             <h2 className="text-3xl md:text-4xl font-black text-dark mb-6">{heading}</h2>
 
             {street && <p className="text-muted mb-1">{street}</p>}

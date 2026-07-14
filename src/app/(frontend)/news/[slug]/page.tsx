@@ -3,15 +3,9 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getPayloadClient } from '@/lib/payload'
 import { RichText } from '@/components/ui/RichText'
+import { postCategoryLabel } from '@/lib/postCategories'
 
 export const revalidate = 3600
-
-const CATEGORY_LABELS: Record<string, string> = {
-  news: 'News',
-  event: 'Event',
-  volunteer: 'Volunteer',
-  announcement: 'Announcement',
-}
 
 function formatDate(iso: string | null) {
   if (!iso) return null
@@ -28,9 +22,9 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
     .catch(() => ({ docs: [] }))
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const post = (result as any).docs?.[0]
-  if (!post) return { title: 'Post Not Found | Brisbane West Toy Library' }
+  if (!post) return { title: 'Post Not Found' }
   return {
-    title: `${post.title} | Brisbane West Toy Library`,
+    title: post.title,
     description: post.excerpt ?? undefined,
   }
 }
@@ -65,7 +59,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
           <div className="flex items-center gap-3 mb-5 flex-wrap">
             {post.category && (
               <span className="text-xs font-bold uppercase tracking-wider text-forest bg-mint/25 px-2.5 py-1 rounded-full">
-                {CATEGORY_LABELS[post.category] ?? post.category}
+                {postCategoryLabel(post.category)}
               </span>
             )}
             {post.publishedAt && (

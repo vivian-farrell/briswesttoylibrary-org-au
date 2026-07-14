@@ -21,15 +21,6 @@ export const Navigation: GlobalConfig = {
           admin: { description: 'e.g. /#location or /toys' },
         },
         {
-          name: 'isScrollLink',
-          type: 'checkbox',
-          label: 'Scroll-to-section link',
-          defaultValue: false,
-          admin: {
-            description: 'When on the home page, clicking this scrolls to the section instead of navigating.',
-          },
-        },
-        {
           name: 'isCTA',
           type: 'checkbox',
           label: 'Show as CTA button',

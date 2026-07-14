@@ -40,6 +40,7 @@ export function HowItWorksSection({ steps = [], sectionLabel = 'Simple Process',
     >
       <div className="container-site">
         <div className="text-center mb-14">
+          <p className="section-label mb-3">{sectionLabel}</p>
           <h2 className="text-3xl md:text-4xl font-black text-dark">{heading}</h2>
         </div>
 

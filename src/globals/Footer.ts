@@ -18,10 +18,28 @@ export const Footer: GlobalConfig = {
       defaultValue: 'Explore',
     },
     {
+      name: 'exploreLinks',
+      type: 'array',
+      label: 'Explore column links',
+      fields: [
+        { name: 'label', type: 'text', required: true },
+        { name: 'href',  type: 'text', required: true },
+      ],
+    },
+    {
       name: 'involvedColumnHeading',
       type: 'text',
       label: 'Get Involved column heading',
       defaultValue: 'Get Involved',
+    },
+    {
+      name: 'involvedLinks',
+      type: 'array',
+      label: 'Get Involved column links',
+      fields: [
+        { name: 'label', type: 'text', required: true },
+        { name: 'href',  type: 'text', required: true },
+      ],
     },
     {
       name: 'acknowledgement',
@@ -34,24 +52,6 @@ export const Footer: GlobalConfig = {
       name: 'copyright',
       type: 'text',
       defaultValue: 'Brisbane West Toy Library Inc.',
-    },
-    {
-      name: 'exploreLinks',
-      type: 'array',
-      label: 'Explore column links',
-      fields: [
-        { name: 'label', type: 'text', required: true },
-        { name: 'href',  type: 'text', required: true },
-      ],
-    },
-    {
-      name: 'involvedLinks',
-      type: 'array',
-      label: 'Get Involved column links',
-      fields: [
-        { name: 'label', type: 'text', required: true },
-        { name: 'href',  type: 'text', required: true },
-      ],
     },
   ],
   hooks: {

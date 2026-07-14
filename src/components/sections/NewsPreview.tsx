@@ -23,6 +23,7 @@ export function NewsPreview({ posts, sectionLabel = 'Latest News', heading = "Wh
       <div className="container-site">
         <div className="flex items-end justify-between mb-10">
           <div>
+            <p className="section-label mb-3">{sectionLabel}</p>
             <h2 className="text-3xl md:text-4xl font-black text-dark">{heading}</h2>
           </div>
           <Link

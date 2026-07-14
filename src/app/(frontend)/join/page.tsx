@@ -1,24 +1,43 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { getPayloadClient } from '@/lib/payload'
+import { RichText } from '@/components/ui/RichText'
 
-export const metadata: Metadata = {
-  title: 'Join Brisbane West Toy Library',
-  description: 'Sign up to become a member of Brisbane West Toy Library.',
+export const revalidate = 3600
+
+export async function generateMetadata(): Promise<Metadata> {
+  const payload = await getPayloadClient()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const page = await payload.findGlobal({ slug: 'membership-page' }).catch(() => null) as any
+  return {
+    title: page?.heading ?? 'Join Brisbane West Toy Library',
+    description: 'Sign up to become a member of Brisbane West Toy Library.',
+  }
 }
 
-export default function JoinPage() {
+export default async function JoinPage() {
+  const payload = await getPayloadClient()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const page = await payload.findGlobal({ slug: 'membership-page' }).catch(() => null) as any
+
   return (
     <div className="bg-cream min-h-screen">
       <div className="container-site section-pad">
         <div className="max-w-xl">
-          <p className="section-label mb-3">Membership</p>
+          <p className="section-label mb-3">{page?.sectionLabel ?? 'Membership'}</p>
           <h1 className="text-4xl md:text-5xl font-black text-dark mb-4">
-            Join Brisbane West Toy Library
+            {page?.heading ?? 'Join Brisbane West Toy Library'}
           </h1>
-          <p className="text-muted text-lg leading-relaxed mb-10">
-            Online joining is coming soon. In the meantime, come along to a session or
-            get in touch and we&apos;ll get you set up.
-          </p>
+          {page?.intro ? (
+            <div className="mb-10">
+              <RichText data={page.intro} />
+            </div>
+          ) : (
+            <p className="text-muted text-lg leading-relaxed mb-10">
+              Online joining is coming soon. In the meantime, come along to a session or
+              get in touch and we&apos;ll get you set up.
+            </p>
+          )}
 
           <div className="bg-white rounded-2xl p-8 shadow-sm border border-mint/30 flex flex-col gap-6">
             <p className="text-muted/60 text-sm uppercase tracking-widest font-semibold">
@@ -43,6 +62,16 @@ export default function JoinPage() {
               Contact us instead
             </Link>
           </div>
+
+          {page?.note && (
+            <p className="text-muted/70 text-sm mt-10">{page.note}</p>
+          )}
+
+          {page?.termsAndConditions && (
+            <div className="mt-10 pt-8 border-t border-mint/30">
+              <RichText data={page.termsAndConditions} />
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -10,17 +10,10 @@ await payload.updateGlobal({
   slug: 'site-settings',
   data: {
     comingSoon: false,
+    siteName: 'E2E Toy Library',
+    tagline: 'E2E site tagline',
     email: 'hello@e2e.example',
     phone: '07 0000 E2E',
-    address: {
-      street: '1 E2E Settings Street',
-      suburb: 'E2ESettSuburb',
-      state: 'E2EState',
-      postcode: 'E2EP0ST',
-    },
-    openingHours: [
-      { day: 'E2E Saturday', hours: 'E2E 9am-12pm' },
-    ],
     socialLinks: {
       facebook: 'https://facebook.com/e2e-test',
       instagram: 'https://instagram.com/e2e-test',
@@ -69,10 +62,14 @@ await payload.updateGlobal({
       sectionLabel: 'E2E Process Label',
       heading: 'E2E How It Works',
       steps: [
-        { icon: '📋', heading: 'E2E Step One', body: 'E2E step one body' },
-        { icon: '🧸', heading: 'E2E Step Two', body: 'E2E step two body' },
-        { icon: '🔄', heading: 'E2E Step Three', body: 'E2E step three body' },
+        { heading: 'E2E Step One', body: 'E2E step one body' },
+        { heading: 'E2E Step Two', body: 'E2E step two body' },
+        { heading: 'E2E Step Three', body: 'E2E step three body' },
       ],
+    },
+    faqSection: {
+      sectionLabel: 'E2E FAQ Label',
+      heading: 'E2E FAQ Heading',
     },
     newsSection: {
       sectionLabel: 'E2E News Label',
@@ -91,15 +88,8 @@ await payload.updateGlobal({
       heading: 'E2E Contact Heading',
       intro: 'E2E contact intro text',
       formHeading: 'E2E Form Heading',
+      formEnabled: true, // so contactSection.formHeading renders
     },
-  },
-})
-
-// ── Contact Page ──────────────────────────────────────────────────────────────
-await payload.updateGlobal({
-  slug: 'contact-page',
-  data: {
-    formEnabled: true, // so contactSection.formHeading renders
   },
 })
 
@@ -107,7 +97,9 @@ await payload.updateGlobal({
 await payload.updateGlobal({
   slug: 'membership-page',
   data: {
+    sectionLabel: 'E2E Join Label',
     heading: 'E2E Membership Page Heading',
+    intro: makeRichText('E2E membership page intro'),
     tiers: [
       {
         name: 'E2E Standard',
@@ -130,12 +122,14 @@ await payload.updateGlobal({
     ],
     trial: {
       name: 'E2E Trial',
+      badge: 'E2E Trial Badge',
       price: 20,
       bondPrice: 20,
       bondNote: 'E2E bond note',
       ctaLabel: 'E2E Trial CTA',
     },
     note: 'E2E membership note',
+    termsAndConditions: makeRichText('E2E terms and conditions body'),
   },
 })
 
@@ -143,9 +137,11 @@ await payload.updateGlobal({
 await payload.updateGlobal({
   slug: 'volunteer-page',
   data: {
+    sectionLabel: 'E2E Volunteering Label',
     heading: 'E2E Volunteer Heading',
     intro: 'E2E volunteer intro',
     content: makeRichText('E2E volunteer body'),
+    rolesHeading: 'E2E Roles Heading',
     roles: [
       {
         title: 'E2E Role Title',
@@ -153,8 +149,35 @@ await payload.updateGlobal({
         commitment: 'E2E commitment',
       },
     ],
+    calendarLabel: 'E2E Shift Calendar',
     ctaLabel: 'E2E Express Interest',
     ctaEmail: 'volunteer@e2e.example',
+  },
+})
+
+// ── Toys Page ─────────────────────────────────────────────────────────────────
+await payload.updateGlobal({
+  slug: 'toys-page',
+  data: {
+    sectionLabel: 'E2E Toys Label',
+    heading: 'E2E Toys Heading',
+    intro: 'E2E toys intro text',
+    catalogueCardHeading: 'E2E Catalogue Card Heading',
+    catalogueCardBody: 'E2E catalogue card body',
+    catalogueCtaLabel: 'E2E Open Catalogue',
+    features: [
+      { icon: '🎯', title: 'E2E Toys Feature', body: 'E2E toys feature body' },
+    ],
+  },
+})
+
+// ── News Page ─────────────────────────────────────────────────────────────────
+await payload.updateGlobal({
+  slug: 'news-page',
+  data: {
+    sectionLabel: 'E2E News Page Label',
+    heading: 'E2E News Page Heading',
+    emptyStateText: 'E2E no posts yet',
   },
 })
 
@@ -163,8 +186,8 @@ await payload.updateGlobal({
   slug: 'navigation',
   data: {
     items: [
-      { label: 'E2E Nav One', href: '/#location', isScrollLink: true, isCTA: false },
-      { label: 'E2E Nav CTA', href: '/join', isScrollLink: false, isCTA: true },
+      { label: 'E2E Nav One', href: '/#location', isCTA: false },
+      { label: 'E2E Nav CTA', href: '/join', isCTA: true },
     ],
   },
 })

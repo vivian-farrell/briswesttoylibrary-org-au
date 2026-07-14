@@ -38,6 +38,8 @@ export function ContactSection({
     >
       <div className="container-site">
         <div className="text-center mb-12">
+          {/* On the pink background the standard .section-label colour is invisible */}
+          <p className="text-white/75 text-xs font-bold uppercase tracking-[0.18em] mb-3">{sectionLabel}</p>
           <h2 className="text-3xl md:text-4xl font-black text-white mb-4">{heading}</h2>
           <p className="text-white/85 text-lg max-w-xl mx-auto">{intro}</p>
         </div>

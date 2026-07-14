@@ -3,6 +3,16 @@ import { getTestPayload } from '../helpers/payload.ts'
 import { makeRichText, richTextToPlain } from '../helpers/richtext.ts'
 
 describe('MembershipPage global — field persistence', () => {
+  it('saves sectionLabel text field', async () => {
+    const payload = await getTestPayload()
+    await payload.updateGlobal({
+      slug: 'membership-page',
+      data: { sectionLabel: 'Membership' },
+    })
+    const result = await payload.findGlobal({ slug: 'membership-page' })
+    expect(result.sectionLabel).toBe('Membership')
+  })
+
   it('saves heading text field', async () => {
     const payload = await getTestPayload()
     await payload.updateGlobal({
@@ -51,7 +61,8 @@ describe('MembershipPage global — field persistence', () => {
         tiers: [
           {
             name: 'Standard',
-            price: 95,
+            price6Month: 75,
+            price12Month: 130,
             description: 'For most families',
             features: [
               { feature: 'Borrow up to 6 toys' },
@@ -62,7 +73,8 @@ describe('MembershipPage global — field persistence', () => {
           },
           {
             name: 'Concession',
-            price: 55,
+            price6Month: 55,
+            price12Month: 95,
             description: 'Pension / Health Care Card holders',
             features: [
               { feature: 'Same access as Standard' },
@@ -76,7 +88,6 @@ describe('MembershipPage global — field persistence', () => {
     const result = await payload.findGlobal({ slug: 'membership-page' })
     const tiers = result.tiers as Array<{
       name: string
-      price: number
       description: string
       features: Array<{ feature: string }>
       isFeatured: boolean
@@ -86,8 +97,9 @@ describe('MembershipPage global — field persistence', () => {
     expect(tiers).toHaveLength(2)
 
     expect(tiers[0].name).toBe('Standard')
-    expect(tiers[0].price).toBe(95)
     expect(tiers[0].description).toBe('For most families')
+    // legacy single price field was removed
+    expect(tiers[0]).not.toHaveProperty('price')
     expect(tiers[0].isFeatured).toBe(true)
     expect(tiers[0].ctaLabel).toBe('Join Now')
     expect(tiers[0].features).toHaveLength(2)
@@ -95,7 +107,6 @@ describe('MembershipPage global — field persistence', () => {
     expect(tiers[0].features[1].feature).toBe('Access all sessions')
 
     expect(tiers[1].name).toBe('Concession')
-    expect(tiers[1].price).toBe(55)
     expect(tiers[1].isFeatured).toBe(false)
     expect(tiers[1].features).toHaveLength(1)
     expect(tiers[1].features[0].feature).toBe('Same access as Standard')
@@ -106,7 +117,6 @@ describe('MembershipPage global — field persistence', () => {
     const mp = await payload.findGlobal({ slug: 'membership-page' })
     const tiers = (mp.tiers ?? []) as Array<{
       name: string
-      price: number
       isFeatured: boolean
       ctaLabel: string
     }>
@@ -160,6 +170,7 @@ describe('MembershipPage global — trial group', () => {
       data: {
         trial: {
           name: '6 Week Trial',
+          badge: 'Try it out',
           price: 20,
           bondPrice: 20,
           bondNote: 'Fully refundable when toys are returned',
@@ -171,6 +182,7 @@ describe('MembershipPage global — trial group', () => {
     const result = await payload.findGlobal({ slug: 'membership-page' })
     const trial = result.trial as {
       name: string
+      badge: string
       price: number
       bondPrice: number
       bondNote: string
@@ -179,6 +191,7 @@ describe('MembershipPage global — trial group', () => {
     }
 
     expect(trial.name).toBe('6 Week Trial')
+    expect(trial.badge).toBe('Try it out')
     expect(trial.price).toBe(20)
     expect(trial.bondPrice).toBe(20)
     expect(trial.bondNote).toBe('Fully refundable when toys are returned')

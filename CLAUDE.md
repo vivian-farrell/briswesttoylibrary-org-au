@@ -79,10 +79,17 @@ Visiting with `?testmode=true` sets a `testmode` session cookie (via `src/middle
 `Users`, `Media`, `Posts`, `FAQs`, `Toys`
 
 ### Globals (`src/globals/`)
-`SiteSettings`, `Navigation`, `Footer`, `Homepage`, `MembershipPage`, `ContactPage`
+`SiteSettings`, `Navigation`, `Footer`, `Homepage`, `MembershipPage`, `VolunteerPage`, `ToysPage`, `NewsPage`
+
+(There is no ContactPage global — the home page contact section, including the `formEnabled` toggle, lives under `Homepage.contactSection`.)
 
 ### Key global: Homepage
-Controls the full long-scroll home page. Fields include: `heroType` (carousel/video toggle), `heroSlides[]`, `heroVideo`, headline/tagline/CTA, and section groups for Location, About, How It Works, Membership, Contact.
+Controls the full long-scroll home page. Fields include: `heroType` (carousel/video toggle), `heroSlides[]`, `heroVideo`, subtitle/headline/tagline/CTA, and section groups (in page render order) for Location, About, How It Works, Membership, FAQ, News, Contact. Every section group has a `sectionLabel` eyebrow text field rendered above its heading.
+
+**Single source of truth for address & opening hours:** `Homepage.locationSection` (street/suburb/state/postcode/openingHours). SiteSettings deliberately does NOT hold address or opening-hours fields — the home Contact section also reads location data from `Homepage.locationSection`.
+
+### ⚠️ Pending Deploy 2 — drop-only migration
+The field-audit commit (additive migration `20260714_124358_audit_cleanup_rewire`) removed several fields from the Payload configs but intentionally left their orphaned columns/tables in the database, per the schema convention below. Once that deploy is verified live, a follow-up drop-only migration should remove: `contact_page` table, `site_settings_opening_hours` table, `site_settings.address_*` columns, `navigation_items.is_scroll_link`, `homepage.membership_section_price_suffix`, `homepage_how_it_works_section_steps.icon`, `membership_page_tiers.price`. Note: `migrate:create` will NOT regenerate these drops (the schema snapshot already reflects them) — the Deploy 2 migration must be written by hand.
 
 ## Design System
 

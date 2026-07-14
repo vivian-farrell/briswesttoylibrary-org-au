@@ -46,11 +46,11 @@ export const Homepage: GlobalConfig = {
       },
     },
     {
-      name: 'scrollLabel',
+      name: 'heroSubtitle',
       type: 'text',
-      label: 'Scroll indicator label',
-      defaultValue: 'Scroll',
-      admin: { description: 'Small vertical text shown in the bottom-right of the hero.' },
+      label: 'Hero Subtitle',
+      defaultValue: "Kenmore · Brisbane's West · Since 1978",
+      admin: { description: 'Small text shown above the headline in the hero.' },
     },
     {
       name: 'heroHeadline',
@@ -65,13 +65,6 @@ export const Homepage: GlobalConfig = {
       defaultValue: 'Borrow quality toys for your child\'s world — sustainably, affordably, together.',
     },
     {
-      name: 'heroSubtitle',
-      type: 'text',
-      label: 'Hero Subtitle',
-      defaultValue: "Kenmore · Brisbane's West · Since 1978",
-      admin: { description: 'Small text shown above the headline in the hero.' },
-    },
-    {
       name: 'heroCTALabel',
       type: 'text',
       label: 'CTA Button Label',
@@ -83,6 +76,13 @@ export const Homepage: GlobalConfig = {
       label: 'CTA Button Link',
       defaultValue: '/#membership',
     },
+    {
+      name: 'scrollLabel',
+      type: 'text',
+      label: 'Scroll indicator label',
+      defaultValue: 'Scroll',
+      admin: { description: 'Small vertical text shown in the bottom-right of the hero.' },
+    },
 
     // ── Location ─────────────────────────────────────────────
     {
@@ -91,33 +91,16 @@ export const Homepage: GlobalConfig = {
       label: 'Location Section',
       fields: [
         {
-          name: 'heading',
-          type: 'text',
-          defaultValue: 'We\'re in Kenmore',
-        },
-        {
           name: 'sectionLabel',
           type: 'text',
           label: 'Section label',
           defaultValue: 'Find Us',
+          admin: { description: 'Small uppercase eyebrow text shown above the heading' },
         },
         {
-          name: 'openingHoursLabel',
+          name: 'heading',
           type: 'text',
-          label: 'Opening hours heading',
-          defaultValue: 'Opening Hours',
-        },
-        {
-          name: 'directionsLabel',
-          type: 'text',
-          label: 'Directions button label',
-          defaultValue: 'Get Directions →',
-        },
-        {
-          name: 'mapsLabel',
-          type: 'text',
-          label: '"View on Google Maps" link label',
-          defaultValue: 'View on Google Maps',
+          defaultValue: 'We\'re in Kenmore',
         },
         {
           name: 'street',
@@ -142,6 +125,12 @@ export const Homepage: GlobalConfig = {
           defaultValue: '4069',
         },
         {
+          name: 'openingHoursLabel',
+          type: 'text',
+          label: 'Opening hours heading',
+          defaultValue: 'Opening Hours',
+        },
+        {
           name: 'openingHours',
           type: 'array',
           label: 'Opening Hours',
@@ -152,12 +141,10 @@ export const Homepage: GlobalConfig = {
           ],
         },
         {
-          name: 'mapEmbedUrl',
+          name: 'directionsLabel',
           type: 'text',
-          label: 'Google Maps Embed URL',
-          admin: {
-            description: 'In Google Maps: Share → Embed a map → copy the src="..." URL',
-          },
+          label: 'Directions button label',
+          defaultValue: 'Get Directions →',
         },
         {
           name: 'directionsUrl',
@@ -165,6 +152,20 @@ export const Homepage: GlobalConfig = {
           label: 'Google Maps Directions URL',
           admin: {
             description: 'Link to open Google Maps directions to the library',
+          },
+        },
+        {
+          name: 'mapsLabel',
+          type: 'text',
+          label: '"View on Google Maps" link label',
+          defaultValue: 'View on Google Maps',
+        },
+        {
+          name: 'mapEmbedUrl',
+          type: 'text',
+          label: 'Google Maps Embed URL',
+          admin: {
+            description: 'In Google Maps: Share → Embed a map → copy the src="..." URL',
           },
         },
       ],
@@ -181,6 +182,7 @@ export const Homepage: GlobalConfig = {
           type: 'text',
           label: 'Section label',
           defaultValue: 'About',
+          admin: { description: 'Small uppercase eyebrow text shown above the heading' },
         },
         {
           name: 'heading',
@@ -222,6 +224,7 @@ export const Homepage: GlobalConfig = {
           type: 'text',
           label: 'Section label',
           defaultValue: 'Simple Process',
+          admin: { description: 'Small uppercase eyebrow text shown above the heading' },
         },
         {
           name: 'heading',
@@ -234,37 +237,10 @@ export const Homepage: GlobalConfig = {
           maxRows: 3,
           admin: { description: 'Exactly 3 steps displayed side-by-side' },
           fields: [
-            { name: 'icon',    type: 'text', admin: { description: 'Emoji, e.g. 📋 (unused — see photo below)' } },
-            { name: 'image',   type: 'upload', relationTo: 'media' },
+            { name: 'image',   type: 'upload', relationTo: 'media', admin: { description: 'Circular step photo' } },
             { name: 'heading', type: 'text', required: true },
             { name: 'body',    type: 'text', required: true },
           ],
-        },
-      ],
-    },
-
-    // ── News preview ─────────────────────────────────────────
-    {
-      name: 'newsSection',
-      type: 'group',
-      label: 'News Preview Section',
-      fields: [
-        {
-          name: 'sectionLabel',
-          type: 'text',
-          label: 'Section label',
-          defaultValue: 'Latest News',
-        },
-        {
-          name: 'heading',
-          type: 'text',
-          defaultValue: "What's On",
-        },
-        {
-          name: 'allNewsLabel',
-          type: 'text',
-          label: '"All news" link label',
-          defaultValue: 'All news →',
         },
       ],
     },
@@ -280,6 +256,7 @@ export const Homepage: GlobalConfig = {
           type: 'text',
           label: 'Section label',
           defaultValue: 'Membership',
+          admin: { description: 'Small uppercase eyebrow text shown above the heading' },
         },
         {
           name: 'heading',
@@ -296,12 +273,6 @@ export const Homepage: GlobalConfig = {
           type: 'text',
           label: '"Most Popular" badge text',
           defaultValue: 'Most Popular',
-        },
-        {
-          name: 'priceSuffix',
-          type: 'text',
-          label: 'Price suffix',
-          defaultValue: '/year',
         },
         {
           name: 'disclaimer',
@@ -323,11 +294,39 @@ export const Homepage: GlobalConfig = {
           type: 'text',
           label: 'Section label',
           defaultValue: 'Help',
+          admin: { description: 'Small uppercase eyebrow text shown above the heading' },
         },
         {
           name: 'heading',
           type: 'text',
           defaultValue: 'Frequently Asked Questions',
+        },
+      ],
+    },
+
+    // ── News preview ─────────────────────────────────────────
+    {
+      name: 'newsSection',
+      type: 'group',
+      label: 'News Preview Section',
+      fields: [
+        {
+          name: 'sectionLabel',
+          type: 'text',
+          label: 'Section label',
+          defaultValue: 'Latest News',
+          admin: { description: 'Small uppercase eyebrow text shown above the heading' },
+        },
+        {
+          name: 'heading',
+          type: 'text',
+          defaultValue: "What's On",
+        },
+        {
+          name: 'allNewsLabel',
+          type: 'text',
+          label: '"All news" link label',
+          defaultValue: 'All news →',
         },
       ],
     },
@@ -343,6 +342,7 @@ export const Homepage: GlobalConfig = {
           type: 'text',
           label: 'Section label',
           defaultValue: 'Get In Touch',
+          admin: { description: 'Small uppercase eyebrow text shown above the heading' },
         },
         {
           name: 'heading',
@@ -359,6 +359,13 @@ export const Homepage: GlobalConfig = {
           type: 'text',
           label: 'Contact form heading',
           defaultValue: 'Send us a message',
+        },
+        {
+          name: 'formEnabled',
+          type: 'checkbox',
+          label: 'Enable contact form',
+          defaultValue: false,
+          admin: { description: 'Requires Resend API key (Phase 5)' },
         },
       ],
     },

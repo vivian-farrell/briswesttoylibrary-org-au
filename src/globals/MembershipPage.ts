@@ -6,6 +6,13 @@ export const MembershipPage: GlobalConfig = {
   admin: { group: 'Content' },
   fields: [
     {
+      name: 'sectionLabel',
+      type: 'text',
+      label: 'Section label',
+      defaultValue: 'Membership',
+      admin: { description: 'Small uppercase eyebrow text shown above the /join page heading' },
+    },
+    {
       name: 'heading',
       type: 'text',
       defaultValue: 'Join Brisbane West Toy Library',
@@ -13,6 +20,34 @@ export const MembershipPage: GlobalConfig = {
     {
       name: 'intro',
       type: 'richText',
+    },
+    {
+      name: 'trial',
+      type: 'group',
+      label: '6-Week Trial',
+      admin: { description: 'Shown as the first card in the membership grid' },
+      fields: [
+        { name: 'name', type: 'text', defaultValue: '6 Week Trial' },
+        {
+          name: 'badge',
+          type: 'text',
+          label: 'Card badge text',
+          defaultValue: 'Try it out',
+          admin: { description: 'Small badge shown at the top of the trial card' },
+        },
+        { name: 'price', type: 'number', defaultValue: 20, label: 'Trial Price (AUD)' },
+        { name: 'bondPrice', type: 'number', defaultValue: 20, label: 'Refundable Bond (AUD)' },
+        { name: 'bondNote', type: 'text', defaultValue: 'Fully refundable when toys are returned' },
+        { name: 'description', type: 'text' },
+        {
+          name: 'features',
+          type: 'array',
+          fields: [
+            { name: 'feature', type: 'text', required: true },
+          ],
+        },
+        { name: 'ctaLabel', type: 'text', defaultValue: 'Start Your Trial', label: 'Button label' },
+      ],
     },
     {
       name: 'tiers',
@@ -24,12 +59,6 @@ export const MembershipPage: GlobalConfig = {
           name: 'name',
           type: 'text',
           required: true,
-        },
-        {
-          name: 'price',
-          type: 'number',
-          required: false,
-          admin: { description: 'Legacy — no longer displayed. Use the 6 & 12 month prices below.' },
         },
         {
           name: 'price6Month',
@@ -65,26 +94,6 @@ export const MembershipPage: GlobalConfig = {
           label: 'Button label',
           defaultValue: 'Join Now',
         },
-      ],
-    },
-    {
-      name: 'trial',
-      type: 'group',
-      label: '6-Week Trial',
-      fields: [
-        { name: 'name', type: 'text', defaultValue: '6 Week Trial' },
-        { name: 'price', type: 'number', defaultValue: 20, label: 'Trial Price (AUD)' },
-        { name: 'bondPrice', type: 'number', defaultValue: 20, label: 'Refundable Bond (AUD)' },
-        { name: 'bondNote', type: 'text', defaultValue: 'Fully refundable when toys are returned' },
-        { name: 'description', type: 'text' },
-        {
-          name: 'features',
-          type: 'array',
-          fields: [
-            { name: 'feature', type: 'text', required: true },
-          ],
-        },
-        { name: 'ctaLabel', type: 'text', defaultValue: 'Start Your Trial', label: 'Button label' },
       ],
     },
     {

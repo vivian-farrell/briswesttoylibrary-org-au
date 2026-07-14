@@ -49,6 +49,9 @@ export function HeroCarousel({ slides, subtitle, headline, tagline, ctaLabel, ct
       <div className="absolute inset-0 bg-black/45" />
 
       <div className="relative z-10 text-center px-6 max-w-3xl mx-auto">
+        <p className="text-mint/80 text-xs tracking-[0.18em] uppercase font-semibold mb-4">
+          {subtitle}
+        </p>
         <h1 className="text-white font-black text-[clamp(2.2rem,7vw,4.5rem)] leading-[1.1] mb-5">
           {headline}
         </h1>

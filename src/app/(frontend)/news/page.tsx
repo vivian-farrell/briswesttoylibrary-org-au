@@ -1,19 +1,18 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getPayloadClient } from '@/lib/payload'
+import { postCategoryLabel } from '@/lib/postCategories'
 
 export const revalidate = 3600
 
-export const metadata: Metadata = {
-  title: 'News | Brisbane West Toy Library',
-  description: 'The latest news, events, and announcements from Brisbane West Toy Library.',
-}
-
-const CATEGORY_LABELS: Record<string, string> = {
-  news: 'News',
-  event: 'Event',
-  volunteer: 'Volunteer',
-  announcement: 'Announcement',
+export async function generateMetadata(): Promise<Metadata> {
+  const payload = await getPayloadClient()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const page = await payload.findGlobal({ slug: 'news-page' }).catch(() => null) as any
+  return {
+    title: page?.heading ?? 'News & Announcements',
+    description: 'The latest news, events, and announcements from Brisbane West Toy Library.',
+  }
 }
 
 function formatDate(iso: string | null) {
@@ -23,14 +22,18 @@ function formatDate(iso: string | null) {
 
 export default async function NewsPage() {
   const payload = await getPayloadClient()
-  const result = await payload
-    .find({
-      collection: 'posts',
-      where: { status: { equals: 'published' } },
-      sort: '-publishedAt',
-      limit: 20,
-    })
-    .catch(() => ({ docs: [] }))
+  const [page, result] = await Promise.all([
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    payload.findGlobal({ slug: 'news-page' }).catch(() => null) as Promise<any>,
+    payload
+      .find({
+        collection: 'posts',
+        where: { status: { equals: 'published' } },
+        sort: '-publishedAt',
+        limit: 20,
+      })
+      .catch(() => ({ docs: [] })),
+  ])
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const posts = (result as any).docs ?? []
@@ -39,12 +42,12 @@ export default async function NewsPage() {
     <div className="bg-cream min-h-screen">
       <div className="container-site section-pad">
         <div className="mb-12">
-          <p className="section-label mb-3">Latest</p>
-          <h1 className="text-4xl md:text-5xl font-black text-dark">News & Announcements</h1>
+          <p className="section-label mb-3">{page?.sectionLabel ?? 'Latest'}</p>
+          <h1 className="text-4xl md:text-5xl font-black text-dark">{page?.heading ?? 'News & Announcements'}</h1>
         </div>
 
         {posts.length === 0 ? (
-          <p className="text-muted text-lg">No posts yet — check back soon!</p>
+          <p className="text-muted text-lg">{page?.emptyStateText ?? 'No posts yet — check back soon!'}</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
@@ -66,7 +69,7 @@ export default async function NewsPage() {
                   <div className="flex items-center gap-2 flex-wrap">
                     {post.category && (
                       <span className="text-xs font-bold uppercase tracking-wider text-forest bg-mint/25 px-2.5 py-1 rounded-full">
-                        {CATEGORY_LABELS[post.category] ?? post.category}
+                        {postCategoryLabel(post.category)}
                       </span>
                     )}
                     {post.publishedAt && (

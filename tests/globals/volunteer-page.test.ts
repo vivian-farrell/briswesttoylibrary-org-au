@@ -3,6 +3,22 @@ import { getTestPayload } from '../helpers/payload.ts'
 import { makeRichText, richTextToPlain } from '../helpers/richtext.ts'
 
 describe('VolunteerPage global — field persistence', () => {
+  it('saves sectionLabel, rolesHeading, and calendarLabel fields', async () => {
+    const payload = await getTestPayload()
+    await payload.updateGlobal({
+      slug: 'volunteer-page',
+      data: {
+        sectionLabel: 'Volunteering',
+        rolesHeading: 'Ways to Help',
+        calendarLabel: 'See the Shift Calendar →',
+      },
+    })
+    const result = await payload.findGlobal({ slug: 'volunteer-page' })
+    expect(result.sectionLabel).toBe('Volunteering')
+    expect(result.rolesHeading).toBe('Ways to Help')
+    expect(result.calendarLabel).toBe('See the Shift Calendar →')
+  })
+
   it('saves heading and intro fields', async () => {
     const payload = await getTestPayload()
     await payload.updateGlobal({
@@ -78,10 +94,13 @@ describe('VolunteerPage global — field persistence', () => {
   it('renders onto site: volunteer page has all fields the component expects', async () => {
     const payload = await getTestPayload()
     const vp = await payload.findGlobal({ slug: 'volunteer-page' })
+    expect(vp).toHaveProperty('sectionLabel')
     expect(vp).toHaveProperty('heading')
     expect(vp).toHaveProperty('intro')
     expect(vp).toHaveProperty('content')
+    expect(vp).toHaveProperty('rolesHeading')
     expect(vp).toHaveProperty('roles')
+    expect(vp).toHaveProperty('calendarLabel')
     expect(vp).toHaveProperty('ctaLabel')
     expect(vp).toHaveProperty('ctaEmail')
 

@@ -19,38 +19,23 @@ export const SiteSettings: GlobalConfig = {
       type: 'text',
       defaultValue: 'Brisbane West Toy Library',
       required: true,
+      admin: { description: 'Used in browser-tab titles and page metadata' },
     },
     {
       name: 'tagline',
       type: 'text',
       defaultValue: 'Toys. Imagination. Community.',
+      admin: { description: 'Used as the default meta description for search results' },
     },
     {
       name: 'email',
       type: 'email',
+      admin: { description: 'Shown in the home page Contact section' },
     },
     {
       name: 'phone',
       type: 'text',
-    },
-    {
-      name: 'address',
-      type: 'group',
-      fields: [
-        { name: 'street', type: 'text' },
-        { name: 'suburb', type: 'text', defaultValue: 'Kenmore' },
-        { name: 'state',  type: 'text', defaultValue: 'QLD' },
-        { name: 'postcode', type: 'text', defaultValue: '4069' },
-      ],
-    },
-    {
-      name: 'openingHours',
-      type: 'array',
-      admin: { description: 'e.g. Saturday / 9:00 am – 12:00 pm' },
-      fields: [
-        { name: 'day',   type: 'text', required: true },
-        { name: 'hours', type: 'text', required: true },
-      ],
+      admin: { description: 'Shown in the home page Contact section' },
     },
     {
       name: 'socialLinks',

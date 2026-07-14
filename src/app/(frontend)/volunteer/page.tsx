@@ -9,7 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const page = await payload.findGlobal({ slug: 'volunteer-page' }).catch(() => null) as any
   return {
-    title: `${page?.heading ?? 'Volunteer'} | Brisbane West Toy Library`,
+    title: page?.heading ?? 'Volunteer',
     description: page?.intro ?? 'Help keep Brisbane West Toy Library running by volunteering a small amount of your time.',
   }
 }
@@ -23,11 +23,14 @@ export default async function VolunteerPage() {
     payload.findGlobal({ slug: 'site-settings' }).catch(() => null) as Promise<any>,
   ])
 
+  const sectionLabel: string = page?.sectionLabel ?? 'Volunteering'
   const heading: string = page?.heading ?? 'Volunteer With Us'
   const intro: string | null = page?.intro ?? null
   const content = page?.content ?? null
+  const rolesHeading: string = page?.rolesHeading ?? 'Volunteer Roles'
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const roles: any[] = page?.roles ?? []
+  const calendarLabel: string = page?.calendarLabel ?? 'View Volunteer Shift Calendar →'
   const ctaLabel: string = page?.ctaLabel ?? 'Express Your Interest'
   const ctaEmail: string | null = page?.ctaEmail ?? null
   const calendarUrl: string | null = settings?.setlsCalendarUrl ?? null
@@ -36,7 +39,7 @@ export default async function VolunteerPage() {
     <div className="bg-cream min-h-screen">
       <div className="container-site section-pad">
         <div className="max-w-2xl mb-12">
-          <p className="section-label mb-3">Volunteering</p>
+          <p className="section-label mb-3">{sectionLabel}</p>
           <h1 className="text-4xl md:text-5xl font-black text-dark mb-6">{heading}</h1>
           {intro && (
             <p className="text-muted text-xl leading-relaxed">{intro}</p>
@@ -66,7 +69,7 @@ export default async function VolunteerPage() {
 
         {roles.length > 0 && (
           <div className="mb-12">
-            <h2 className="text-2xl font-bold text-dark mb-6">Volunteer Roles</h2>
+            <h2 className="text-2xl font-bold text-dark mb-6">{rolesHeading}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {roles.map((role: { title: string; description?: string; commitment?: string }, i: number) => (
                 <div key={i} className="bg-white rounded-xl p-6 shadow-sm border border-mint/30">
@@ -93,7 +96,7 @@ export default async function VolunteerPage() {
               rel="noopener noreferrer"
               className="inline-block bg-mint/40 text-dark font-bold px-6 py-3 rounded-full hover:brightness-95 transition-all"
             >
-              View Volunteer Shift Calendar →
+              {calendarLabel}
             </a>
           )}
 

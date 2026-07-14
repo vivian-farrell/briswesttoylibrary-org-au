@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import BarcodeGenerator from '@/components/BarcodeGenerator'
 
 export const metadata: Metadata = {
-  title: 'Barcode Generator | Brisbane West Toy Library',
+  title: 'Barcode Generator',
   description: 'Generate printable Code 39 barcodes from SETLS export codes.',
   robots: { index: false, follow: false },
 }

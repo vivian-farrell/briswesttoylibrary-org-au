@@ -1,9 +1,28 @@
 import '@/styles/globals.css'
+import type { Metadata } from 'next'
 import { cookies } from 'next/headers'
 import { NavShell } from '@/components/layout/NavShell'
 import { SiteFooter } from '@/components/layout/Footer'
 import { ComingSoon } from '@/components/ComingSoon'
 import { getPayloadClient } from '@/lib/payload'
+
+export async function generateMetadata(): Promise<Metadata> {
+  let siteName = 'Brisbane West Toy Library'
+  let tagline = 'Toys. Imagination. Community.'
+  try {
+    const payload = await getPayloadClient()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const settings = (await payload.findGlobal({ slug: 'site-settings' })) as any
+    siteName = settings?.siteName ?? siteName
+    tagline = settings?.tagline ?? tagline
+  } catch {
+    // DB unavailable — fall back to defaults
+  }
+  return {
+    title: { default: siteName, template: `%s | ${siteName}` },
+    description: tagline,
+  }
+}
 
 export default async function FrontendLayout({ children }: { children: React.ReactNode }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -40,7 +59,6 @@ export default async function FrontendLayout({ children }: { children: React.Rea
     label: i.label as string,
     href: i.href as string,
     isCTA: i.isCTA as boolean,
-    isScrollLink: i.isScrollLink as boolean,
   }))
 
   return (

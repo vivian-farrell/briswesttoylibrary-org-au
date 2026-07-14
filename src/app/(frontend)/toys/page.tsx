@@ -5,27 +5,47 @@ import { getPayloadClient } from '@/lib/payload'
 export const revalidate = 3600
 
 export async function generateMetadata(): Promise<Metadata> {
+  const payload = await getPayloadClient()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const page = await payload.findGlobal({ slug: 'toys-page' }).catch(() => null) as any
   return {
-    title: 'Our Toys | Brisbane West Toy Library',
-    description: 'Browse the Brisbane West Toy Library catalogue and borrow quality educational toys for your children.',
+    title: page?.heading ?? 'Our Toys',
+    description:
+      page?.intro ??
+      'Browse the Brisbane West Toy Library catalogue and borrow quality educational toys for your children.',
   }
 }
 
+type Feature = { icon: string; title: string; body: string }
+
+const FALLBACK_FEATURES: Feature[] = [
+  { icon: '🎯', title: 'Educational', body: 'Puzzles, building sets, STEM kits and more' },
+  { icon: '🌿', title: 'Sustainable', body: 'Borrow instead of buy — less waste, more variety' },
+  { icon: '♻️', title: 'Always Rotating', body: 'Return when done and try something new' },
+]
+
 export default async function ToysPage() {
   const payload = await getPayloadClient()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const settings = await payload.findGlobal({ slug: 'site-settings' }).catch(() => null) as any
+  const [page, settings] = await Promise.all([
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    payload.findGlobal({ slug: 'toys-page' }).catch(() => null) as Promise<any>,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    payload.findGlobal({ slug: 'site-settings' }).catch(() => null) as Promise<any>,
+  ])
 
   const catalogueUrl: string | null = settings?.setlsCatalogueUrl ?? null
+  const features: Feature[] =
+    page?.features && page.features.length > 0 ? page.features : FALLBACK_FEATURES
 
   return (
     <div className="bg-cream min-h-screen">
       <div className="container-site section-pad">
         <div className="mb-12">
-          <p className="section-label mb-3">Toy Catalogue</p>
-          <h1 className="text-4xl md:text-5xl font-black text-dark mb-4">Our Toys</h1>
+          <p className="section-label mb-3">{page?.sectionLabel ?? 'Toy Catalogue'}</p>
+          <h1 className="text-4xl md:text-5xl font-black text-dark mb-4">{page?.heading ?? 'Our Toys'}</h1>
           <p className="text-muted text-lg max-w-xl">
-            We stock hundreds of quality educational toys, puzzles, games, and outdoor equipment — updated regularly with new additions.
+            {page?.intro ??
+              'We stock hundreds of quality educational toys, puzzles, games, and outdoor equipment — updated regularly with new additions.'}
           </p>
         </div>
 
@@ -35,10 +55,12 @@ export default async function ToysPage() {
               🧸
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-dark mb-2">Browse the Catalogue</h2>
+              <h2 className="text-2xl font-bold text-dark mb-2">
+                {page?.catalogueCardHeading ?? 'Browse the Catalogue'}
+              </h2>
               <p className="text-muted leading-relaxed">
-                Our full toy catalogue is hosted on SETLS, the platform we use to manage borrowing.
-                Members can log in to place reservations.
+                {page?.catalogueCardBody ??
+                  'Our full toy catalogue is hosted on SETLS, the platform we use to manage borrowing. Members can log in to place reservations.'}
               </p>
             </div>
             <a
@@ -47,7 +69,7 @@ export default async function ToysPage() {
               rel="noopener noreferrer"
               className="inline-block bg-orange text-white font-bold px-8 py-4 rounded-full hover:brightness-110 transition-all self-start"
             >
-              Open Toy Catalogue →
+              {page?.catalogueCtaLabel ?? 'Open Toy Catalogue →'}
             </a>
           </div>
         ) : (
@@ -59,7 +81,7 @@ export default async function ToysPage() {
               Our online catalogue is coming soon. In the meantime, come along to a session to see what&apos;s available!
             </p>
             <Link
-              href="/contact"
+              href="/#contact"
               className="inline-block bg-forest text-white font-bold px-8 py-4 rounded-full hover:brightness-110 transition-all self-start"
             >
               Contact Us →
@@ -68,16 +90,12 @@ export default async function ToysPage() {
         )}
 
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            { icon: '🎯', label: 'Educational', desc: 'Puzzles, building sets, STEM kits and more' },
-            { icon: '🌿', label: 'Sustainable', desc: 'Borrow instead of buy — less waste, more variety' },
-            { icon: '♻️', label: 'Always Rotating', desc: 'Return when done and try something new' },
-          ].map(({ icon, label, desc }) => (
-            <div key={label} className="bg-white rounded-xl p-6 shadow-sm border border-mint/20 flex gap-4">
+          {features.map(({ icon, title, body }) => (
+            <div key={title} className="bg-white rounded-xl p-6 shadow-sm border border-mint/20 flex gap-4">
               <span className="text-2xl flex-shrink-0">{icon}</span>
               <div>
-                <p className="font-bold text-dark">{label}</p>
-                <p className="text-muted text-sm mt-1">{desc}</p>
+                <p className="font-bold text-dark">{title}</p>
+                <p className="text-muted text-sm mt-1">{body}</p>
               </div>
             </div>
           ))}

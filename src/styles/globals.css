@@ -43,6 +43,15 @@ html {
 
   /* Spacing / radius */
   --radius: 0.75rem;
+
+  /* ── Elevation ──────────────────────────────────────────────────────────────
+     Refined, neutral float shadow. Layered: a tight contact shadow plus two
+     soft, wide casts so a card reads as gently sitting above the page.
+     Use with the `shadow-float` utility (e.g. on the featured tier card).   */
+
+  --shadow-float: 0 2px 4px rgba(32, 20, 71, 0.04),
+                  0 12px 28px rgba(32, 20, 71, 0.10),
+                  0 24px 60px rgba(32, 20, 71, 0.08);
 }
 
 body {
@@ -72,5 +81,14 @@ body {
 
   .section-pad {
     padding-block: 5rem;
+  }
+
+  /* Eyebrow label shown above section/page headings */
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color-link);
   }
 }

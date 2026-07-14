@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { LogoImage } from '@/components/ui/LogoImage'
 
-type NavItem = { label: string; href: string; isCTA?: boolean; isScrollLink?: boolean }
+type NavItem = { label: string; href: string; isCTA?: boolean }
 
 type Props = {
   navItems?: NavItem[]
@@ -162,9 +162,10 @@ export function NavShell({ navItems, copyright = 'Brisbane West Toy Library Inc.
             {item.label}
           </Link>
         ))}
+        {/* Primary CTA — solid coral (accent) */}
         <Link
           href={ctaItem.href}
-          className="ml-2 bg-yellow text-heading px-4 py-1.5 rounded-full text-sm font-bold hover:opacity-90 transition-opacity"
+          className="ml-2 bg-accent text-white px-4 py-1.5 rounded-full text-sm font-bold hover:brightness-105 transition-all"
         >
           {ctaItem.label}
         </Link>
@@ -206,10 +207,11 @@ export function NavShell({ navItems, copyright = 'Brisbane West Toy Library Inc.
             </li>
           ))}
           <li>
+            {/* Primary CTA — solid coral (accent) */}
             <Link
               href={ctaItem.href}
               onClick={close}
-              className="inline-block bg-yellow text-heading px-10 py-3 rounded-full font-bold text-[clamp(1rem,3vw,1.4rem)] mt-3 hover:opacity-90 transition-opacity"
+              className="inline-block bg-accent text-white px-10 py-3 rounded-full font-bold text-[clamp(1rem,3vw,1.4rem)] mt-3 hover:brightness-105 transition-all"
             >
               {ctaItem.label}
             </Link>

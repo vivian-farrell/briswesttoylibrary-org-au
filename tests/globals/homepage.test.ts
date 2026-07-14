@@ -240,27 +240,27 @@ describe('Homepage global — howItWorksSection', () => {
     expect(section.heading).toBe('How It Works')
   })
 
-  it('saves steps with icon, heading, and body', async () => {
+  it('saves steps with heading and body (icon field removed)', async () => {
     const payload = await getTestPayload()
     await payload.updateGlobal({
       slug: 'homepage',
       data: {
         howItWorksSection: {
           steps: [
-            { icon: '📋', heading: 'Join', body: 'Pay your annual fee.' },
-            { icon: '🧸', heading: 'Borrow', body: 'Choose toys each session.' },
-            { icon: '🔄', heading: 'Return', body: 'Bring them back next time.' },
+            { heading: 'Join', body: 'Pay your annual fee.' },
+            { heading: 'Borrow', body: 'Choose toys each session.' },
+            { heading: 'Return', body: 'Bring them back next time.' },
           ],
         },
       },
     })
     const result = await payload.findGlobal({ slug: 'homepage' })
-    const section = result.howItWorksSection as { steps: Array<{ icon: string; heading: string; body: string }> }
+    const section = result.howItWorksSection as { steps: Array<{ heading: string; body: string }> }
     expect(section.steps).toHaveLength(3)
-    expect(section.steps[0].icon).toBe('📋')
     expect(section.steps[0].heading).toBe('Join')
     expect(section.steps[1].heading).toBe('Borrow')
     expect(section.steps[2].body).toBe('Bring them back next time.')
+    expect(section.steps[0]).not.toHaveProperty('icon')
   })
 
   it('saves an optional image upload per step and resolves it as a media relation', async () => {
@@ -347,7 +347,6 @@ describe('Homepage global — membershipSection and contactSection', () => {
         membershipSection: {
           sectionLabel: 'Become a Member',
           popularBadge: 'Best Value',
-          priceSuffix: '/yr',
           disclaimer: 'Fees subject to change.',
         },
       },
@@ -356,13 +355,13 @@ describe('Homepage global — membershipSection and contactSection', () => {
     const mem = result.membershipSection as {
       sectionLabel: string
       popularBadge: string
-      priceSuffix: string
       disclaimer: string
     }
     expect(mem.sectionLabel).toBe('Become a Member')
     expect(mem.popularBadge).toBe('Best Value')
-    expect(mem.priceSuffix).toBe('/yr')
     expect(mem.disclaimer).toBe('Fees subject to change.')
+    // priceSuffix was removed with the 6/12-month duration toggle
+    expect(mem).not.toHaveProperty('priceSuffix')
   })
 
   it('saves contactSection heading and intro', async () => {
@@ -397,6 +396,25 @@ describe('Homepage global — membershipSection and contactSection', () => {
     const contact = result.contactSection as { sectionLabel: string; formHeading: string }
     expect(contact.sectionLabel).toBe('Say Hello')
     expect(contact.formHeading).toBe('Send us a message')
+  })
+
+  it('saves contactSection formEnabled checkbox (moved from the removed ContactPage global)', async () => {
+    const payload = await getTestPayload()
+    await payload.updateGlobal({
+      slug: 'homepage',
+      data: { contactSection: { formEnabled: true } },
+    })
+    const result = await payload.findGlobal({ slug: 'homepage' })
+    let contact = result.contactSection as { formEnabled: boolean }
+    expect(contact.formEnabled).toBe(true)
+
+    await payload.updateGlobal({
+      slug: 'homepage',
+      data: { contactSection: { formEnabled: false } },
+    })
+    const after = await payload.findGlobal({ slug: 'homepage' })
+    contact = after.contactSection as { formEnabled: boolean }
+    expect(contact.formEnabled).toBe(false)
   })
 })
 

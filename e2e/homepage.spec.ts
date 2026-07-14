@@ -31,10 +31,12 @@ test.describe('homepage CMS wiring', () => {
   })
 
   test('location: street and suburb/state/postcode', async ({ page }) => {
-    await expect(page.getByText('E2E Location Street')).toBeVisible()
-    await expect(page.getByText(/E2ELocSuburb/)).toBeVisible()
-    await expect(page.getByText(/E2ELS/)).toBeVisible()
-    await expect(page.getByText(/E2ELP/)).toBeVisible()
+    // Scoped to #location — the contact section shows the same suburb/state/postcode
+    const location = page.locator('#location')
+    await expect(location.getByText('E2E Location Street')).toBeVisible()
+    await expect(location.getByText(/E2ELocSuburb/)).toBeVisible()
+    await expect(location.getByText(/E2ELS/)).toBeVisible()
+    await expect(location.getByText(/E2ELP/)).toBeVisible()
   })
 
   test('location: directions label and href', async ({ page }) => {
@@ -78,6 +80,14 @@ test.describe('homepage CMS wiring', () => {
     await expect(page.getByText('E2E step two body')).toBeVisible()
     await expect(page.getByRole('heading', { name: 'E2E Step Three' })).toBeVisible()
     await expect(page.getByText('E2E step three body')).toBeVisible()
+  })
+
+  // ── FAQ Section ───────────────────────────────────────────────────────────
+
+  test('faq: section label, heading, and seeded question render', async ({ page }) => {
+    await expect(page.getByText('E2E FAQ Label')).toBeVisible()
+    await expect(page.getByText('E2E FAQ Heading')).toBeVisible()
+    await expect(page.getByText('E2E FAQ Question?')).toBeVisible()
   })
 
   // ── News Preview Section ──────────────────────────────────────────────────
@@ -130,8 +140,8 @@ test.describe('homepage CMS wiring', () => {
     await expect(page.getByText('E2E concession feature')).toBeVisible()
   })
 
-  test('membership: trial card price, bond, and CTA', async ({ page }) => {
-    await expect(page.getByText('Try it out')).toBeVisible()
+  test('membership: trial card badge, price, bond, and CTA', async ({ page }) => {
+    await expect(page.getByText('E2E Trial Badge')).toBeVisible()
     await expect(page.getByRole('heading', { name: 'E2E Trial', exact: true })).toBeVisible()
     await expect(page.getByText('E2E bond note')).toBeVisible()
     await expect(page.getByText('E2E Trial CTA')).toBeVisible()
@@ -156,10 +166,12 @@ test.describe('homepage CMS wiring', () => {
     await expect(page.getByText('07 0000 E2E')).toBeVisible()
   })
 
-  test('contact: site-settings address suburb, state, postcode', async ({ page }) => {
-    await expect(page.getByText(/E2ESettSuburb/)).toBeVisible()
-    await expect(page.getByText(/E2EState/)).toBeVisible()
-    await expect(page.getByText(/E2EP0ST/)).toBeVisible()
+  test('contact: address suburb, state, postcode come from the location section', async ({ page }) => {
+    // Contact section reads hp.locationSection (single source of truth for address)
+    const contact = page.locator('#contact')
+    await expect(contact.getByText(/E2ELocSuburb/)).toBeVisible()
+    await expect(contact.getByText(/E2ELS/)).toBeVisible()
+    await expect(contact.getByText(/E2ELP/)).toBeVisible()
   })
 
   test('contact: facebook and instagram hrefs', async ({ page }) => {

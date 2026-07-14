@@ -7,6 +7,7 @@ import * as migration_20260525_134850_location_section_address_hours from './202
 import * as migration_20260531_123635_cms_all_section_labels from './20260531_123635_cms_all_section_labels';
 import * as migration_20260603_112249_add_faq_section from './20260603_112249_add_faq_section';
 import * as migration_20260702_133334_redesign_about_howitworks_membership_volunteer from './20260702_133334_redesign_about_howitworks_membership_volunteer';
+import * as migration_20260714_124358_audit_cleanup_rewire from './20260714_124358_audit_cleanup_rewire';
 
 export const migrations = [
   {
@@ -52,6 +53,11 @@ export const migrations = [
   {
     up: migration_20260702_133334_redesign_about_howitworks_membership_volunteer.up,
     down: migration_20260702_133334_redesign_about_howitworks_membership_volunteer.down,
-    name: '20260702_133334_redesign_about_howitworks_membership_volunteer'
+    name: '20260702_133334_redesign_about_howitworks_membership_volunteer',
+  },
+  {
+    up: migration_20260714_124358_audit_cleanup_rewire.up,
+    down: migration_20260714_124358_audit_cleanup_rewire.down,
+    name: '20260714_124358_audit_cleanup_rewire'
   },
 ];
