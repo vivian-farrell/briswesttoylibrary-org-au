@@ -2,8 +2,9 @@ import { describe, it, expect } from 'vitest'
 import { NextRequest } from 'next/server'
 import { middleware } from '@/middleware'
 
-function makeRequest(path: string) {
-  return new NextRequest(new URL(path, 'http://localhost'))
+function makeRequest(path: string, cookie?: string) {
+  const init = cookie ? { headers: { cookie } } : undefined
+  return new NextRequest(new URL(path, 'http://localhost'), init)
 }
 
 describe('middleware — testmode cookie', () => {
@@ -38,10 +39,31 @@ describe('middleware — testmode cookie', () => {
     expect(res.cookies.get('testmode')?.value).toBe('1')
   })
 
-  it('always returns a response (does not block requests)', () => {
-    const req = makeRequest('/')
+  it('does not block non-root requests', () => {
+    const req = makeRequest('/join')
     const res = middleware(req)
     expect(res).toBeDefined()
+    expect(res.status).toBe(200)
+  })
+})
+
+describe('middleware — temporary root redirect', () => {
+  it('redirects the root path to the SETLS catalogue when testmode is not active', () => {
+    const req = makeRequest('/')
+    const res = middleware(req)
+    expect(res.status).toBe(307)
+    expect(res.headers.get('location')).toBe('https://bwtl.setls.com.au/')
+  })
+
+  it('does not redirect the root path when ?testmode=true is set', () => {
+    const req = makeRequest('/?testmode=true')
+    const res = middleware(req)
+    expect(res.status).toBe(200)
+  })
+
+  it('does not redirect the root path when the testmode cookie is already set', () => {
+    const req = makeRequest('/', 'testmode=1')
+    const res = middleware(req)
     expect(res.status).toBe(200)
   })
 })
